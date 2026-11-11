@@ -648,3 +648,18 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 /* hero 元信息行：浏览量徽章 + 定位眉标同行，消除双胶囊堆叠 */
 .hero-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:24px}
 .hero-grid{align-items:center}
+
+/* ═══════ 移动端导航（H5）：≤1100px 汉堡 + 下拉面板 ═══════ */
+.nav-burger{display:none;width:32px;height:32px;border:1px solid var(--border);border-radius:8px;
+  background:var(--surface);color:var(--text);align-items:center;justify-content:center;cursor:pointer;padding:0}
+.nav-mobile{display:none}
+@media (max-width:1100px){
+  .nav-burger{display:inline-flex}
+  .nav-mobile{display:block;position:absolute;top:100%;left:0;right:0;z-index:50;
+    background:var(--chrome-bg);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);
+    padding:8px 0;box-shadow:var(--shadow-pop)}
+  .nav-mobile a{display:block;padding:13px 24px;color:var(--text);font-size:.95rem;
+    border-top:1px solid var(--border-soft);text-decoration:none}
+  .nav-mobile a[aria-current="page"]{color:var(--accent)}
+}
+.nav{position:relative}

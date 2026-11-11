@@ -8,7 +8,7 @@
 <title>部署指南 · TestOps AI 运维监控平台</title>
 <meta name="description" content="Docker 一键部署、私有化内网部署与商业授权三条路径；前置条件、快速开始命令与常见坑（均来自真实部署实测）。">
 <link rel="icon" type="image/svg+xml" href="/assets/codeflow-logo.svg">
-<link rel="stylesheet" href="/assets/site.css?v=40e5554e">
+<link rel="stylesheet" href="/assets/site.css?v=1e580069">
 <meta property="og:title" content="部署指南 · TestOps AI 运维监控平台">
   <meta property="og:description" content="Docker 一键部署、私有化内网部署与商业授权三条路径；前置条件、快速开始命令与常见坑（均来自真实部署实测）。">
   <meta property="og:type" content="website">
@@ -31,9 +31,12 @@
       <a href="/blog.html" data-nav="blog">博客</a>
       <a href="/deploy.html" data-nav="deploy">部署</a>
       <a href="/open-source.html" data-nav="open-source">开源</a>
-      <a href="/testops/index.html" data-nav="testops" aria-current="page">TestOps 运维</a>
+      <a href="/testops/index.html" data-nav="testops" aria-current="page" aria-current="page">TestOps 运维</a>
     </nav>
     <div class="nav-spacer"></div>
+    <button class="nav-burger" id="navBurger" aria-label="打开导航菜单" aria-expanded="false" aria-controls="navMobile">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3.5h14v1.7H1V3.5Zm0 3.9h14v1.7H1V7.4Zm0 3.9h14v1.7H1v-1.7Z"/></svg>
+    </button>
     <div class="nav-act">
       <a class="gh-star" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
@@ -45,6 +48,13 @@
       <a class="btn btn-primary btn-sm" href="/deploy.html">开始部署</a>
     </div>
   </div>
+<div id="navMobile" class="nav-mobile" hidden>
+  <a href="/features.html" data-nav="features">产品</a>
+  <a href="/blog.html" data-nav="blog">博客</a>
+  <a href="/deploy.html" data-nav="deploy">部署</a>
+  <a href="/open-source.html" data-nav="open-source">开源</a>
+  <a href="/testops/index.html" data-nav="testops" aria-current="page" aria-current="page">TestOps 运维</a>
+</div>
 </header>
 
 <main>
@@ -208,6 +218,6 @@
   <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
 </aside>
 
-<script src="/assets/site.js?v=40e5554e" defer></script>
+<script src="/assets/site.js?v=1e580069" defer></script>
 </body>
 </html>

@@ -69,3 +69,22 @@
       }).catch(function () {});
   } catch (e) {}
 })();
+
+// 移动端导航：汉堡开合，选中后自动收起（≤1100px 生效，样式控制可见性）
+(function () {
+  var btn = document.getElementById("navBurger");
+  var panel = document.getElementById("navMobile");
+  if (!btn || !panel) return;
+  function set(open) {
+    panel.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "关闭导航菜单" : "打开导航菜单");
+  }
+  btn.addEventListener("click", function () { set(panel.hidden); });
+  panel.addEventListener("click", function (e) {
+    if (e.target.tagName === "A") set(false);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !panel.hidden) set(false);
+  });
+})();
