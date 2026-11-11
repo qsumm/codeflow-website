@@ -19,14 +19,14 @@ SRC = SITE / "src"
 PRODUCT = Path(os.environ.get(
     "TESTOPS_PRODUCT_ROOT", str(ROOT.parent / "aiops-platform")))
 
-# ── 品牌与仓库：单一事实源（家族站：CodeFlow 主品牌 + TestOps 子站） ──
+# ── 品牌与仓库：单一事实源（CodeFlow 平台 + 智能运维模块） ──
 # 主品牌：站内所有可见文字（标题/导航/页脚/正文/OG/文档）统一由此派生，
 #        源文件里写 {{BRAND}}，改这里即全站生效（D21 品牌统一）。
 BRAND = "CodeFlow"
 # 主仓库：CodeFlow（从需求到交付的数字员工平台）。
 REPO = "https://github.com/qsumm/CodeFlow"
 REPO_CLONE = f"{REPO}.git"
-# 子站品牌：TestOps（智能运维）整体迁至 /testops/ 子路径，源文件里写 {{TESTOPS_*}} token。
+# 智能运维模块（原 TestOps 独立产品线，现归入 /ops/）：正文描述产品史时仍用 TESTOPS_BRAND。
 TESTOPS_BRAND = "TestOps"
 TESTOPS_REPO = "https://github.com/qsumm/TestOps"
 TESTOPS_REPO_CLONE = f"{TESTOPS_REPO}.git"
@@ -169,7 +169,7 @@ def hook_tutorial_cards() -> str:
         cards.append(f"""      <div class="hub-item">
         <div class="h-t">{title} <small>{num}</small></div>
         <p class="h-d">{blurb}</p>
-        <div class="h-c"><a class="tag" style="text-decoration:none" href="/testops/docs/tutorials/{num}.html">阅读 · {_read_minutes(body)} min</a></div>
+        <div class="h-c"><a class="tag" style="text-decoration:none" href="/ops/docs/tutorials/{num}.html">阅读 · {_read_minutes(body)} min</a></div>
       </div>""")
     return '<div class="hub-grid" style="grid-template-columns:repeat(3,1fr)">\n' + "\n".join(cards) + "\n  </div>"
 
@@ -257,23 +257,23 @@ DOC_SHELL = """<div class="wrap">
 
 
 def build_doc_pages() -> dict[str, tuple]:
-    """P3：教程 / 学习文章 / 题库的正文壳页 + md 资产拷贝（TestOps 子站 → testops/ 前缀）。"""
+    """P3：教程 / 学习文章 / 题库的正文壳页 + md 资产拷贝（智能运维模块 → ops/ 前缀）。"""
     assets_md = SITE / "assets" / "md"
     jobs = []
-    # 12 篇教程（产物进 /testops/docs/tutorials/，md 资产仍在 /assets/md/ 供壳页 fetch）
+    # 12 篇教程（产物进 /ops/docs/tutorials/，md 资产仍在 /assets/md/ 供壳页 fetch）
     for md in sorted((PRODUCT / "docs" / "05-教程").glob("*.md")):
         num = md.name.split("-")[0]
-        jobs.append((f"testops/docs/tutorials/{num}.html", md, f"/assets/md/tutorials/{num}.md",
+        jobs.append((f"ops/docs/tutorials/{num}.html", md, f"/assets/md/tutorials/{num}.md",
                      re.sub(r"^\d+-", "", re.sub(r"\.md$", "", md.name)),
                      TUTORIAL_BLURBS.get(num, "跟着做一遍就能上手的实战教程。"),
-                     "/testops/learn-tutorials.html", "教程目录",
+                     "/ops/learn-tutorials.html", "教程目录",
                      f"{TESTOPS_REPO}/tree/main/docs/05-教程"))
         (assets_md / "tutorials").mkdir(parents=True, exist_ok=True)
         (assets_md / "tutorials" / f"{num}.md").write_text(md.read_text(encoding="utf-8"), encoding="utf-8")
     # learning 文章（aiops / sre-basics）
-    # (产品仓源目录, 站点目录, 返回页)：源目录 aiops → 站点目录 testops（品牌统一，D21）
-    for rel, site_rel, back in (("aiops", "testops", "/testops/learn-testops.html"),
-                                ("sre-basics", "sre-basics", "/testops/learn-sre.html")):
+    # (产品仓源目录, 站点目录, 返回页)：源目录 aiops → 站点目录 ops
+    for rel, site_rel, back in (("aiops", "ops", "/ops/learn-testops.html"),
+                                ("sre-basics", "sre-basics", "/ops/learn-sre.html")):
         (assets_md / "learn" / site_rel).mkdir(parents=True, exist_ok=True)
         for md in sorted((PRODUCT / "learning" / rel).glob("*.md")):
             if md.name == "README.md":
@@ -281,8 +281,8 @@ def build_doc_pages() -> dict[str, tuple]:
             slug = re.sub(r"\.md$", "", md.name)
             title = re.sub(r"\.md$", "", md.name)
             # 首段可能抽空（正文以标题/引用开头）——回退用标题构造，保证每页描述唯一（G07）
-            blurb = _first_para(_fm(md).get("_body", ""))[:90] or f"{title}——{TESTOPS_BRAND} 学习学院文章。"
-            jobs.append((f"testops/learn/{site_rel}/{slug}.html", md, f"/assets/md/learn/{site_rel}/{slug}.md",
+            blurb = _first_para(_fm(md).get("_body", ""))[:90] or f"{title}——智能运维学习学院文章。"
+            jobs.append((f"ops/learn/{site_rel}/{slug}.html", md, f"/assets/md/learn/{site_rel}/{slug}.md",
                          title, blurb,
                          back, "学习学院", TESTOPS_REPO))
             (assets_md / "learn" / site_rel / f"{slug}.md").write_text(md.read_text(encoding="utf-8"), encoding="utf-8")
@@ -292,10 +292,10 @@ def build_doc_pages() -> dict[str, tuple]:
         (assets_md / "learn").mkdir(parents=True, exist_ok=True)
         # 产品仓 md 只读；站点副本做品牌归一（标题里的旧品牌 → TESTOPS_BRAND，不是主品牌）
         (assets_md / "learn" / "interview.md").write_text(
-            qb.read_text(encoding="utf-8").replace("AIOps", TESTOPS_BRAND), encoding="utf-8")
-        jobs.append(("testops/learn/interview/all.html", qb, "/assets/md/learn/interview.md",
-                     "{{TESTOPS_BRAND}} 面试题库（46 题）", "含答案、追问链、踩坑回答与简历话术。",
-                     "/testops/learn-interview.html", "面试题库", TESTOPS_REPO))
+            qb.read_text(encoding="utf-8").replace("AIOps", "智能运维"), encoding="utf-8")
+        jobs.append(("ops/learn/interview/all.html", qb, "/assets/md/learn/interview.md",
+                     "智能运维面试题库（46 题）", "含答案、追问链、踩坑回答与简历话术。",
+                     "/ops/learn-interview.html", "面试题库", TESTOPS_REPO))
     out = {}
     for rel, md, mdp, title, blurb, back, back_label, origin in jobs:
         out[rel] = (mdp, title, blurb, back, back_label, origin)
@@ -460,8 +460,8 @@ def build(quiet: bool = False) -> dict[str, str]:
     out["sitemap.xml"] = (f'<?xml version="1.0" encoding="UTF-8"?>\n<!-- base_url 未配置时 loc 为占位，上线前在 pages.json 设置 base_url -->\n'
                           f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{locs}\n</urlset>\n')
     out["robots.txt"] = "User-agent: *\nAllow: /\nSitemap: " + (base or "https://REPLACE-BEFORE-LAUNCH") + "/sitemap.xml\n"
-    cf_pages = [p for p in reg["pages"] if p["slug"] != "404" and not p["slug"].startswith("testops/")]
-    tps_pages = [p for p in reg["pages"] if p["slug"] != "404" and p["slug"].startswith("testops/")]
+    cf_pages = [p for p in reg["pages"] if p["slug"] != "404" and not p["slug"].startswith("ops/")]
+    tps_pages = [p for p in reg["pages"] if p["slug"] != "404" and p["slug"].startswith("ops/")]
 
     def _llm_line(p: dict) -> str:
         rel = "" if p["slug"] == "index" else p["slug"] + ".html"
@@ -475,7 +475,7 @@ def build(quiet: bool = False) -> dict[str, str]:
 ## CodeFlow 主要页面
 """ + "\n".join(_llm_line(p) for p in cf_pages) + f"""
 
-## {TESTOPS_BRAND} 子站（/testops/）
+## 智能运维模块（/ops/）
 """ + "\n".join(_llm_line(p) for p in tps_pages) + f"""
 
 ## 部署（CodeFlow）

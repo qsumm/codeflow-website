@@ -11,24 +11,24 @@
 - [自部署指南](/deploy.html): 平台前后端与执行器 runtime 的自部署命令：单机 4C8G 起步，build.sh / bootstrap.sh 
 - [开源与合规](/open-source.html): 平台源码 MIT（上游 CodeFlow Community），执行器 runtime 纯标准库可独立部署；全链路可审计
 
-## TestOps 子站（/testops/）
-- [{{TESTOPS_BRAND}}](/testops/index.html): 开源自托管的 AI 运维监控平台：拉取式 Agent 零入站端口，告警收敛成事件后交给带证据链的诊断 Agent 排查取
-- [功能详解](/testops/features.html): 发现、定位、处置、沉淀四章：指纹状态机、证据链诊断、九道护栏与审批凭据、案例沉淀——每个能力都带 FR 编号与真实数字。
-- [证据链](/testops/evidence.html): 一次真实故障的完整证据链：82 秒出报告、16 步取证、结论带 step 引用、置信度按证据确定性计分、快照回放可复现。
-- [部署指南](/testops/deploy.html): Docker 一键部署、私有化内网部署与商业授权三条路径；前置条件、快速开始命令与常见坑（均来自真实部署实测）。
-- [学习学院](/testops/learn.html): 免费的知识库：3 条学习路径（值班工程师/SRE/平台开发者）与 4 大栏目——AI 机制拆解、SRE 基础、实战教程 
-- [AI 机制拆解](/testops/learn-testops.html): 把 AI 运维的魔法拆成可读的工程事实：ReAct Agent、LLM 四种成熟用法、RAG 案例库、运维 Prompt
-- [SRE 基础](/testops/learn-sre.html): 从值班到复盘的基本功：SLI/SLO 与错误预算、告警分级、on-call 文化、Postmortem 写法。
-- [实战教程 12 篇](/testops/learn-tutorials.html): 从部署到二次开发：12 篇跟着做就能上手的教程，随版本演进同步更新。
-- [{{TESTOPS_BRAND}} 面试题库 46 题](/testops/learn-interview.html): 含答案、追问链、踩坑回答与简历话术的面试题库，随版本演进增补。
-- [Agent 评测](/testops/agent-community.html): Agent 评测平台：11 个预置评估器（Judge / Code / Human）、轨迹断言 DSL、实验门禁、成本中
-- [开源专区](/testops/oss-hub.html): 平台真实对接的上游与互补生态：Prometheus、node_exporter、apprise、Ollama、OpenT
-- [VIP 权益](/testops/vip.html): VIP 专属：让 AI 按点上班——自然语言指令上时间表，报告推飞书；License 模块位 pro 解锁，即将上线。
-- [版本对比与商业授权](/testops/pricing.html): 开源版（AGPL-3.0）与商业版逐项对比；License 离线 HMAC 验签与模块位机制说明。
-- [开源说明](/testops/open-source.html): 双仓机制与发布管道：白名单、敏感扫描、孤儿快照零历史泄漏——开源包不是主线 dump，是有防线的发布产物。
-- [更新公告](/testops/changelog.html): 每个版本改了什么：按 major/minor/patch 分级的更新历史，与产品发版同步。
-- [文档中心](/testops/docs.html): 快速开始、API 参考、12 篇实战教程与运维排障手册——从部署到二次开发的全部文档入口。
-- [关于](/testops/about.html): 版本信息、路线图、贡献指南与安全通告渠道。
+## 智能运维模块（/ops/）
+- [智能运维模块](/ops/index.html): CodeFlow 的智能运维模块：拉取式 Agent 零入站端口，告警收敛成事件后交给带证据链的诊断 Agent 排查取
+- [功能详解](/ops/features.html): 发现、定位、处置、沉淀四章：指纹状态机、证据链诊断、九道护栏与审批凭据、案例沉淀——每个能力都带 FR 编号与真实数字。
+- [证据链](/ops/evidence.html): 一次真实故障的完整证据链：82 秒出报告、16 步取证、结论带 step 引用、置信度按证据确定性计分、快照回放可复现。
+- [智能运维模块部署指南](/ops/deploy.html): Docker 一键部署、私有化内网部署与商业授权三条路径；前置条件、快速开始命令与常见坑（均来自真实部署实测）。
+- [学习学院](/ops/learn.html): 免费的知识库：3 条学习路径（值班工程师/SRE/平台开发者）与 4 大栏目——AI 机制拆解、SRE 基础、实战教程 
+- [AI 机制拆解](/ops/learn-testops.html): 把 AI 运维的魔法拆成可读的工程事实：ReAct Agent、LLM 四种成熟用法、RAG 案例库、运维 Prompt
+- [SRE 基础](/ops/learn-sre.html): 从值班到复盘的基本功：SLI/SLO 与错误预算、告警分级、on-call 文化、Postmortem 写法。
+- [实战教程 12 篇](/ops/learn-tutorials.html): 从部署到二次开发：12 篇跟着做就能上手的教程，随版本演进同步更新。
+- [智能运维面试题库 46 题](/ops/learn-interview.html): 含答案、追问链、踩坑回答与简历话术的面试题库，随版本演进增补。
+- [Agent 评测](/ops/agent-community.html): Agent 评测平台：11 个预置评估器（Judge / Code / Human）、轨迹断言 DSL、实验门禁、成本中
+- [开源专区](/ops/oss-hub.html): 平台真实对接的上游与互补生态：Prometheus、node_exporter、apprise、Ollama、OpenT
+- [VIP 权益](/ops/vip.html): VIP 专属：让 AI 按点上班——自然语言指令上时间表，报告推飞书；License 模块位 pro 解锁，即将上线。
+- [版本对比与商业授权](/ops/pricing.html): 开源版（AGPL-3.0）与商业版逐项对比；License 离线 HMAC 验签与模块位机制说明。
+- [开源说明](/ops/open-source.html): 双仓机制与发布管道：白名单、敏感扫描、孤儿快照零历史泄漏——开源包不是主线 dump，是有防线的发布产物。
+- [更新公告](/ops/changelog.html): 每个版本改了什么：按 major/minor/patch 分级的更新历史，与产品发版同步。
+- [文档中心](/ops/docs.html): 快速开始、API 参考、12 篇实战教程与运维排障手册——从部署到二次开发的全部文档入口。
+- [关于](/ops/about.html): 版本信息、路线图、贡献指南与安全通告渠道。
 
 ## 部署（CodeFlow）
 ```bash

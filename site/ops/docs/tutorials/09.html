@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<!-- 由 tools/build_pages.py 生成，禁止手改：改 site/src/ 后重建 -->
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>巡检与健康日报</title>
+<meta name="description" content="定时巡检与健康日报：巡检项清单、cron 语义、异常自动建事件。">
+<link rel="icon" type="image/svg+xml" href="/assets/codeflow-logo.svg">
+<link rel="stylesheet" href="/assets/site.css?v=1e580069">
+<meta property="og:title" content="巡检与健康日报">
+  <meta property="og:description" content="定时巡检与健康日报：巡检项清单、cron 语义、异常自动建事件。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/og/og-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/">
+      <span class="brand-mark">
+        <img src="/assets/codeflow-logo.svg" width="20" height="20" alt="" aria-hidden="true" style="display:block;border-radius:5px">
+      </span>
+      <span class="brand-name"><b>CodeFlow</b> <span>从需求到交付</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="/features.html" data-nav="features">产品</a>
+      <a href="/blog.html" data-nav="blog">博客</a>
+      <a href="/deploy.html" data-nav="deploy">部署</a>
+      <a href="/open-source.html" data-nav="open-source">开源</a>
+      <a href="/ops/index.html" data-nav="ops">智能运维</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <button class="nav-burger" id="navBurger" aria-label="打开导航菜单" aria-expanded="false" aria-controls="navMobile">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3.5h14v1.7H1V3.5Zm0 3.9h14v1.7H1V7.4Zm0 3.9h14v1.7H1v-1.7Z"/></svg>
+    </button>
+    <div class="nav-act">
+      <a class="gh-star" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <span>GitHub</span>
+      </a>
+      <button class="icon-btn" id="themeBtn" aria-label="切换明暗主题">
+        <svg id="themeIcon" width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm0 1.5a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 12.5Zm0-11a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 1.5ZM3.05 3.05a.75.75 0 0 1 1.06 0l.7.7a.75.75 0 1 1-1.06 1.06l-.7-.7a.75.75 0 0 1 0-1.06Zm9.14 1.76a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Zm.31 4.69a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1a.75.75 0 0 1 .75.75Zm-10 0a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 2.5 11Zm1.19 4.44a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 0 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0ZM12.95 3.05a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Z"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm" href="/deploy.html">开始部署</a>
+    </div>
+  </div>
+<div id="navMobile" class="nav-mobile" hidden>
+  <a href="/features.html" data-nav="features">产品</a>
+  <a href="/blog.html" data-nav="blog">博客</a>
+  <a href="/deploy.html" data-nav="deploy">部署</a>
+  <a href="/open-source.html" data-nav="open-source">开源</a>
+  <a href="/ops/index.html" data-nav="ops">智能运维</a>
+</div>
+</header>
+
+<main>
+<div class="wrap">
+<section class="hero" style="padding:56px 0 28px">
+  <a class="l-more" href="/ops/learn-tutorials.html">← 返回教程目录</a>
+  <h1 style="font-size:clamp(1.55rem,2.9vw,2.2rem);margin:16px 0 10px">巡检与健康日报</h1>
+  <p class="lede" style="max-width:46em">定时巡检与健康日报：巡检项清单、cron 语义、异常自动建事件。</p>
+</section>
+<div class="wrap">
+  <div class="doc-layout">
+    <article class="doc-body" id="md-body" data-md="/assets/md/tutorials/09.md">
+      <p class="doc-loading">正文加载中…（若长时间无内容，请直接查看 <a href="https://github.com/qsumm/TestOps/tree/main/docs/05-教程">仓库原文</a>）</p>
+    </article>
+    <aside class="doc-toc" id="doc-toc"></aside>
+  </div>
+</div>
+</div>
+<script type="module">
+  import { marked } from '/assets/vendor/marked.esm.js';
+  const box = document.getElementById('md-body');
+  const toc = document.getElementById('doc-toc');
+  try {
+    const md = await (await fetch(box.dataset.md)).text();
+    box.innerHTML = marked.parse(md);
+    // 表格包滚动容器（窄屏不被撑破）
+    box.querySelectorAll('table').forEach((t) => {
+      const w = document.createElement('div');
+      w.className = 'table-scroll';
+      t.parentNode.insertBefore(w, t);
+      w.appendChild(t);
+    });
+    const heads = [...box.querySelectorAll('h2, h3')];
+    if (heads.length) {
+      toc.innerHTML = '<h4>本页目录</h4>' + heads.map((h, i) => {
+        h.id = h.id || ('h-' + i);
+        return `<a class="${h.tagName === 'H3' ? 'lv3' : ''}" href="#${h.id}">${h.textContent}</a>`;
+      }).join('');
+    } else { toc.remove(); }
+  } catch (e) {
+    box.innerHTML = '<p class="doc-loading">正文加载失败：' + e.message + '。请查看仓库原文。</p>';
+    toc.remove();
+  }
+</script>
+
+</main>
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="/">
+          <span class="brand-mark">
+            <img src="/assets/codeflow-logo.svg" width="20" height="20" alt="" aria-hidden="true" style="display:block;border-radius:5px">
+          </span>
+          <span class="brand-name"><b>CodeFlow</b> <span>从需求到交付</span></span>
+        </a>
+        <p>需求进、交付出：数字员工按 SDLC 流水线完成研发交付，人只做需求澄清与验收。姊妹产品 TestOps 管 CI 之后的运行时。</p>
+        <div class="foot-badges" style="margin-top:16px">
+          <span class="badge">平台 MIT</span>
+          <span class="badge">Spring Boot 2.7</span>
+          <span class="badge">React · Vite</span>
+          <span class="badge">runtime 纯标准库</span>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>CodeFlow</h4>
+        <a href="/features.html">产品能力</a><a href="/delivery.html">真实交付</a><a href="/deploy.html">自部署</a><a href="/open-source.html">开源与合规</a><a href="https://github.com/qsumm/CodeFlow">GitHub 仓库</a>
+      </div>
+      <div class="foot-col">
+        <h4>智能运维模块</h4>
+        <a href="/ops/index.html">产品总览</a><a href="/ops/features.html">功能详解</a><a href="/ops/evidence.html">证据链</a><a href="/ops/learn.html">学习学院</a><a href="/ops/docs.html">文档中心</a>
+      </div>
+      <div class="foot-col">
+        <h4>文档</h4>
+        <a href="/ops/docs/tutorials/01.html">快速开始</a><a href="/ops/docs/tutorials/02.html">Agent 接入</a><a href="/ops/docs/tutorials/05.html">诊断 Agent 拆解</a><a href="/ops/docs/tutorials/12.html">运维排障</a><a href="/ops/docs.html">文档中心</a>
+      </div>
+      <div class="foot-col">
+        <h4>关于</h4>
+        <a href="/ops/changelog.html">发版记录</a><a href="/ops/pricing.html">商业授权</a><a href="/ops/about.html#join">安全通告</a><a href="/ops/vip.html">联系我们</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 CodeFlow · 平台源码 MIT · 智能运维模块 AGPL-3.0 开源 · 浏览量 <b id="pv-total">…</b></span>
+      <span>开放集成：主流工单平台 · 钉钉 / 飞书 · Anthropic 兼容模型协议 · MCP</span>
+    </div>
+  </div>
+</footer>
+
+<!-- 右下角常驻联系挂件（FR-33）：文案在上、二维码在下；fixed 定位不占文档流 -->
+<aside class="wx-contact" aria-label="联系方式">
+  <p class="wx-contact-label">扫码或添加微信号：<code>cloud288</code></p>
+  <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
+</aside>
+
+<script src="/assets/site.js?v=1e580069" defer></script>
+</body>
+</html>

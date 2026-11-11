@@ -103,7 +103,7 @@
 3. 上线检查清单：域名 DNS / HTTPS / 提交搜索引擎 / GitHub README 与官网互链
 4. **回滚**：上一版本地可一键重发（纯静态天然支持）
 
-> **2026-11-07 进展**：已部署腾讯云 1.15.66.59（nginx :80 → /var/www/testops-site，暂无域名/HTTPS）；同日完成**家族站改造**——主品牌升级 CodeFlow（新首页 + features/delivery/deploy/open-source 四页），TestOps 39 页迁 `/testops/`，13 条旧 URL nginx 301（配置在服务器 `/etc/nginx/default.d/testops-legacy-redirects.conf`，入仓待办）。P5 遗留：域名 / HTTPS / base_url / OG 图重制（仍为 TestOps 视觉）。
+> **2026-11-07 进展**：已部署腾讯云 1.15.66.59（nginx :80 → /var/www/testops-site，暂无域名/HTTPS）；同日完成**家族站改造**——主品牌升级 CodeFlow（新首页 + features/delivery/deploy/open-source 四页），TestOps 39 页先迁 `/testops/`、后归一为 `/ops/` 智能运维模块（方案 B，/testops/* → /ops/* 301）（配置在服务器 `/etc/nginx/default.d/testops-legacy-redirects.conf`，入仓待办）。P5 遗留：域名 / HTTPS / base_url / OG 图重制（仍为 TestOps 视觉）。
 
 ### P6 · 内容运营启动（持续）
 

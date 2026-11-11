@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<!-- 由 tools/build_pages.py 生成，禁止手改：改 site/src/ 后重建 -->
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>证据链 · 别人的 AI 给结论，我们给证据 · 智能运维模块</title>
+<meta name="description" content="一次真实故障的完整证据链：82 秒出报告、16 步取证、结论带 step 引用、置信度按证据确定性计分、快照回放可复现。">
+<link rel="icon" type="image/svg+xml" href="/assets/codeflow-logo.svg">
+<link rel="stylesheet" href="/assets/site.css?v=1e580069">
+<meta property="og:title" content="证据链 · 别人的 AI 给结论，我们给证据 · 智能运维模块">
+  <meta property="og:description" content="一次真实故障的完整证据链：82 秒出报告、16 步取证、结论带 step 引用、置信度按证据确定性计分、快照回放可复现。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/og/og-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/">
+      <span class="brand-mark">
+        <img src="/assets/codeflow-logo.svg" width="20" height="20" alt="" aria-hidden="true" style="display:block;border-radius:5px">
+      </span>
+      <span class="brand-name"><b>CodeFlow</b> <span>从需求到交付</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="/features.html" data-nav="features">产品</a>
+      <a href="/blog.html" data-nav="blog">博客</a>
+      <a href="/deploy.html" data-nav="deploy">部署</a>
+      <a href="/open-source.html" data-nav="open-source">开源</a>
+      <a href="/ops/index.html" data-nav="ops">智能运维</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <button class="nav-burger" id="navBurger" aria-label="打开导航菜单" aria-expanded="false" aria-controls="navMobile">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3.5h14v1.7H1V3.5Zm0 3.9h14v1.7H1V7.4Zm0 3.9h14v1.7H1v-1.7Z"/></svg>
+    </button>
+    <div class="nav-act">
+      <a class="gh-star" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <span>GitHub</span>
+      </a>
+      <button class="icon-btn" id="themeBtn" aria-label="切换明暗主题">
+        <svg id="themeIcon" width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm0 1.5a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 12.5Zm0-11a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 1.5ZM3.05 3.05a.75.75 0 0 1 1.06 0l.7.7a.75.75 0 1 1-1.06 1.06l-.7-.7a.75.75 0 0 1 0-1.06Zm9.14 1.76a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Zm.31 4.69a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1a.75.75 0 0 1 .75.75Zm-10 0a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 2.5 11Zm1.19 4.44a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 0 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0ZM12.95 3.05a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Z"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm" href="/deploy.html">开始部署</a>
+    </div>
+  </div>
+<div id="navMobile" class="nav-mobile" hidden>
+  <a href="/features.html" data-nav="features">产品</a>
+  <a href="/blog.html" data-nav="blog">博客</a>
+  <a href="/deploy.html" data-nav="deploy">部署</a>
+  <a href="/open-source.html" data-nav="open-source">开源</a>
+  <a href="/ops/index.html" data-nav="ops">智能运维</a>
+</div>
+</header>
+
+<main>
+<div class="wrap">
+<section class="hero" style="padding:64px 0 40px">
+  <span class="eyebrow">证据链 · 差异化核心</span>
+  <h1 style="font-size:clamp(1.8rem,3.4vw,2.7rem)">别人的 AI 给你结论，<br>我们给你证据。</h1>
+  <p class="lede">AI 写的报告最常见的失败不是"写错"，是<strong>写得像对的</strong>——业务码 0、状态字段 3，看着全对，但你追问"这个 3 从哪来的"，它答不上来。本页用一次真实故障的完整取证过程，回答"凭什么信"。</p>
+</section>
+
+<section class="tight">
+  <div class="sec-head"><div class="sec-kicker">实测时间线</div>
+  <h2 style="font-size:1.5rem">一次真实故障处置，每一步有原始输出</h2></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>阶段</th><th>实测结果</th></tr></thead>
+      <tbody>
+        <tr><td>故障注入 → 告警</td><td class="yes">3 条探活告警同时 firing（业务端口 / 业务HTTP / nginx进程）</td></tr>
+        <tr><td>收敛为事件</td><td class="yes">3 → 1 个 incident（两级收敛，合并理由可查）</td></tr>
+        <tr><td>AI 诊断</td><td class="yes">16 步 · 12.3 万 tokens · 8 个只读工具 · 82 秒出报告</td></tr>
+        <tr><td>结论准确性</td><td class="yes">准确指出"进程死亡为直接根因；死因缺第一现场证据，无法定论"——诚实边界的产品化</td></tr>
+        <tr><td>回放复现</td><td class="yes">同快照两次回放指纹相同，结论逐字段一致（temperature=0）</td></tr>
+        <tr><td>恢复</td><td class="yes">目标机真重启 → 探活 up → 恢复通知真实投递（10 分钟全流程）</td></tr>
+        <tr><td>案例沉淀</td><td class="yes">事件关闭 → 案例卡入库 → 下次同类故障语义召回</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:12px;font-size:.8rem;color:var(--muted)">以上数字来自靶机真机演练（公网平台 + 真实 LLM + 真实 nginx 服务），非演示环境数字。</p>
+</section>
+
+<section class="tight">
+  <div class="sec-head"><div class="sec-kicker">报告解剖</div>
+  <h2 style="font-size:1.5rem">一份合规报告长什么样</h2></div>
+  <div class="report">
+    <div class="report-bar"><span class="tl"><i></i><i></i><i></i></span><span class="rb-title">事件 #2000195 · 诊断报告（节选）</span></div>
+    <div class="report-body">
+      <div><span class="rp-dim">status</span>: <span class="rp-ok">succeeded</span> · <span class="rp-dim">confidence</span>: <span class="rp-ok">CONFIRMED</span></div>
+      <div><span class="rp-dim">strength</span>: <span class="rp-warn">moderate</span> · <span class="rp-dim">tools</span>: <span class="rp-dim">8 只读</span></div>
+      <div class="rp-dim" style="margin-top:10px">— Evidence（每条可点回原始步骤）—</div>
+      <div class="ev-line"><span class="rp-dim">01</span><div class="ev-body">
+        <div class="ev-t">进程探活 mock-service 返回 not found <span class="chip">step_3</span></div>
+        <div class="ev-x">$ pgrep -f mock_service.py → (no output) · exit 1</div></div></div>
+      <div class="ev-line"><span class="rp-dim">02</span><div class="ev-body">
+        <div class="ev-t">业务端口 TCP 探测失败 <span class="chip">step_4</span></div>
+        <div class="ev-x">$ nc -zv 127.0.0.1 8080 → connection refused</div></div></div>
+      <div class="ev-line"><span class="rp-dim">03</span><div class="ev-body">
+        <div class="ev-t">journalctl 无 OOM/段错误记录 <span class="chip">step_7</span></div>
+        <div class="ev-x">排除内存耗尽与崩溃；死因缺第一现场证据，无法定论</div></div></div>
+      <div class="rp-dim" style="margin-top:12px">— What I ruled out —</div>
+      <div style="margin-top:4px">磁盘水位 38% <span class="rp-dim">（未触发阈值）</span> · 证书 89 天 <span class="rp-dim">（健康）</span> · 其它 2 台主机探活正常 <span class="rp-dim">（非集群级中断）</span></div>
+    </div>
+    <div class="report-foot"><span>16 步 · 12.3 万 tokens · 8 个只读工具</span><span style="color:var(--accent)">置信度按证据来源确定性计分</span></div>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="sec-head"><div class="sec-kicker">五条纪律</div>
+  <h2 style="font-size:1.5rem">把"不编造"做成工程，不是口号</h2></div>
+  <ul class="ev-points">
+    <li><span class="k">1</span><span><b>结论必须带证据 token。</b>每条「受影响实体」都要挂 step 引用，点得回原始工具调用的输入输出。没有引用的结论不允许出现在报告里。</span></li>
+    <li><span class="k">2</span><span><b>不确定就写不确定。</b>置信度按已采集证据来源确定性计分，不是让模型自己给自己打分；关键证据缺失时置信度封顶。</span></li>
+    <li><span class="k">3</span><span><b>反过早收敛。</b>提示词写死"时间吻合≠因果""最常见因≠本次因""could is not did"三条陷阱清单，穷尽之后才允许 INCONCLUSIVE。</span></li>
+    <li><span class="k">4</span><span><b>把没查的也说清楚。</b>影响面强制四分类，最后一类"没检查"不能省——不许用推断扩大或缩小爆炸半径。</span></li>
+    <li><span class="k">5</span><span><b>结论可复现。</b>工具响应固化为快照，回放时 temperature=0 跑同一段上下文——改提示词前后能出对比矩阵，不是"感觉变好了"。</span></li>
+  </ul>
+</section>
+
+<section class="tight">
+  <div class="sec-head"><div class="sec-kicker">评测闭环</div>
+  <h2 style="font-size:1.5rem">改提示词前后，用数字说话</h2></div>
+  <div class="deploy">
+    <div class="dcard"><span class="dcard-badge">录制-回放</span><h3>确定性复现</h3><p class="d-sub" style="margin-bottom:10px">工具响应固化为快照；回放不触碰真实主机（无任何实发请求，测试断言）；LLM temperature=0 真跑。</p></div>
+    <div class="dcard"><span class="dcard-badge">case 双池</span><h3>调优池 / 回归池隔离</h3><p class="d-sub" style="margin-bottom:10px">回归池永不参与调优（硬约束 + 守卫断言）；故障注入脚本即天然标注机，15 case 冷启动零人工。</p></div>
+    <div class="dcard"><span class="dcard-badge">版本指纹</span><h3>对比矩阵</h3><p class="d-sub" style="margin-bottom:10px">每次评测记录提示词+技能+模型+commit 指纹；两次评测可出一致率/硬冲突率/证据完整性对比。</p></div>
+  </div>
+  <p style="margin-top:16px;font-size:.8rem;color:var(--muted)">评测数字只进内部评测页与内部文档——宣传材料不出现任何准确率表述，这是我们自己的红线。</p>
+</section>
+</div>
+
+</main>
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="/">
+          <span class="brand-mark">
+            <img src="/assets/codeflow-logo.svg" width="20" height="20" alt="" aria-hidden="true" style="display:block;border-radius:5px">
+          </span>
+          <span class="brand-name"><b>CodeFlow</b> <span>从需求到交付</span></span>
+        </a>
+        <p>需求进、交付出：数字员工按 SDLC 流水线完成研发交付，人只做需求澄清与验收。姊妹产品 TestOps 管 CI 之后的运行时。</p>
+        <div class="foot-badges" style="margin-top:16px">
+          <span class="badge">平台 MIT</span>
+          <span class="badge">Spring Boot 2.7</span>
+          <span class="badge">React · Vite</span>
+          <span class="badge">runtime 纯标准库</span>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>CodeFlow</h4>
+        <a href="/features.html">产品能力</a><a href="/delivery.html">真实交付</a><a href="/deploy.html">自部署</a><a href="/open-source.html">开源与合规</a><a href="https://github.com/qsumm/CodeFlow">GitHub 仓库</a>
+      </div>
+      <div class="foot-col">
+        <h4>智能运维模块</h4>
+        <a href="/ops/index.html">产品总览</a><a href="/ops/features.html">功能详解</a><a href="/ops/evidence.html">证据链</a><a href="/ops/learn.html">学习学院</a><a href="/ops/docs.html">文档中心</a>
+      </div>
+      <div class="foot-col">
+        <h4>文档</h4>
+        <a href="/ops/docs/tutorials/01.html">快速开始</a><a href="/ops/docs/tutorials/02.html">Agent 接入</a><a href="/ops/docs/tutorials/05.html">诊断 Agent 拆解</a><a href="/ops/docs/tutorials/12.html">运维排障</a><a href="/ops/docs.html">文档中心</a>
+      </div>
+      <div class="foot-col">
+        <h4>关于</h4>
+        <a href="/ops/changelog.html">发版记录</a><a href="/ops/pricing.html">商业授权</a><a href="/ops/about.html#join">安全通告</a><a href="/ops/vip.html">联系我们</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 CodeFlow · 平台源码 MIT · 智能运维模块 AGPL-3.0 开源 · 浏览量 <b id="pv-total">…</b></span>
+      <span>开放集成：主流工单平台 · 钉钉 / 飞书 · Anthropic 兼容模型协议 · MCP</span>
+    </div>
+  </div>
+</footer>
+
+<!-- 右下角常驻联系挂件（FR-33）：文案在上、二维码在下；fixed 定位不占文档流 -->
+<aside class="wx-contact" aria-label="联系方式">
+  <p class="wx-contact-label">扫码或添加微信号：<code>cloud288</code></p>
+  <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
+</aside>
+
+<script src="/assets/site.js?v=1e580069" defer></script>
+</body>
+</html>

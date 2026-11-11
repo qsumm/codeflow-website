@@ -1,0 +1,74 @@
+<div class="wrap">
+<section class="hero" style="padding:64px 0 40px">
+  <span class="eyebrow">部署指南</span>
+  <h1 style="font-size:clamp(1.8rem,3.4vw,2.7rem)">三条路，一条命令起步。</h1>
+  <p class="lede">以下命令与产品仓库《快速开始》逐字一致（构建时自动抽取对账）。首次构建约 3~6 分钟。</p>
+</section>
+
+<section class="tight">
+  <div class="sec-head"><div class="sec-kicker">开源路径</div>
+  <h2 style="font-size:1.5rem">Docker Compose 一键部署</h2></div>
+  {{DEPLOY_COMMANDS}}
+  <div class="caps" style="margin-top:18px">
+    <div class="cap"><div class="cap-h"><span class="cap-ico">①</span><h3>前置条件</h3></div>
+      <ul class="cap-list">
+        <li>Linux x86_64/aarch64 或 macOS · Docker 20.10+ 与 Compose v2</li>
+        <li>可用内存 ≥ 4GB（数据库是 OceanBase 系，2GB 勉强）</li>
+        <li>端口 8848 未占用；2891（数据库）只做本机映射，<b>不对外开放</b></li>
+        <li>出站可达 Docker Hub（不可达时用镜像源 build-arg，见下）</li>
+      </ul>
+    </div>
+    <div class="cap"><div class="cap-h"><span class="cap-ico">②</span><h3>安全红线（违反即部署失败）</h3></div>
+      <ul class="cap-list">
+        <li><b>三个默认密钥一个都不许留默认值</b>：JWT_SECRET / KEY_STORE_SECRET / DB_PASSWORD 换成随机值</li>
+        <li>不要在公网开放 2891 端口</li>
+        <li>不要在生产环境执行 deploy/faults/ 下的任何故障注入脚本</li>
+        <li>登录后第一件事改 admin 默认密码</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cap" style="margin-top:14px"><div class="cap-h"><span class="cap-ico">③</span><h3>实测常见坑</h3></div>
+    <ul class="cap-list">
+      <li><b>--env-file .env 必须带</b>：compose 项目目录会变成 deploy/，不带则根 .env 读不到，LLM 与密钥全空</li>
+      <li>SeekDB 数据目录是 /var/lib/seekdb（命名卷 seekdb-data）；down -v 会清数据</li>
+      <li>服务器时间不同步会导致告警时间窗错乱，部署前先对时</li>
+      <li>国内拉不动 Docker Hub：--build-arg APT_MIRROR=mirrors.aliyun.com --build-arg PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple</li>
+      <li>接入被监控机：平台「主机管理 → 接入新主机」复制安装命令；目标机 macOS/Linux + Python ≥3.9，无需开放入站端口；可先跑只读 preflight 自检</li>
+    </ul>
+  </div>
+</section>
+
+<section class="tight">
+  <div class="sec-head"><div class="sec-kicker">演示与验证</div>
+  <h2 style="font-size:1.5rem">灌种子数据，注入一次真实故障</h2></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>故障注入脚本</th><th>场景</th><th>恢复</th></tr></thead>
+      <tbody>
+        <tr><td>cpu_spike.sh</td><td>CPU 飙高</td><td class="yes">180s 自动恢复</td></tr>
+        <tr><td>mem_leak.sh</td><td>内存泄漏</td><td class="yes">自动恢复</td></tr>
+        <tr><td>disk_full.sh</td><td>磁盘打满（安全上限内写入）</td><td class="yes">自动恢复</td></tr>
+        <tr><td>probe_fail.sh</td><td>探活失败</td><td class="yes">自动恢复</td></tr>
+        <tr><td>process_hang.sh</td><td>进程假死（running ≠ healthy）</td><td class="yes">自动恢复</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:12px;font-size:.8rem;color:var(--muted)">⚠ 脚本只用于演示环境——它们会真的占满资源，不要在生产机运行。</p>
+</section>
+
+<section class="tight">
+  <div class="sec-head"><div class="sec-kicker">另两条路</div>
+  <h2 style="font-size:1.5rem">私有化与商业授权</h2></div>
+  <div class="deploy">
+    <div class="dcard"><span class="dcard-badge">SELF-HOSTED</span><h3>私有化部署到你的内网</h3>
+      <p class="d-sub">数据不出网 · LLM 可自建（DeepSeek / Qwen / OpenAI 兼容）· License 离线验签</p>
+      <a class="btn btn-ghost btn-sm" href="/ops/about.html">了解要求</a></div>
+    <div class="dcard featured"><span class="dcard-badge open">COMMERCIAL</span><h3>商业版 · 源码 + 护航</h3>
+      <p class="d-sub">含定时任务（VIP）、组织级权限与远程部署指导</p>
+      <a class="btn btn-primary btn-sm" href="/ops/pricing.html">看版本对比</a></div>
+    <div class="dcard"><span class="dcard-badge">TROUBLE</span><h3>部署卡住了？</h3>
+      <p class="d-sub">平台自身排障手册 + 主流程冒烟脚本（可作部署 gate）</p>
+      <a class="btn btn-ghost btn-sm" href="/ops/docs.html">排障手册</a></div>
+  </div>
+</section>
+</div>

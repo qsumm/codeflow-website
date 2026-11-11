@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<!-- 由 tools/build_pages.py 生成，禁止手改：改 site/src/ 后重建 -->
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>智能运维模块 · CodeFlow — 告警响了，AI 已经查完，证据链摆在你面前</title>
+<meta name="description" content="CodeFlow 的智能运维模块：拉取式 Agent 零入站端口，告警收敛成事件后交给带证据链的诊断 Agent 排查取证；处置白名单+九道护栏，AI 查清事实，拍板在人。">
+<link rel="icon" type="image/svg+xml" href="/assets/codeflow-logo.svg">
+<link rel="stylesheet" href="/assets/site.css?v=1e580069">
+<meta property="og:title" content="智能运维模块 · CodeFlow — 告警响了，AI 已经查完，证据链摆在你面前">
+  <meta property="og:description" content="CodeFlow 的智能运维模块：拉取式 Agent 零入站端口，告警收敛成事件后交给带证据链的诊断 Agent 排查取证；处置白名单+九道护栏，AI 查清事实，拍板在人。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/og/og-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/">
+      <span class="brand-mark">
+        <img src="/assets/codeflow-logo.svg" width="20" height="20" alt="" aria-hidden="true" style="display:block;border-radius:5px">
+      </span>
+      <span class="brand-name"><b>CodeFlow</b> <span>从需求到交付</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="/features.html" data-nav="features">产品</a>
+      <a href="/blog.html" data-nav="blog">博客</a>
+      <a href="/deploy.html" data-nav="deploy">部署</a>
+      <a href="/open-source.html" data-nav="open-source">开源</a>
+      <a href="/ops/index.html" data-nav="ops">智能运维</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <button class="nav-burger" id="navBurger" aria-label="打开导航菜单" aria-expanded="false" aria-controls="navMobile">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3.5h14v1.7H1V3.5Zm0 3.9h14v1.7H1V7.4Zm0 3.9h14v1.7H1v-1.7Z"/></svg>
+    </button>
+    <div class="nav-act">
+      <a class="gh-star" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <span>GitHub</span>
+      </a>
+      <button class="icon-btn" id="themeBtn" aria-label="切换明暗主题">
+        <svg id="themeIcon" width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm0 1.5a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 12.5Zm0-11a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 1.5ZM3.05 3.05a.75.75 0 0 1 1.06 0l.7.7a.75.75 0 1 1-1.06 1.06l-.7-.7a.75.75 0 0 1 0-1.06Zm9.14 1.76a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Zm.31 4.69a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1a.75.75 0 0 1 .75.75Zm-10 0a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 2.5 11Zm1.19 4.44a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 0 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0ZM12.95 3.05a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Z"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm" href="/deploy.html">开始部署</a>
+    </div>
+  </div>
+<div id="navMobile" class="nav-mobile" hidden>
+  <a href="/features.html" data-nav="features">产品</a>
+  <a href="/blog.html" data-nav="blog">博客</a>
+  <a href="/deploy.html" data-nav="deploy">部署</a>
+  <a href="/open-source.html" data-nav="open-source">开源</a>
+  <a href="/ops/index.html" data-nav="ops">智能运维</a>
+</div>
+</header>
+
+<main>
+<!-- ═══════ HERO ═══════ -->
+<div class="wrap">
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">AGPL-3.0 开源 · 自托管 · 2C4G 可跑</span>
+      <h1>告警响了，AI 已经查完，<br>证据链摆在你面前。</h1>
+      <p class="lede">
+        拉取式 <strong>Agent</strong> 接管主机与服务监控（被监控机<strong>零入站端口</strong>），
+        告警收敛成事件后交给带<strong>证据链</strong>的诊断 Agent 自主排查取证；
+        处置只在白名单内、经<strong>九道护栏</strong>准入后执行——
+        <strong>AI 负责把事实查清楚，拍板权在人。</strong>
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#deploy">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M7.25 2.5a.75.75 0 0 1 .75.75V10.4l2.2-2.2a.75.75 0 1 1 1.06 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0l-3.5-3.5a.75.75 0 1 1 1.06-1.06l2.2 2.2V3.25a.75.75 0 0 1 .75-.75Z"/></svg>
+          一键部署
+        </a>
+        <a class="btn btn-ghost" href="#evidence">看一次真实诊断</a>
+        <a class="btn btn-ghost" href="#learn">免费学 TestOps</a>
+      </div>
+      <p class="hero-note"><span class="dot"></span>3~6 分钟构建完成 · Docker Compose 一条命令 · 首次登录后请立即改默认密码</p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-n">82<small>秒</small></div>
+          <div class="stat-l">出带证据链的根因报告</div>
+          <div class="stat-src">一次真实故障处置实测</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">10<small>分钟</small></div>
+          <div class="stat-l">告警 → 恢复全流程</div>
+          <div class="stat-src">含审批与执行留痕</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">0<small>个</small></div>
+          <div class="stat-l">被监控机入站端口</div>
+          <div class="stat-src">Agent 主动回连平台</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 主视觉：真实诊断报告（这是差异化核心，别的站抄不了） -->
+    <div class="report" role="img" aria-label="一次真实 AI 诊断报告的片段：结论为 CONFIRMED，每条证据都带可点击的 step 引用">
+      <div class="report-bar">
+        <span class="tl"><i></i><i></i><i></i></span>
+        <span class="rb-title">事件 #2000195 · 诊断报告</span>
+      </div>
+      <div class="report-body">
+        <div><span class="rp-dim">status</span>: <span class="rp-ok">succeeded</span> · <span class="rp-dim">confidence</span>: <span class="rp-ok">CONFIRMED</span></div>
+        <div><span class="rp-dim">strength</span>: <span class="rp-warn">moderate</span> · <span class="rp-dim">tools</span>: <span class="rp-dim">8 只读</span></div>
+        <div class="rp-dim" style="margin-top:9px">— Summary —</div>
+        <div style="margin:4px 0 10px">mock-db-01 的 <span class="rp-warn">nginx</span> 进程已死亡，直接导致业务端口探活失败。</div>
+
+        <div class="rp-dim">— Evidence（每条都可点回原始步骤）—</div>
+        <div class="ev-line">
+          <span class="rp-dim">01</span>
+          <div class="ev-body">
+            <div class="ev-t">进程探活 mock-service 返回 not found <span class="chip">step_3</span></div>
+            <div class="ev-x">$ pgrep -f mock_service.py → (no output) · exit 1</div>
+          </div>
+        </div>
+        <div class="ev-line">
+          <span class="rp-dim">02</span>
+          <div class="ev-body">
+            <div class="ev-t">业务端口 TCP 探测失败 <span class="chip">step_4</span></div>
+            <div class="ev-x">$ nc -zv 127.0.0.1 8080 → connection refused</div>
+          </div>
+        </div>
+        <div class="ev-line">
+          <span class="rp-dim">03</span>
+          <div class="ev-body">
+            <div class="ev-t">journalctl 无 OOM/段错误记录 <span class="chip">step_7</span></div>
+            <div class="ev-x">排除内存耗尽与崩溃；死因缺第一现场证据，无法定论</div>
+          </div>
+        </div>
+
+        <div class="rp-dim" style="margin-top:12px">— What I ruled out —</div>
+        <div style="margin-top:4px">磁盘水位 38% <span class="rp-dim">（未触发阈值）</span> · 证书 89 天 <span class="rp-dim">（健康）</span> · 其它 2 台主机探活正常 <span class="rp-dim">（非集群级中断）</span></div>
+      </div>
+      <div class="report-foot">
+        <span>16 步 · 12.3 万 tokens · 8 个只读工具</span>
+        <span style="color:var(--accent)">置信度按证据来源确定性计分</span>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ 链路四步 ═══════ -->
+<div class="wrap">
+<section class="tight">
+  <div class="sec-head">
+    <div class="sec-kicker">主链路</div>
+    <h2>从告警到恢复，每一步都留下可追溯的痕迹</h2>
+    <p>三段主链路，难点从来不是功能，是<strong>可信度</strong>——凭什么信 AI 说的、凭什么敢让它动。</p>
+  </div>
+  <div class="chain">
+    <div class="chain-step">
+      <div class="chain-n">STEP 01 / 发现</div>
+      <h3>Agent 接管监控</h3>
+      <p>一条命令装完，主机与服务状态自动进平台。</p>
+      <ul>
+        <li>CPU/内存/磁盘/网络/进程采集</li>
+        <li>HTTP / TCP / 进程 / 证书 四型探活</li>
+        <li>断网本地缓存，恢复后续传</li>
+      </ul>
+    </div>
+    <div class="chain-step">
+      <div class="chain-n">STEP 02 / 告警</div>
+      <h3>指纹去重，只报一次</h3>
+      <p>同一次故障不会刷屏成二十条告警。</p>
+      <ul>
+        <li>阈值 / 3σ / 孤立森林 三类检测</li>
+        <li>指纹状态机 + 留观恢复窗口</li>
+        <li>两级屏蔽 + 通知节奏三参数</li>
+      </ul>
+    </div>
+    <div class="chain-step">
+      <div class="chain-n">STEP 03 / 定位</div>
+      <h3>AI 自主排查取证</h3>
+      <p>结论不是模型说的，是查出来的。</p>
+      <ul>
+        <li>两级收敛，一次故障一个事件</li>
+        <li>ReAct 循环 + 预算五件套兜底</li>
+        <li>每条结论强制带证据 token</li>
+      </ul>
+    </div>
+    <div class="chain-step">
+      <div class="chain-n">STEP 04 / 处置</div>
+      <h3>护栏内才准动手</h3>
+      <p>AI 负责查清事实，拍板权始终在人。</p>
+      <ul>
+        <li>九道护栏 + 动作清单</li>
+        <li>一次性审批凭据，用后即焚</li>
+        <li>全链路审计 + 案例沉淀</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ 部署三卡（Dify 模式） ═══════ -->
+<div class="wrap">
+<section id="deploy" class="tight">
+  <div class="sec-head">
+    <div class="sec-kicker">部署</div>
+    <h2>你的机器，你的数据，你的选择</h2>
+    <p>三条路都通。源码在 GitHub 上，许可证是 AGPL-3.0，改与不改、卖与不卖，规则写在协议里而不是藏在你脑子里。</p>
+  </div>
+  <div class="deploy">
+    <div class="dcard featured">
+      <span class="dcard-badge open">OPEN SOURCE · AGPL-3.0</span>
+      <h3>Docker 一键部署</h3>
+      <p class="d-sub">个人学习 / 小团队 / 试点验证</p>
+      <ul>
+        <li><b>一条命令</b>拉起平台 + 数据库 + 2 台演示主机</li>
+        <li>带 5 种故障注入脚本，故障现场随需造</li>
+        <li>2C4G 单机可跑，内存占用约 0.3 GB</li>
+        <li>源码、教程、面试题库全公开</li>
+      </ul>
+      <a class="btn btn-primary btn-sm" href="https://github.com/qsumm/TestOps">GitHub 一键拉取</a>
+    </div>
+    <div class="dcard">
+      <span class="dcard-badge">SELF-HOSTED</span>
+      <h3>私有化部署到你的内网</h3>
+      <p class="d-sub">企业 / 合规敏感行业 / 数据不能出网</p>
+      <ul>
+        <li>被监控机<b>零入站端口</b>，Agent 主动回连</li>
+        <li>LLM 可自建（DeepSeek / Qwen / 硅基流动 / OpenAI 兼容）</li>
+        <li>License 离线 HMAC 校验，模块位按需开</li>
+        <li>通知走 Webhook，飞书 / 钉钉 / 企微 / 邮件</li>
+      </ul>
+      <a class="btn btn-ghost btn-sm" href="/ops/deploy.html">看部署文档</a>
+    </div>
+    <div class="dcard">
+      <span class="dcard-badge">COMMERCIAL</span>
+      <h3>商业版 · 源码 + 护航</h3>
+      <p class="d-sub">要交付、要 SLA、要人兜底</p>
+      <ul>
+        <li>完整<b>源码授权</b>（不受 AGPL 传染约束）</li>
+        <li><b>定时任务</b>：自然语言指令上时间表，报告推飞书（VIP · 即将上线）</li>
+        <li>企业级能力：组织级权限、审计、通知路由</li>
+        <li>私有化定制 + 远程部署指导 + 1V1 答疑</li>
+      </ul>
+      <a class="btn btn-ghost btn-sm" href="/ops/vip.html">联系我们</a>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ 证据链（差异化核心） ═══════ -->
+<div class="evidence" id="evidence">
+<div class="wrap">
+<section>
+  <div class="ev-grid">
+    <div>
+      <div class="sec-kicker">差异点</div>
+      <h2 style="font-size:clamp(1.55rem,2.6vw,2.05rem);margin-bottom:15px;letter-spacing:-.02em">
+        别人的 AI 给你结论，<br>我们给你<strong style="color:var(--accent)">证据</strong>。
+      </h2>
+      <p style="color:var(--muted);font-size:1rem;line-height:1.7">
+        AI 写的报告最常见的失败不是"写错"，是<strong>"写得像对的"</strong>——
+        业务码 0、状态字段 3、合作状态 1，看着全对，但你追问"这个 3 从哪来的"，它答不上来。
+      </p>
+      <ul class="ev-points">
+        <li><span class="k">1</span><span><b>结论必须带证据 token。</b>每条「受影响实体」都要挂一个 <code>step_N</code>，点得回原始工具调用的输入输出。没有引用的结论不允许出现在报告里。</span></li>
+        <li><span class="k">2</span><span><b>不确定就写不确定。</b>置信度按已采集证据来源<b>确定性计分</b>，不是让模型自己给自己打分；关键证据缺失时置信度封顶。</span></li>
+        <li><span class="k">3</span><span><b>反过早收敛。</b>提示词里写死了"时间吻合≠因果""最常见因≠本次因""could is not did"三条陷阱清单，穷尽之后才允许给 INCONCLUSIVE。</span></li>
+        <li><span class="k">4</span><span><b>把没查的也说清楚。</b>影响面强制四分类：已确认受影响 / 已确认健康 / 窗口内因其它原因变化 / <b>没检查</b>。最后一项不能省。</span></li>
+        <li><span class="k">5</span><span><b>结论可复现。</b>工具响应可固化为快照，回放时 LLM temperature=0 跑同一段上下文——改提示词前后能出对比矩阵，不是"感觉变好了"。</span></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="term">
+        <div class="term-bar">
+          <span class="tl"><i></i><i></i><i></i></span>
+          <span>bash — 一键部署</span>
+        </div>
+        <div class="term-body">
+<div><span class="c">$</span> git clone https://github.com/qsumm/TestOps.git &amp;&amp; cd TestOps</div>
+<div><span class="c">$</span> cp backend/.env.example .env <span class="w"># 改掉 3 个默认密钥</span></div>
+<div><span class="c">$</span> docker compose --env-file .env -f deploy/docker-compose.yaml up -d --build</div>
+<div><span class="p">✓</span> Container aiops-platform <span class="p">healthy</span></div>
+<div><span class="p">✓</span> Container aiops-seekdb <span class="p">healthy</span></div>
+<div><span class="p">✓</span> Container aiops-agent-1 <span class="p">healthy</span></div>
+<div><span class="p">✓</span> Container aiops-agent-2 <span class="p">healthy</span></div>
+<div style="margin-top:6px"><span class="a">→</span> http://localhost:8848 <span class="c">(admin / admin123，请立即修改)</span></div>
+<div style="margin-top:6px"><span class="c"># 灌 7 天演示数据</span></div>
+<div><span class="c">$</span> docker compose --env-file .env -f deploy/docker-compose.yaml exec platform \</div>
+<div>    python scripts/seed_demo.py --days 7</div>
+        </div>
+      </div>
+
+      <div class="tbl-wrap" style="margin-top:16px">
+        <table>
+          <thead><tr><th>一次真实故障处置</th><th>实测</th></tr></thead>
+          <tbody>
+            <tr><td>故障注入 → 告警</td><td class="yes">3 条探活告警同时 firing</td></tr>
+            <tr><td>收敛为事件</td><td class="yes">3 → 1 个 incident</td></tr>
+            <tr><td>AI 诊断</td><td class="yes">16 步 / 12.3 万 tokens / CONFIRMED</td></tr>
+            <tr><td>结论准确性</td><td class="yes">准确指出"进程死亡为直接根因，死因缺第一现场证据无法定论"</td></tr>
+            <tr><td>回放复现</td><td class="yes">两次回放指纹相同，结论逐字段一致</td></tr>
+            <tr><td>恢复</td><td class="yes">目标机真重启 → 探活 up → 恢复通知真实投递</td></tr>
+            <tr><td>案例沉淀</td><td class="yes">事件关闭 → 案例卡入库 → 下次语义召回</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+</div>
+
+<!-- ═══════ 能力四块 ═══════ -->
+<div class="wrap">
+<section id="capabilities">
+  <div class="sec-head">
+    <div class="sec-kicker">能力</div>
+    <h2>一个平台，覆盖测试全流程</h2>
+    <p>12 个页面 · 163 个 API 端点 · 26 张业务表 · 720 项自动化测试全绿。开源与商业共用同一套代码，不做阉割版。</p>
+  </div>
+  <div class="caps">
+    <div class="cap">
+      <div class="cap-h">
+        <span class="cap-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="4" rx="1"/><rect x="1.5" y="9.5" width="13" height="4" rx="1"/><path d="M4 4.5h.01M4 11.5h.01"/></svg></span>
+        <h3>发现</h3><span class="cap-sub">FR-B / FR-C</span>
+      </div>
+      <p>被监控机零入站端口，一台机器装完就进平台。</p>
+      <ul class="cap-list">
+        <li><b>install.sh</b> 三路径：launchd / systemd / nohup 兜底</li>
+        <li><b>4 型探针</b>：HTTP / TCP / 进程 / HTTPS 证书剩余天数</li>
+        <li><b>3 类检测</b>：阈值 / 3σ / 孤立森林（sklearn 缺失自动降级）</li>
+        <li><b>2h 环形</b> + 1m/5m 聚合落库，任意时间窗可渲染</li>
+        <li><b>Prometheus 轨</b>：只读查询代理 / node_exporter 直采</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <div class="cap-h">
+        <span class="cap-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/></svg></span>
+        <h3>定位</h3><span class="cap-sub">FR-D</span>
+      </div>
+      <p>告警收敛成事件后，AI 拿着工具去查，不是拿着笔去编。</p>
+      <ul class="cap-list">
+        <li><b>两级收敛</b>：规则聚类 → LLM 因果判定（可降级纯规则）</li>
+        <li><b>13 个只读工具</b>：指标 / 探活 / 日志 / 案例 / 5 类历史查询</li>
+        <li><b>预算五件套</b>：步数 / 工具输出 / 压缩阈值 / 超时 / 硬截止</li>
+        <li><b>三层留痕</b>：思维链 / 工具瀑布 / 完整调用历史</li>
+        <li><b>AI 助手</b>：自然语言追问，答案必须附引用</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <div class="cap-h">
+        <span class="cap-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 1.5 13.5 4v4c0 3.2-2.3 5.6-5.5 6.5C4.8 13.6 2.5 11.2 2.5 8V4L8 1.5Z"/><path d="M5.8 8 7.4 9.6 10.4 6.6"/></svg></span>
+        <h3>处置</h3><span class="cap-sub">FR-E</span>
+      </div>
+      <p>AI 永远不能直接执行命令——这是设计，不是配置。</p>
+      <ul class="cap-list">
+        <li><b>九道护栏</b>：禁用清单 / 只读白名单 / 爆炸半径 / 幂等 …</li>
+        <li><b>三档执行</b>：仅建议 / 人工确认 / 白名单自动</li>
+        <li><b>一次性凭据</b>：只存 sha256、TTL 300s、用后即焚、重放被拒</li>
+        <li><b>审计可追溯</b>：谁在何时以何种方式批准了哪一步</li>
+        <li><b>分级恢复</b>：4 类动作白名单 + 连续失败熔断</li>
+      </ul>
+    </div>
+    <div class="cap">
+      <div class="cap-h">
+        <span class="cap-ico"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 3.5h5l1.5 2H14v8H2z"/><path d="M5.5 8.5h5M5.5 10.5h3"/></svg></span>
+        <h3>沉淀</h3><span class="cap-sub">FR-E3 / FR-426</span>
+      </div>
+      <p>越用越懂你——但"越用越聪明"这句话要能被验证。</p>
+      <ul class="cap-list">
+        <li><b>案例库</b>：事件关闭自动沉淀，向量召回 + 文本降级</li>
+        <li><b>人工订正</b>：AI 报告可标记跟进 / 观察 / 忽略，忽略必填理由</li>
+        <li><b>降噪复用</b>：同主机被忽略过的历史，后续报告自动提示</li>
+        <li><b>技能体系</b>：8 个内置 Skill，SKILL.md 可 GitHub 导入</li>
+        <li><b>效果度量</b>：加载次数 / 跟进率 / Token 中位数，样本不足如实说</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ 学习学院（留存主战场） ═══════ -->
+<div class="wrap">
+<section id="learn">
+  <div class="sec-head">
+    <div class="sec-kicker">学习学院 · 持续更新</div>
+    <h2>不只是用工具，是把 TestOps 学明白</h2>
+    <p>把"AI 运维"拆成能读懂、能复述、能写进简历的工程知识。全部免费、无需注册——这个栏目值得你收藏回来。</p>
+  </div>
+
+  <div class="paths">
+    <span class="path-chip"><b>路径 ①</b> 值班工程师入门 <em>4 周</em></span>
+    <span class="path-chip"><b>路径 ②</b> 中级 SRE 进阶 <em>6 周</em></span>
+    <span class="path-chip"><b>路径 ③</b> 平台开发者 <em>8 周</em></span>
+  </div>
+
+  <div class="learn-grid">
+    <div class="learn-card">
+      <h3>AI 机制拆解</h3>
+      <p class="l-sub">把"AI 运维"的魔法拆成可读的工程事实</p>
+      <ul>
+        <li><b>ReAct Agent 到底在干什么</b><span class="rt">12 min</span></li>
+        <li><b>LLM 在运维的四种成熟用法</b><span class="rt">9 min</span></li>
+        <li><b>RAG 与案例库为什么越用越聪明</b><span class="rt">10 min</span></li>
+        <li><b>给运维场景写 Prompt 的套路</b><span class="rt">8 min</span></li>
+      </ul>
+      <a class="l-more" href="/ops/learn-testops.html">进入栏目 →</a>
+    </div>
+    <div class="learn-card">
+      <h3>SRE 基础</h3>
+      <p class="l-sub">从值班到复盘，运维的基本功</p>
+      <ul>
+        <li><b>SLI / SLO / SLA 与错误预算</b><span class="rt">10 min</span></li>
+        <li><b>告警为什么要分级</b><span class="rt">6 min</span></li>
+        <li><b>on-call 值班文化</b><span class="rt">7 min</span></li>
+        <li><b>故障复盘 Postmortem 怎么写</b><span class="rt">11 min</span></li>
+      </ul>
+      <a class="l-more" href="/ops/learn-sre.html">进入栏目 →</a>
+    </div>
+    <div class="learn-card">
+      <h3>实战教程</h3>
+      <p class="l-sub">12 篇，跟着做一遍就能上手，随版本演进同步更新</p>
+      <ul>
+        <li><b>部署与验收</b> · <b>Agent 原理与接入</b><span class="rt">01-02</span></li>
+        <li><b>告警引擎设计</b> · <b>异常检测与规则调优</b><span class="rt">03-04</span></li>
+        <li><b>AI 诊断 Agent 拆解</b> · <b>处置闭环与护栏</b><span class="rt">05·08</span></li>
+        <li><b>多模型对接与成本治理</b> · <b>二次开发指南</b><span class="rt">10-11</span></li>
+      </ul>
+      <a class="l-more" href="/ops/learn-tutorials.html">全部 12 篇 →</a>
+    </div>
+    <div class="learn-card">
+      <h3>TestOps 面试题库</h3>
+      <p class="l-sub">46 题，含答案、追问链、踩坑回答与简历话术</p>
+      <ul>
+        <li><b>告警引擎三连问</b>：指纹 / 状态机 / 风暴治理<span class="rt">8 题</span></li>
+        <li><b>AI 诊断深挖</b>：预算 / 护栏 / 证据链<span class="rt">11 题</span></li>
+        <li><b>三个必讲的技术故事</b>：可直接进简历<span class="rt">3 段</span></li>
+        <li><b>踩坑回答对照</b>：面试官听到会皱眉的答法<span class="rt">12 条</span></li>
+      </ul>
+      <a class="l-more" href="/ops/learn-interview.html">全部 46 题 →</a>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ Agent 评测 ═══════ -->
+<div class="wrap">
+<section id="agent-eval">
+  <div class="sec-head">
+    <div class="sec-kicker">Agent 评测</div>
+    <h2>Agent 评测平台——不只是看指标，是真的评</h2>
+    <p>11 个预置评估器 · 轨迹断言 DSL 七算子 · 实验门禁 · 成本中心 · stale 传播——每次评测都知道花了多少钱、哪个评估器最准。</p>
+    <div style="margin-top:14px"><a class="btn btn-primary" href="/ops/agent-community.html">进入评测平台 →</a></div>
+  </div>
+
+  <div class="official-rows" style="margin-top:22px">
+    <div class="official-row">
+      <div class="o-h"><b>Agent-as-a-Judge</b></div>
+      <p>11 个预置评估器：LLM-as-judge 走真模型调用（OpenAI / Anthropic 双协议），Code 评估器在沙箱内执行，Human 标注产出同一结果形状。</p>
+      <div class="o-scope">Judge · Code · Human</div>
+    </div>
+    <div class="official-row">
+      <div class="o-h"><b>轨迹断言 DSL</b></div>
+      <p>七算子 + assert-set 嵌套 + not- 取反，把「预期路径」写成可执行断言，而不是事后人工打分。</p>
+      <div class="o-scope">七算子 · 嵌套 · 取反</div>
+    </div>
+    <div class="official-row">
+      <div class="o-h"><b>实验门禁</b></div>
+      <p>多组对照跑分，门禁 API 直接返回「采纳 / 回退」结论——评测结论能挡住发布，不只是给人看。</p>
+      <div class="o-scope">多组对照 · 门禁 API</div>
+    </div>
+    <div class="official-row">
+      <div class="o-h"><b>成本与 stale 传播</b></div>
+      <p>每次评测的 token 与花费入账；迟到 trace 到达后旧结论自动作废，看板分数恒定剔除 stale。</p>
+      <div class="o-scope">成本中心 · stale 传播</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ 技能集市 ═══════ -->
+<div class="wrap">
+<section id="skills-market">
+  <div class="sec-head">
+    <div class="sec-kicker">技能集市</div>
+    <h2>把排查经验写成技能，让别人直接复用</h2>
+    <p>三轨技能目录：官方 8 个已验证方法论 · 社区种子 8 个 · 集成配方征集中。命令全部只读，过平台白名单与九道护栏。</p>
+  </div>
+
+  <div class="com-tabs" role="tablist" aria-label="技能轨道">
+    <button class="com-tab active" data-track="community" role="tab" aria-selected="true">社区技能 <em>8</em></button>
+    <button class="com-tab" data-track="official" role="tab" aria-selected="false">官方技能 <em>8</em></button>
+    <button class="com-tab" data-track="recipes" role="tab" aria-selected="false">集成配方 <em>征集</em></button>
+  </div>
+
+  <!-- 轨 1：社区技能 -->
+  <div class="com-track" id="track-community">
+    <div class="skill-grid">
+      <div class="skill-card">
+        <div class="s-h"><b>cert-chain-checkup</b><span class="community-tag">社区种子</span></div>
+        <p class="s-d">证书告警分两种：快到期和链不完整。排查路径完全不同，别拿续期解决信任链问题。</p>
+        <div class="s-tags"><span class="tag">https-cert</span><span class="tag">探活失败</span></div>
+        <div class="skill-metrics"><span class="insufficient">效果数据：样本不足（新收录） · 2 条只读命令</span></div>
+        <div class="import-cmd">导入：平台 → 技能管理 → GitHub 导入</div>
+      </div>
+      <div class="skill-card">
+        <div class="s-h"><b>disk-inode-exhaust</b><span class="community-tag">社区种子</span></div>
+        <p class="s-d">df 还有空间但写入报错，八成是 inode 耗尽。定位小文件目录，而不是急着重启。</p>
+        <div class="s-tags"><span class="tag">disk.*.percent</span><span class="tag">disk.inode.*</span><span class="tag">写入失败</span></div>
+        <div class="skill-metrics"><span class="insufficient">效果数据：样本不足（新收录） · 4 条只读命令</span></div>
+        <div class="import-cmd">导入：平台 → 技能管理 → GitHub 导入</div>
+      </div>
+      <div class="skill-card">
+        <div class="s-h"><b>failed-unit-storm</b><span class="community-tag">社区种子</span></div>
+        <p class="s-d">服务反复重启往往不是服务自己的问题。先拉 failed 单元清单，再用 journalctl 找第一现场。</p>
+        <div class="s-tags"><span class="tag">服务不可用</span><span class="tag">探活失败</span><span class="tag">业务端口</span></div>
+        <div class="skill-metrics"><span class="insufficient">效果数据：样本不足（新收录） · 3 条只读命令</span></div>
+        <div class="import-cmd">导入：平台 → 技能管理 → GitHub 导入</div>
+      </div>
+      <div class="skill-card">
+        <div class="s-h"><b>mysql-conn-pool-exhaust</b><span class="community-tag">社区种子</span></div>
+        <p class="s-d">连接数打满不一定是要加 max_connections：先看 processlist 里谁在占、有没有 sleep 堆积，再判断是泄漏还是容量。</p>
+        <div class="s-tags"><span class="tag">mysql.*</span><span class="tag">连接数</span><span class="tag">连接池</span></div>
+        <div class="skill-metrics"><span class="insufficient">效果数据：样本不足（新收录） · 4 条只读命令</span></div>
+        <div class="import-cmd">导入：平台 → 技能管理 → GitHub 导入</div>
+      </div>
+      <div class="skill-card">
+        <div class="s-h"><b>nginx-502-troubleshoot</b><span class="community-tag">社区种子</span></div>
+        <p class="s-d">502/504 三连查：本机端口还听不听 → 上游通不通 → nginx 日志怎么说。先分清"挂了"还是"慢了"，再谈改配置。</p>
+        <div class="s-tags"><span class="tag">nginx.*</span><span class="tag">探活失败</span><span class="tag">502</span><span class="tag">业务HTTP</span></div>
+        <div class="skill-metrics"><span class="insufficient">效果数据：样本不足（新收录） · 5 条只读命令</span></div>
+        <div class="import-cmd">导入：平台 → 技能管理 → GitHub 导入</div>
+      </div>
+      <div class="skill-card">
+        <div class="s-h"><b>redis-memory-pressure</b><span class="community-tag">社区种子</span></div>
+        <p class="s-d">内存告警先看碎片率与淘汰策略是否匹配，再谈大键。改 maxmemory 之前先回答"内存花在哪了"。</p>
+        <div class="s-tags"><span class="tag">redis.*</span><span class="tag">mem.*</span></div>
+        <div class="skill-metrics"><span class="insufficient">效果数据：样本不足（新收录） · 3 条只读命令</span></div>
+        <div class="import-cmd">导入：平台 → 技能管理 → GitHub 导入</div>
+      </div>
+      <div class="skill-card">
+        <div class="s-h"><b>tcp-timewait-storm</b><span class="community-tag">社区种子</span></div>
+        <p class="s-d">TIME_WAIT 堆积是高频短连接的信号。先数清楚分布，再看是哪个调用方在疯狂建连。</p>
+        <div class="s-tags"><span class="tag">net.tcp.*</span><span class="tag">连接异常</span></div>
+        <div class="skill-metrics"><span class="insufficient">效果数据：样本不足（新收录） · 3 条只读命令</span></div>
+        <div class="import-cmd">导入：平台 → 技能管理 → GitHub 导入</div>
+      </div>
+      <div class="skill-card">
+        <div class="s-h"><b>time-drift-check</b><span class="community-tag">社区种子</span></div>
+        <p class="s-d">时间漂移会污染取证时间窗与告警时刻。接入前查一次，排查跨机日志前再查一次。</p>
+        <div class="s-tags"><span class="tag">主机离线</span><span class="tag">时间窗</span><span class="tag">跨机对齐</span></div>
+        <div class="skill-metrics"><span class="insufficient">效果数据：样本不足（新收录） · 1 条只读命令</span></div>
+        <div class="import-cmd">导入：平台 → 技能管理 → GitHub 导入</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 轨 2：官方技能 -->
+  <div class="com-track" id="track-official" hidden>
+    <div class="official-rows">
+      <div class="official-row"><div class="o-h"><b>core-investigation</b><span class="verified">官方 · 核心方法论</span></div><p>通用故障调查方法论：假设驱动、证伪优先、症状不是根因。</p><div class="o-scope">随每次诊断常驻注入</div></div>
+      <div class="official-row"><div class="o-h"><b>core-safety</b><span class="verified">官方 · 核心方法论</span></div><p>只读优先与变更纪律：没验证过的修复不建议，危险命令一律不执行。</p><div class="o-scope">随每次诊断常驻注入</div></div>
+      <div class="official-row"><div class="o-h"><b>core-reporting</b><span class="verified">官方 · 核心方法论</span></div><p>报告写作规范：结论在前、证据在后、诚实标注不确定性与未检查项。</p><div class="o-scope">随每次诊断常驻注入</div></div>
+      <div class="official-row"><div class="o-h"><b>disk-troubleshoot</b><span class="verified">官方</span></div><p>磁盘问题专项：水位、inode、IO 三条线分开查。</p><div class="o-scope">触发：disk.*, 磁盘, inode</div></div>
+      <div class="official-row"><div class="o-h"><b>host-health-diagnose</b><span class="verified">官方</span></div><p>主机健康综合排查：CPU / 内存 / 负载联动判断。</p><div class="o-scope">触发：cpu.*, mem.*, load.*</div></div>
+      <div class="official-row"><div class="o-h"><b>metric-analysis</b><span class="verified">官方</span></div><p>指标分析方法论：窗口、基线与异常点的关系。</p><div class="o-scope">触发：metric, 指标, cpu.*, mem.*</div></div>
+      <div class="official-row"><div class="o-h"><b>log-search</b><span class="verified">官方</span></div><p>日志检索路径：时间窗优先于行数，关键词定位如实标注。</p><div class="o-scope">触发：日志, journal, error, oom</div></div>
+      <div class="official-row"><div class="o-h"><b>case-recall</b><span class="verified">官方</span></div><p>案例检索：相似故障先查历史，复用已验证的处置。</p><div class="o-scope">触发：案例, 复盘, 历史</div></div>
+    </div>
+  </div>
+
+  <!-- 轨 3：集成配方 -->
+  <div class="com-track" id="track-recipes" hidden>
+    <div class="official-rows">
+      <div class="official-row"><div class="o-h"><b>postgres_exporter 白名单</b><span class="community-tag">配方 · 征集中</span></div><p>476 个指标里挑哪 20 个进平台？一份开箱可用的 metric_keep 正则清单。</p><div class="o-scope">数据源配置 · metric_keep</div></div>
+      <div class="official-row"><div class="o-h"><b>MCP 客户端接入</b><span class="community-tag">配方 · 征集中</span></div><p>把平台 8 个只读工具接进你自己的 Agent：开启 /mcp、鉴权与工具清单。</p><div class="o-scope">POST /mcp · 默认关闭</div></div>
+      <div class="official-row"><div class="o-h"><b>通知渠道 recipes</b><span class="community-tag">配方 · 征集中</span></div><p>飞书加签 / 钉钉机器人 / 通用 Webhook 的 apprise URL 模板与避坑参数。</p><div class="o-scope">apprise 透传 · 危险 scheme 已拦</div></div>
+      <div class="official-row"><div class="o-h"><b>你的配方</b><span class="community-tag">虚位以待</span></div><p>把你调通过的 exporter / 渠道 / Agent 集成写成配方，分享给所有人。</p><div class="o-scope">提 Issue 提案</div></div>
+    </div>
+  </div>
+
+  <!-- 贡献三步 + 贡献者墙 -->
+  <div class="contrib">
+    <div class="contrib-steps">
+      <h3>贡献一个技能，只要三步</h3>
+      <div class="cstep"><span class="n">1</span><div class="t"><b>提案</b><p>开一个 Issue：讲清这个场景为什么值得一个技能——适用范围 + 一个你真实排查过的故障故事。</p></div></div>
+      <div class="cstep"><span class="n">2</span><div class="t"><b>起草</b><p>按 SKILL.md 模板写：frontmatter（适用告警范围 + 只读命令）+ 何时用 / 动作 / 边界三段。命令必须全部只读。</p></div></div>
+      <div class="cstep"><span class="n">3</span><div class="t"><b>验证合并</b><p>附一个可复现的触发场景（平台自带的 5 种故障注入脚本即可），维护者真机跑通后合并进月度收录。</p></div></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:14px">合并 30 天后开始累计真实效果数据：加载次数、跟进率、Token 中位数——你的技能有没有用，数字说话。</p>
+    </div>
+    <div class="contrib-wall">
+      <div>
+        <div class="cw-h">贡献者墙 · 虚位以待</div>
+        <p class="cw-d">还没有社区贡献者。<br><b>第一个把自己的排查经验写成技能的人，写在这里。</b></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 月度效果榜 -->
+  <div class="leaderboard">
+    <span class="lb-cup"><svg width="19" height="19" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.5 1.5a1 1 0 0 0-1 1V4a4.5 4.5 0 0 0 3.6 4.41 2.5 2.5 0 0 0 1.4 1.4v1.69H5.75a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5H8.5V9.81a2.5 2.5 0 0 0 1.4-1.4A4.5 4.5 0 0 0 13.5 4V2.5a1 1 0 0 0-1-1h-9ZM4 4V3h8v1a3 3 0 0 1-1.9 2.79A2.5 2.5 0 0 0 8 5.5c-.66 0-1.26.26-1.7.68A3 3 0 0 1 4 4Zm4 .5a1 1 0 0 1 1 1 3 3 0 0 1-.55 1.73A1 1 0 0 1 8 9.5a1 1 0 0 1-.45-.27A3 3 0 0 1 7 5.5a1 1 0 0 1 1-1Z"/></svg></span>
+    <div>
+      <div class="lb-t">月度效果榜 · 每月随《AI 运维月报》发布</div>
+      <div class="lb-d">按真实加载次数 × 跟进率排社区技能 Top 5。<b style="color:var(--text)">本期样本不足，暂不排名</b>——数字够的时候自然会出现在这里，不够的时候我们直说。</div>
+    </div>
+  </div>
+
+  <!-- 安全条 -->
+  <div class="safety-bar">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--pass)" stroke-width="1.6" aria-hidden="true"><path d="M8 1.5 13.5 4v4c0 3.2-2.3 5.6-5.5 6.5C4.8 13.6 2.5 11.2 2.5 8V4L8 1.5Z"/><path d="M5.8 8 7.4 9.6 10.4 6.6"/></svg>
+    <p><b>安全前置，不是事后补救。</b>所有社区技能的命令都会经过平台只读白名单与九道护栏校验，禁用清单硬边界不可越过；技能授权的命令仅在本次诊断会话内生效，会话结束即失效。</p>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ VIP · 定时任务 ═══════ -->
+<div class="evidence">
+<div class="wrap">
+<section id="vip">
+  <div class="vip-grid">
+    <div>
+      <span class="vip-badge">VIP 权益 <em>License 模块位 pro</em></span>
+      <h2 style="font-size:clamp(1.55rem,2.6vw,2.05rem);margin:18px 0 14px;letter-spacing:-.02em">
+        让 AI 按点上班：定时任务
+      </h2>
+      <p style="color:var(--muted);font-size:1rem;line-height:1.7;max-width:34em">
+        把一条自然语言指令交给时间表。每天早上自动汇总昨夜告警与事件、每周五生成本周复盘——
+        报告直接推到飞书 / 钉钉。全程<strong style="color:var(--text)">只读取证、结果留存、失败必报</strong>。
+      </p>
+
+      <div class="vip-tpl">
+        <div class="vt">
+          <span class="vt-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></span>
+          <div><div class="vt-t">晨会动态 <small>每工作日 09:00</small></div>
+          <div class="vt-d">汇总过去一个工作日的告警、事件、巡检结果与恢复情况，生成不超过 6 条的晨会口述摘要。只读分析。</div></div>
+        </div>
+        <div class="vt">
+          <span class="vt-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <div><div class="vt-t">风险扫描 <small>每天 10:00</small></div>
+          <div class="vt-d">检查最近 24 小时的新增告警与指标异常，识别高置信风险并附证据 token——不是罗列，是按影响排序。</div></div>
+        </div>
+        <div class="vt">
+          <span class="vt-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+          <div><div class="vt-t">本周复盘 <small>每周五 16:00</small></div>
+          <div class="vt-d">整理本周全部事件与处置：按服务、根因分类，生成团队版与管理层精简版两份。</div></div>
+        </div>
+        <div class="vt">
+          <span class="vt-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+          <div><div class="vt-t">慢性炸弹巡检 <small>每周三 15:00</small></div>
+          <div class="vt-d">证书到期、磁盘缓慢增长、备份任务静默失败——专查"还没爆但快了"的那类。</div></div>
+        </div>
+      </div>
+
+      <p class="vip-note">
+        <b>门禁</b>：License 模块位 <span class="mono">pro</span> 解锁（离线 HMAC 验签，随商业授权发放）；
+        无 pro 位时页面显示引导、API 返回 403。<b>自定义指令</b>：任何自然语言指令都能上时间表，
+        执行范围限定为只读工具链——定时执行场景同样不做任何写操作，这是设计不是限制。
+      </p>
+      <span class="vip-soon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> 设计预览 · 功能即将上线 · 加入首批体验名单</span>
+    </div>
+
+    <!-- 静态界面预览 -->
+    <div class="vip-mock" role="img" aria-label="定时任务创建表单的产品设计预览">
+      <div class="vm-bar">
+        <span class="tl"><i></i><i></i><i></i></span>
+        <span>新建定时任务</span>
+        <span class="vm-badge">VIP · pro</span>
+      </div>
+      <div class="vm-body">
+        <div class="vm-field"><label>任务标题</label><div class="v-in">晨会动态</div></div>
+        <div class="vm-field"><label>调度</label>
+          <div class="vm-sched"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> 每工作日 09:00 <span class="s-chip">北京时间</span> <span class="s-chip">下次运行 14h 后</span> <span class="s-chip">+ 添加计划</span></div>
+        </div>
+        <div class="vm-field"><label>指令（自然语言）</label>
+          <div class="v-in prompt">汇总昨天 18:00 至今的告警与事件，按严重度排序；已恢复的打勾标记，未恢复的给出<b>主机、根因摘要与建议动作</b>；末尾附一条"今天最该看的一件事"。不超过 6 条，推送到飞书值班群。</div>
+        </div>
+        <div class="vm-row">
+          <div class="v-in"><small>执行范围</small>全部主机（按可见域）</div>
+          <div class="v-in"><small>安全模式</small>只读取证 · 固定</div>
+          <div class="v-in"><small>模型</small>主模型 / 快模型</div>
+        </div>
+      </div>
+      <div class="vm-foot">
+        <span>结果留存 · 失败必通知 · 全程审计</span>
+        <span style="color:var(--accent);font-weight:600">创建定时任务</span>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+</div>
+
+<!-- ═══════ 开源专区（开放集成 · 上游与互补） ═══════ -->
+<div class="wrap">
+<section id="oss-hub" class="tight">
+  <div class="sec-head">
+    <div class="sec-kicker">开源专区</div>
+    <h2>开放集成，不锁定</h2>
+    <p>我们站在这些开源项目之上，也把集成口留在它们那边。指标、采集、通知、模型运行时全部可替换——数据是你的，工具链也该是你的。</p>
+  </div>
+  <div class="hub-grid">
+    <div class="hub-item">
+      <div class="h-t">Prometheus <small>上游</small></div>
+      <p class="h-d">指标采集与查询的事实标准——轨 B 直接对接：query_range 代理 + 规则评估。</p>
+      <div class="h-c"><span class="tag">指标</span><span class="tag">轨 B</span></div>
+    </div>
+    <div class="hub-item">
+      <div class="h-t">node_exporter <small>互补</small></div>
+      <p class="h-d">已有 exporter 的机器零改造接入：平台直采 /metrics，映射进统一指标空间。</p>
+      <div class="h-c"><span class="tag">采集</span><span class="tag">直采</span></div>
+    </div>
+    <div class="hub-item">
+      <div class="h-t">Grafana Loki <small>互补</small></div>
+      <p class="h-d">日志聚合与平台各管一层——日志取证按需下发，聚合交给专业的。</p>
+      <div class="h-c"><span class="tag">日志</span></div>
+    </div>
+    <div class="hub-item">
+      <div class="h-t">apprise <small>上游</small></div>
+      <p class="h-d">通知传输层的底座：一套 URL 协议接通 150+ 渠道，节奏与台账平台自己管。</p>
+      <div class="h-c"><span class="tag">通知</span></div>
+    </div>
+    <div class="hub-item">
+      <div class="h-t">Ollama <small>互补</small></div>
+      <p class="h-d">本地跑大模型，AI 能力自建——数据不出网的部署路径之一。</p>
+      <div class="h-c"><span class="tag">模型</span><span class="tag">自建</span></div>
+    </div>
+    <div class="hub-item">
+      <div class="h-t">OpenTelemetry <small>标准</small></div>
+      <p class="h-d">可观测开放标准。跟着标准走，不发明自己的协议。</p>
+      <div class="h-c"><span class="tag">标准</span></div>
+    </div>
+    <div class="hub-item">
+      <div class="h-t">Midscene <small>互补</small></div>
+      <p class="h-d">字节开源的 AI UI 自动化框架：浏览器 / Android / 桌面——与监控诊断互补的相邻赛道。</p>
+      <div class="h-c"><span class="tag">AI 自动化</span></div>
+    </div>
+    <div class="hub-item">
+      <div class="h-t">Browser Use <small>互补</small></div>
+      <p class="h-d">自然语言驱动的浏览器 Agent——AI 操作网页的事实标准之一。</p>
+      <div class="h-c"><span class="tag">AI Agent</span></div>
+    </div>
+  </div>
+  <p class="hub-note">收录规则：<b style="color:var(--text)">上游依赖与互补生态</b>——平台真实对接或在相邻赛道。同类产品不收录 · 每月复核 · 发现失联条目请<a href="https://github.com/qsumm/TestOps/issues">提 Issue</a></p>
+</section>
+</div>
+
+<!-- ═══════ 开源与生态 ═══════ -->
+<div class="wrap">
+<section id="opensource" class="tight">
+  <div class="sec-head">
+    <div class="sec-kicker">开源</div>
+    <h2>不只是把代码扔出来</h2>
+    <p>两个仓库、两次导出、30+ 条敏感规则扫描——开源包不是主线 dump，是一条有防线的发布产物。</p>
+  </div>
+  <div class="mini-grid">
+    <div class="mini">
+      <div class="m-t">主仓（私有）</div>
+      <div class="m-d">全部历史、全部文档、完整测试与商业化能力。开发真源。</div>
+      <div class="m-p">main → baseline → oss</div>
+    </div>
+    <div class="mini">
+      <div class="m-t">开源仓（公开）</div>
+      <div class="m-d">孤儿快照提交，零历史泄漏。白名单内容 + 敏感扫描通过才允许推送。</div>
+      <div class="m-p">AGPL-3.0</div>
+    </div>
+    <div class="mini">
+      <div class="m-t">教程 12 篇</div>
+      <div class="m-d">部署 / Agent 原理 / 告警引擎 / 检测调优 / 诊断拆解 / 护栏 / 二次开发 …</div>
+      <div class="m-p">docs/05-教程</div>
+    </div>
+    <div class="mini">
+      <div class="m-t">面试题库 46 题</div>
+      <div class="m-d">含答案、追问、踩坑回答、简历话术，与三个必讲的技术故事。</div>
+      <div class="m-p">docs/06</div>
+    </div>
+    <div class="mini">
+      <div class="m-t">机器接口</div>
+      <div class="m-d">MCP 端点（默认关，写工具默认不注册）+ Agent 上报协议 + OpenAPI 文档。</div>
+      <div class="m-p">POST /mcp</div>
+    </div>
+    <div class="mini">
+      <div class="m-t">评测闭环</div>
+      <div class="m-d">调优池 / 回归池双池隔离，故障注入脚本即天然标注机。</div>
+      <div class="m-p">15 case 冷启动</div>
+    </div>
+    <div class="mini">
+      <div class="m-t">致谢与出处</div>
+      <div class="m-d">关键机制的调研出处（Apache-2.0 开源项目）在设计文档中逐条标注——不装作原创。</div>
+      <div class="m-p">机制可溯源</div>
+    </div>
+    <div class="mini">
+      <div class="m-t">Contributor</div>
+      <div class="m-d">免构建约定 · 敏感信息红线 · 安全通告渠道，欢迎提 Issue / PR。</div>
+      <div class="m-p">AGPL-3.0</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ 版本对比 ═══════ -->
+<div class="wrap">
+<section id="docs" class="tight">
+  <div class="sec-head">
+    <div class="sec-kicker">版本</div>
+    <h2>开源版与商业版的差别，写在明面上</h2>
+    <p>不做"阉割版"这种词。差别主要是三样：谁承担维护责任、要不要 SLA、以及能不能闭源改。</p>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>能力</th><th>开源版（AGPL-3.0）</th><th>商业版</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>全部 12 个页面 / 163 个端点 / 告警引擎 / 诊断 Agent</td><td class="yes">包含</td><td class="yes">包含</td></tr>
+        <tr><td>证据链诊断 + 九道护栏 + 一次性审批凭据</td><td class="yes">包含</td><td class="yes">包含</td></tr>
+        <tr><td>源码可读可改</td><td class="yes">包含</td><td class="yes">包含</td></tr>
+        <tr><td>分发时是否受 AGPL 传染约束</td><td class="no">是</td><td class="yes">否（独立商业授权）</td></tr>
+        <tr><td>私有化定制开发</td><td class="no">自行承担</td><td class="yes">提供</td></tr>
+        <tr><td>部署指导 / 问题答疑</td><td class="no">社区 / 文档</td><td class="yes">远程指导 + 1V1</td></tr>
+        <tr><td>私有化部署（内网 / 隔离网）</td><td class="yes">支持</td><td class="yes">支持</td></tr>
+        <tr><td>教程 12 篇 + 面试题库</td><td class="yes">包含</td><td class="yes">包含</td></tr>
+        <tr><td>定时 AI 任务（自然语言指令上时间表，报告推渠道）</td><td class="no">—</td><td class="yes">VIP 专属（License 模块位 pro · 即将上线）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ FAQ ═══════ -->
+<div class="wrap">
+<section id="faq" class="tight">
+  <div class="sec-head">
+    <div class="sec-kicker">FAQ</div>
+    <h2>常见问题</h2>
+  </div>
+  <div class="faq">
+    <details open>
+      <summary>我管着 5 台机器，需要这个吗？</summary>
+      <p>5 台以下基本不需要——传统的轻量监控工具都够，AI 诊断没有数据可吃。本平台的核心场景在 5~50 台：批量探活、护栏、跨主机诊断的收益最大。500 台以上也适合，但要评估接入路径（逐台装 Agent 慢，可走 Prometheus 数据源 + node_exporter 直采）。</p>
+    </details>
+    <details>
+      <summary>一定要绑定某家大模型吗？</summary>
+      <p>不需要。平台支持多模型配置，可按角色设置不同模型与参数，并提供连接测试，便于替换与成本控制。DeepSeek / 通义千问 / 硅基流动 / OpenAI 兼容网关都能接，也可自建。</p>
+    </details>
+    <details>
+      <summary>AI 会不会自己上生产机乱动？</summary>
+      <p>不会，而且这是写进代码的硬约束。九道护栏里第一条就是禁用清单（rm -rf /、mkfs、dd 写盘、管道进 shell 等）；只读白名单之外的动作必须先由人签发一次性凭据，凭据用后即焚、重放被拒。平台 V1 不代运维在目标机执行命令，远程执行通道列入 V2 路线。</p>
+    </details>
+    <details>
+      <summary>怎么保证 AI 报告不是编的？</summary>
+      <p>四条机制叠加：① 每条「受影响实体」必须带证据 token，点得回原始工具调用；② 置信度按证据来源确定性计分，不是模型自评；③ 提示词内置反过早收敛陷阱清单，穷尽后才允许 INCONCLUSIVE；④ 评测闭环用快照回放，改提示词前后能出对比矩阵。历史上抓到过的真实问题（模型写对了却被解析器判废、白名单被 `cat &gt; file` 绕过）都有回归测试锁住。</p>
+    </details>
+    <details>
+      <summary>数据会不会传到别人的服务器？</summary>
+      <p>取决于你怎么部署。自托管时数据只在你自己的机器上；调用大模型时只有诊断上下文会发给 LLM 提供方，平台提供脱敏与最小化。平台自身的采集与存储不做任何外传，通知只走你配置的渠道。</p>
+    </details>
+    <details>
+      <summary>怎么验证它真的能用，而不是 demo？</summary>
+      <p>仓库自带 5 种故障注入脚本（CPU 飙高 / 磁盘打满 / 进程假死 / 探活失败 / 内存泄漏），一条命令触发、观察完整链路。另有主流程冒烟脚本可作为部署 gate。注意：故障脚本不要在生产机上跑——它们会真的占满资源。</p>
+    </details>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ 尾 CTA ═══════ -->
+<div class="wrap">
+<section class="final">
+  <h2>今晚就能知道它靠不靠谱</h2>
+  <p>30 分钟部署起来，注入一次真实故障，看 AI 交出来的报告里每条证据能不能点回原始步骤。</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="https://github.com/qsumm/TestOps">GitHub 一键拉取</a>
+    <a class="btn btn-ghost" href="/ops/docs/tutorials/01.html">先读 5 分钟快速开始</a>
+  </div>
+</section>
+</div>
+
+<!-- ═══════ 页脚 ═══════ -->
+</main>
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="/">
+          <span class="brand-mark">
+            <img src="/assets/codeflow-logo.svg" width="20" height="20" alt="" aria-hidden="true" style="display:block;border-radius:5px">
+          </span>
+          <span class="brand-name"><b>CodeFlow</b> <span>从需求到交付</span></span>
+        </a>
+        <p>需求进、交付出：数字员工按 SDLC 流水线完成研发交付，人只做需求澄清与验收。姊妹产品 TestOps 管 CI 之后的运行时。</p>
+        <div class="foot-badges" style="margin-top:16px">
+          <span class="badge">平台 MIT</span>
+          <span class="badge">Spring Boot 2.7</span>
+          <span class="badge">React · Vite</span>
+          <span class="badge">runtime 纯标准库</span>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>CodeFlow</h4>
+        <a href="/features.html">产品能力</a><a href="/delivery.html">真实交付</a><a href="/deploy.html">自部署</a><a href="/open-source.html">开源与合规</a><a href="https://github.com/qsumm/CodeFlow">GitHub 仓库</a>
+      </div>
+      <div class="foot-col">
+        <h4>智能运维模块</h4>
+        <a href="/ops/index.html">产品总览</a><a href="/ops/features.html">功能详解</a><a href="/ops/evidence.html">证据链</a><a href="/ops/learn.html">学习学院</a><a href="/ops/docs.html">文档中心</a>
+      </div>
+      <div class="foot-col">
+        <h4>文档</h4>
+        <a href="/ops/docs/tutorials/01.html">快速开始</a><a href="/ops/docs/tutorials/02.html">Agent 接入</a><a href="/ops/docs/tutorials/05.html">诊断 Agent 拆解</a><a href="/ops/docs/tutorials/12.html">运维排障</a><a href="/ops/docs.html">文档中心</a>
+      </div>
+      <div class="foot-col">
+        <h4>关于</h4>
+        <a href="/ops/changelog.html">发版记录</a><a href="/ops/pricing.html">商业授权</a><a href="/ops/about.html#join">安全通告</a><a href="/ops/vip.html">联系我们</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 CodeFlow · 平台源码 MIT · 智能运维模块 AGPL-3.0 开源 · 浏览量 <b id="pv-total">…</b></span>
+      <span>开放集成：主流工单平台 · 钉钉 / 飞书 · Anthropic 兼容模型协议 · MCP</span>
+    </div>
+  </div>
+</footer>
+
+<!-- 右下角常驻联系挂件（FR-33）：文案在上、二维码在下；fixed 定位不占文档流 -->
+<aside class="wx-contact" aria-label="联系方式">
+  <p class="wx-contact-label">扫码或添加微信号：<code>cloud288</code></p>
+  <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
+</aside>
+
+<script src="/assets/site.js?v=1e580069" defer></script>
+</body>
+</html>

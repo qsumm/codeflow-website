@@ -2,7 +2,7 @@
 
 **需求进，交付出。**
 
-家族站：主打 **CodeFlow**（从需求到交付的数字员工研发平台，github.com/qsumm/CodeFlow），**TestOps**（AI 运维监控平台）整体收编为 `/testops/` 子站。双层定位：**产品层**（转化）+ **知识层**（留存）。设计、调研、原型、内容资产全部在本仓沉淀。
+家族站：主打 **CodeFlow**（从需求到交付的数字员工研发平台，github.com/qsumm/CodeFlow），**TestOps**（AI 运维监控平台）整体收编为 `/ops/` **智能运维模块**（TestOps 仅作为模块内产品史名称保留）。双层定位：**产品层**（转化）+ **知识层**（留存）。设计、调研、原型、内容资产全部在本仓沉淀。
 
 ## 当前状态
 
@@ -48,10 +48,10 @@ python3 tools/check_all.py           # 22 项机械守卫
 | [PLAN.md](PLAN.md) | **开发计划**（P1-P6 里程碑 · 验收标准 · 风险红线） |
 | `server.py` | FastAPI 站点服务（静态托管 + `/api/health` + 404 兜底） |
 | `tools/` | `build_pages.py`（生成器，双品牌 token：{{BRAND}}=CodeFlow / {{TESTOPS_BRAND}}=TestOps）· `check_all.py`（守卫）· `og_template.html` |
-| `site/` | 产物：CodeFlow 5 页 + TestOps 17 页（`testops/`）+ 21 正文壳页 + `assets/`；`site/src/` 是源 |
+| `site/` | 产物：CodeFlow 6 页 + 智能运维模块 17 页（`ops/`）+ 21 正文壳页 + `assets/`；`site/src/` 是源 |
 | `docs/官网设计稿.md` | TestOps 设计稿 v1.3（历史档案） |
 | `docs/开源产品官网设计研究.md` | 15 个开源产品官网调研（六范式 + 信任层级 + 12 个可复用装置） |
-| `agent-community/` | 8 个种子 SKILL.md + 贡献指南；技能卡渲染到 TestOps 子站首页 `#skills-market` |
+| `agent-community/` | 8 个种子 SKILL.md + 贡献指南；技能卡渲染到智能运维模块首页 `#skills-market` |
 | `assets/` | 设计过程截图 |
 | `docs/engineering/` | 工程文档四件套 + **05-交付核对表**（TestOps 单产品站时期的 FR 核对，家族站改造后部分 FR 口径待更新） |
 

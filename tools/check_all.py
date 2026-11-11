@@ -29,7 +29,7 @@ def g(code: str, ok: bool, msg: str = "") -> None:
 
 
 def html_pages() -> list[Path]:
-    """全部产物页（含 /testops/ 子站与文档壳页），排除 src/ 源目录。"""
+    """全部产物页（含 /ops/ 智能运维模块与文档壳页），排除 src/ 源目录。"""
     return sorted(p for p in SITE.rglob("*.html") if SRC not in p.parents)
 
 
@@ -163,7 +163,7 @@ def g09() -> None:
 
 # ── G10 诚实标识 ──
 def g10() -> None:
-    vip = (SITE / "testops" / "vip.html").read_text(encoding="utf-8")
+    vip = (SITE / "ops" / "vip.html").read_text(encoding="utf-8")
     has = ("即将上线" in vip) and ("设计预览" in vip)
     bad = [w for w in ("已上线", "正式发布", "现已支持") if w in vip]
     g("G10", has and not bad, f"缺标识={not has} 违规词={bad}")
@@ -239,8 +239,8 @@ def evaldeck_url() -> str:
 
 def g16() -> None:
     """Agent 评测页 = EvalDeck 全量嵌入（iframe + 品牌加载态 + 四能力标记 + token 已替换）。"""
-    s = (SITE / "testops" / "agent-community.html").read_text(encoding="utf-8")
-    idx = (SITE / "testops" / "index.html").read_text(encoding="utf-8")
+    s = (SITE / "ops" / "agent-community.html").read_text(encoding="utf-8")
+    idx = (SITE / "ops" / "index.html").read_text(encoding="utf-8")
     url = evaldeck_url().rstrip("/")
     checks = [
         ("iframe 嵌入", 'class="eval-embed"' in s and url in s),
@@ -264,9 +264,9 @@ def g17() -> None:
         "tutorials": len(list((prod / "docs" / "05-教程").glob("*.md"))),
     }
     bad = []
-    for slug, key in (("testops/learn-testops.html", "aiops"),
-                      ("testops/learn-sre.html", "sre"),
-                      ("testops/learn-tutorials.html", "tutorials")):
+    for slug, key in (("ops/learn-testops.html", "aiops"),
+                      ("ops/learn-sre.html", "sre"),
+                      ("ops/learn-tutorials.html", "tutorials")):
         s = (SITE / slug).read_text(encoding="utf-8")
         n = len(re.findall(r'<div class="learn-card"|<div class="hub-item"', s))
         if n != counts[key]:
@@ -278,11 +278,11 @@ def g17() -> None:
 def g18() -> None:
     prod = Path(PRODUCT_ROOT)
     ver = (prod / "VERSION").read_text(encoding="utf-8").strip()
-    about = (SITE / "testops" / "about.html").read_text(encoding="utf-8")
+    about = (SITE / "ops" / "about.html").read_text(encoding="utf-8")
     ok_v = ver in about
     qs = (prod / "docs" / "04-交付与运营" / "快速开始.md").read_text(encoding="utf-8")
     cmd = re.search(r"```bash\n(.*?)```", qs, re.S).group(1).strip().splitlines()[0]
-    dep = (SITE / "testops" / "deploy.html").read_text(encoding="utf-8")
+    dep = (SITE / "ops" / "deploy.html").read_text(encoding="utf-8")
     ok_c = cmd.split()[0] in dep and "docker compose" in dep
     # 家族站新增：CodeFlow 自部署页必须含平台构建/启动命令
     cf_dep = (SITE / "deploy.html").read_text(encoding="utf-8")
@@ -351,12 +351,12 @@ def g21() -> None:
         bad.append("首页缺主品牌名 CodeFlow")
     if REPO not in idx:
         bad.append("首页缺 CodeFlow 仓库地址")
-    # 4) 子站首页 = TestOps 品牌 + TestOps 仓库
-    tidx = (SITE / "testops" / "index.html").read_text(encoding="utf-8")
-    if TESTOPS_BRAND not in tidx:
-        bad.append("子站首页缺 TestOps 品牌名")
-    if TESTOPS_REPO not in tidx:
-        bad.append("子站首页缺 TestOps 仓库地址")
+    # 4) 模块首页 = 智能运维定位（模块正文可保留 TestOps 产品名，首页品牌归 CodeFlow）
+    tidx = (SITE / "ops" / "index.html").read_text(encoding="utf-8")
+    if "智能运维" not in tidx:
+        bad.append("模块首页缺智能运维定位")
+    if "CodeFlow" not in tidx:
+        bad.append("模块首页缺 CodeFlow 品牌")
     # 5) 旧仓库地址零残留（qsumm/AIOps 已改名，靠 GitHub 重定向，站内不应再依赖）
     for p in list(SITE.rglob("*.html")):
         if "qsumm/AIOps" in p.read_text(encoding="utf-8"):
@@ -366,9 +366,9 @@ def g21() -> None:
 
 # ── G22 技能卡 = skills/*.md（首页技能集市轨；G16 改判评测嵌入后此锁不撤） ──
 def g22() -> None:
-    """TestOps 子站首页技能集市卡数 == skills/*.md 数；抽首尾两张 name/description/命令数逐字段一致。"""
+    """智能运维模块首页技能集市卡数 == skills/*.md 数；抽首尾两张 name/description/命令数逐字段一致。"""
     mds = sorted((ROOT / "agent-community" / "skills").glob("*.md"))
-    idx = (SITE / "testops" / "index.html").read_text(encoding="utf-8")
+    idx = (SITE / "ops" / "index.html").read_text(encoding="utf-8")
     n = len(re.findall(r'<div class="skill-card">', idx))
     bad = []
     if n != len(mds):
