@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- base_url 未配置时 loc 为占位，上线前在 pages.json 设置 base_url -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://REPLACE-BEFORE-LAUNCH/index.html</loc><lastmod>2026-11-08</lastmod></url>
+  <url><loc>https://REPLACE-BEFORE-LAUNCH/index.html</loc><lastmod>2026-11-11</lastmod></url>
   <url><loc>https://REPLACE-BEFORE-LAUNCH/features.html</loc><lastmod>2026-11-07</lastmod></url>
   <url><loc>https://REPLACE-BEFORE-LAUNCH/delivery.html</loc><lastmod>2026-11-07</lastmod></url>
   <url><loc>https://REPLACE-BEFORE-LAUNCH/blog.html</loc><lastmod>2026-11-07</lastmod></url>

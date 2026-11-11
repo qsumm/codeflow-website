@@ -81,3 +81,13 @@
   max-height: calc(100dvh - 78px);
   background: #000;
 }
+
+/* 滚动自动播放的内联静音视频：盖在封面上，点击穿透到预览锚点（弹窗带声音） */
+.product-demo-inline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
