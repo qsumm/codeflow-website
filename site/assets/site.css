@@ -797,7 +797,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
     radial-gradient(30% 40% at 18% 66%, rgba(var(--accent-rgb),.05), transparent 70%),
     radial-gradient(30% 40% at 82% 66%, rgba(var(--accent-rgb),.05), transparent 70%);
 }
-.hero-center h1{font-size:clamp(2.3rem,4.6vw,3.5rem);line-height:1.22;margin:18px auto 14px;max-width:20em}
+.hero-center h1{font-size:clamp(1.8rem,5.1vw,4.05rem);line-height:1.18;margin:18px auto 16px;max-width:24em;letter-spacing:-.015em}
 .hero-center h1 span{font-size:.52em !important}
 .hero-center .hero-sub{max-width:52em;font-size:1rem}
 .hero-center .lede{max-width:46em;font-size:1.02rem;line-height:1.75}
@@ -806,3 +806,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   .hero-center{padding:52px 0 22px}
   .hero-center h1{font-size:2rem}
 }
+
+/* H1 单行：宽屏不折行，刚好铺满内容区 */
+@media (min-width:1000px){.hero-center h1{white-space:nowrap}}
+@media (max-width:620px){.hero-center h1{font-size:1.72rem}}
