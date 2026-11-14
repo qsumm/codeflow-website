@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>首屏主视觉 · 3 个创意方案</title>
+<style>
+:root,[data-theme="dark"]{
+  --bg:#0e0f11;--surface:rgba(28,29,32,.72);--surface2:#1e1f23;
+  --border:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.16);
+  --text:#f5f5f7;--muted:#9a9aa2;
+  --accent:#2383e2;--accent-soft:rgba(35,131,226,.16);--accent-weak:rgba(35,131,226,.08);
+}
+[data-theme="light"]{
+  --bg:#f6f7f9;--surface:#ffffff;--surface2:#eceef2;
+  --border:rgba(0,0,0,.09);--border-strong:rgba(0,0,0,.18);
+  --text:#0b0b0f;--muted:#5b6472;
+  --accent:#1d6ff2;--accent-soft:rgba(29,111,242,.14);--accent-weak:rgba(29,111,242,.07);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"PingFang SC",sans-serif;padding:30px 24px 60px}
+.head{max-width:1080px;margin:0 auto 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.head h1{font-size:1.3rem;font-weight:750}
+.head p{color:var(--muted);font-size:.86rem;flex:1;min-width:240px}
+.head button{background:var(--surface);border:1px solid var(--border-strong);color:var(--text);border-radius:8px;padding:8px 16px;font-size:.85rem;cursor:pointer}
+.list{max-width:1080px;margin:0 auto;display:grid;gap:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px 22px}
+.tagline{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.tagline b{font-size:.98rem}
+.tagline span{font-size:.74rem;color:var(--accent);font-weight:650;letter-spacing:.04em}
+.card p.desc{font-size:.78rem;color:var(--muted);margin-bottom:14px;line-height:1.6}
+.stage{max-width:560px;margin:0 auto}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>首屏主视觉 · 创意方案</h1>
+  <p>核心隐喻：<b>模糊的需求文字，变成结构化的交付物</b>。三个方向都能动，选一个我落地。</p>
+  <button onclick="const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'">切换明暗</button>
+</div>
+
+<div class="list">
+
+  <!-- ① 字符流 -->
+  <div class="card">
+    <div class="tagline"><b>① 字符流 · 需求文字过闸变成代码</b><span>最贴合产品</span></div>
+    <p class="desc">左边是散落的中文需求字，穿过一道发光闸门，右边逐行吐出血统清晰的代码行。表达「语言 → 代码」的本质转化。</p>
+    <div class="stage">
+      <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block" aria-label="需求文字经过转化输出为代码行">
+        <!-- 左：散落的需求字 -->
+        <g font-size="15" fill="var(--muted)" font-family="-apple-system,PingFang SC,sans-serif">
+          <text class="c1" x="24"  y="52">需</text><text class="c2" x="72" y="98">澄清</text>
+          <text class="c3" x="30"  y="132">验收</text><text class="c4" x="88" y="40">文档</text>
+          <text class="c5" x="60"  y="160">设计</text><text class="c6" x="18" y="82">需求</text>
+        </g>
+        <!-- 闸门 -->
+        <rect x="196" y="26" width="3" height="138" rx="1.5" fill="var(--accent)" opacity=".9"/>
+        <rect x="186" y="26" width="24" height="138" rx="12" fill="var(--accent)" opacity=".10"/>
+        <circle cx="197" cy="95" r="5" fill="var(--accent)"/>
+        <circle class="gate" cx="197" cy="95" r="5" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+
+        <!-- 右：代码行 -->
+        <g>
+          <rect class="l1" x="236" y="40"  width="0" height="5" rx="2.5" fill="var(--accent)"/>
+          <rect class="l1b" x="236" y="54" width="0" height="5" rx="2.5" fill="var(--muted)" opacity=".45"/>
+          <rect class="l2" x="252" y="76" width="0" height="5" rx="2.5" fill="var(--accent)" opacity=".9"/>
+          <rect class="l2b" x="252" y="90" width="0" height="5" rx="2.5" fill="var(--muted)" opacity=".45"/>
+          <rect class="l3" x="236" y="112" width="0" height="5" rx="2.5" fill="var(--muted)" opacity=".45"/>
+          <rect class="l3b" x="252" y="126" width="0" height="5" rx="2.5" fill="var(--accent)" opacity=".75"/>
+          <rect class="l4" x="236" y="148" width="0" height="5" rx="2.5" fill="var(--muted)" opacity=".45"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ② 便签归位 -->
+  <div class="card">
+    <div class="tagline"><b>② 便签归位 · 散乱需求变结构化清单</b><span>具象版</span></div>
+    <p class="desc">左边是一堆歪斜错落的便签（群里甩过来的需求碎片），它们飞向右侧、扶正、对齐成一份带勾选的交付清单。混沌到秩序，但每一片都是看得懂的「内容」。</p>
+    <div class="stage">
+      <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block" id="notesSvg" aria-label="散乱的便签碎片归位为对齐的交付清单"></svg>
+    </div>
+  </div>
+
+  <!-- ③ 工单出差 -->
+  <div class="card">
+    <div class="tagline"><b>③ 工单出差 · 一张卡走完全程</b><span>最叙事</span></div>
+    <p class="desc">一张工单卡沿着轨道出发，经过每道工序盖一个章，到终点折成一叠交付包。像看一件活从进门到出门。</p>
+    <div class="stage">
+      <svg viewBox="0 0 520 190" style="width:100%;height:auto;display:block" id="cardSvg" aria-label="工单卡沿轨道经过各工序并输出交付包">
+        <line x1="40" y1="95" x2="470" y2="95" stroke="var(--border-strong)" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/>
+        <g id="stamps" opacity="0">
+          <circle cx="140" cy="95" r="13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <path d="M134 95 L139 100 L147 90" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="240" cy="95" r="13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <path d="M234 95 L239 100 L247 90" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="340" cy="95" r="13" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+          <path d="M334 95 L339 100 L347 90" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <g id="ticket">
+          <rect x="26" y="70" width="46" height="50" rx="5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="33" y="79" width="26" height="4" rx="2" fill="var(--accent)" opacity=".85"/>
+          <rect x="33" y="89" width="20" height="3" rx="1.5" fill="var(--muted)" opacity=".5"/>
+          <rect x="33" y="97" width="24" height="3" rx="1.5" fill="var(--muted)" opacity=".5"/>
+          <rect x="33" y="105" width="14" height="3" rx="1.5" fill="var(--muted)" opacity=".5"/>
+        </g>
+        <g id="pack" opacity="0">
+          <rect x="424" y="76" width="62" height="14" rx="3" fill="var(--surface2)" stroke="var(--border-strong)" stroke-width="1.2"/>
+          <rect x="424" y="90" width="62" height="14" rx="3" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.2"/>
+          <rect x="424" y="104" width="62" height="14" rx="3" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.8"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+</div>
+
+<style>
+/* ── ① 字符流动画 ── */
+@keyframes drift{0%{opacity:0;transform:translateX(0)}12%{opacity:.85}55%{opacity:.9;transform:translateX(150px)}
+  62%{opacity:0;transform:translateX(168px)}100%{opacity:0}}
+@keyframes glow{0%,100%{r:6;opacity:.5}50%{r:11;opacity:0}}
+@keyframes grow{0%,45%{width:0;opacity:0}52%{opacity:1;width:var(--w)}88%{opacity:1;width:var(--w)}96%,100%{opacity:0;width:var(--w)}}
+.c1{animation:drift 7s linear infinite;animation-delay:0s}
+.c2{animation:drift 7s linear infinite;animation-delay:.8s}
+.c3{animation:drift 7s linear infinite;animation-delay:1.6s}
+.c4{animation:drift 7s linear infinite;animation-delay:2.4s}
+.c5{animation:drift 7s linear infinite;animation-delay:3.2s}
+.c6{animation:drift 7s linear infinite;animation-delay:4s}
+.gate{animation:glow 2.2s ease-out infinite}
+.l1{--w:150px;animation:grow 7s linear infinite;animation-delay:.4s}
+.l1b{--w:110px;animation:grow 7s linear infinite;animation-delay:.55s}
+.l2{--w:130px;animation:grow 7s linear infinite;animation-delay:1.6s}
+.l2b{--w:90px;animation:grow 7s linear infinite;animation-delay:1.75s}
+.l3{--w:160px;animation:grow 7s linear infinite;animation-delay:2.8s}
+.l3b{--w:120px;animation:grow 7s linear infinite;animation-delay:2.95s}
+.l4{--w:140px;animation:grow 7s linear infinite;animation-delay:4s}
+</style>
+
+<script>
+/* ── ② 便签归位 + 竖向流水线：散乱需求穿过四道工序，落位成交付清单 ── */
+(function () {
+  var svg = document.getElementById('notesSvg');
+  if (!svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 左侧便签（真实需求名）
+  var NOTES = [
+    { x: 6,   y: 12,  r: -9,  name: '登录超时' },
+    { x: 70,  y: 22,  r: 7,   name: '导出 Excel' },
+    { x: 18,  y: 74,  r: 12,  name: '订单同步' },
+    { x: 84,  y: 92,  r: -6,  name: '批量导入' },
+    { x: 128, y: 18,  r: 14,  name: '权限校验' },
+    { x: 138, y: 104, r: -11, name: '失败重试' }
+  ];
+  var ROWS = [24, 50, 76, 102, 128, 154];
+  var ROW_X = 284, ROW_W = 210;
+  var STAGES = ['分析', '编码', '测试', '交接'];
+  var CHIP_Y = [30, 66, 102, 138];
+
+  // ── 右侧清单面板 ──
+  var panel = document.createElementNS(NS, 'rect');
+  panel.setAttribute('x', 274); panel.setAttribute('y', 8);
+  panel.setAttribute('width', 232); panel.setAttribute('height', 176);
+  panel.setAttribute('rx', 9);
+  panel.setAttribute('fill', 'var(--surface2)');
+  panel.setAttribute('stroke', 'var(--border)');
+  panel.setAttribute('stroke-width', '1');
+  svg.appendChild(panel);
+
+  // ── 中间竖向流水线：连接线 + 四道工序芯片 ──
+  var rail = document.createElementNS(NS, 'line');
+  rail.setAttribute('x1', 240); rail.setAttribute('y1', 22);
+  rail.setAttribute('x2', 240); rail.setAttribute('y2', 170);
+  rail.setAttribute('stroke', 'var(--border-strong)');
+  rail.setAttribute('stroke-width', '1');
+  rail.setAttribute('stroke-dasharray', '2 5');
+  svg.appendChild(rail);
+
+  var chips = [];
+  STAGES.forEach(function (name, i) {
+    var g = document.createElementNS(NS, 'g');
+    var pill = document.createElementNS(NS, 'rect');
+    pill.setAttribute('x', 212); pill.setAttribute('y', CHIP_Y[i]);
+    pill.setAttribute('width', 56); pill.setAttribute('height', 18); pill.setAttribute('rx', 9);
+    pill.setAttribute('fill', 'var(--surface)');
+    pill.setAttribute('stroke', 'var(--border)');
+    pill.setAttribute('stroke-width', '1');
+    g.appendChild(pill);
+    var dot = document.createElementNS(NS, 'circle');
+    dot.setAttribute('cx', 221); dot.setAttribute('cy', CHIP_Y[i] + 9); dot.setAttribute('r', 2.6);
+    dot.setAttribute('fill', 'var(--muted)'); dot.setAttribute('opacity', '.5');
+    g.appendChild(dot);
+    var t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', 228); t.setAttribute('y', CHIP_Y[i] + 12.5);
+    t.setAttribute('font-size', '8.5');
+    t.setAttribute('fill', 'var(--muted)');
+    t.setAttribute('font-family', '-apple-system,PingFang SC,sans-serif');
+    t.textContent = name;
+    g.appendChild(t);
+    g.style.transition = 'opacity .2s';
+    svg.appendChild(g);
+    chips.push({ g: g, pill: pill, dot: dot, t: t });
+  });
+
+  function chipState(i, on) {
+    var c = chips[i];
+    c.pill.setAttribute('fill', on ? 'var(--accent-weak)' : 'var(--surface)');
+    c.pill.setAttribute('stroke', on ? 'var(--accent)' : 'var(--border)');
+    c.dot.setAttribute('fill', on ? 'var(--accent)' : 'var(--muted)');
+    c.dot.setAttribute('opacity', on ? '1' : '.5');
+    c.t.setAttribute('fill', on ? 'var(--accent)' : 'var(--muted)');
+  }
+
+  var noteEls = [], rowEls = [];
+  NOTES.forEach(function (n, i) {
+    // 便签
+    var g = document.createElementNS(NS, 'g');
+    g.style.transform = 'translate(' + n.x + 'px,' + n.y + 'px) rotate(' + n.r + 'deg)';
+    g.style.transition = 'transform 1s cubic-bezier(.35,0,.15,1), opacity .45s ease';
+    var card = document.createElementNS(NS, 'rect');
+    card.setAttribute('width', 60); card.setAttribute('height', 40); card.setAttribute('rx', 4);
+    card.setAttribute('fill', 'var(--surface)');
+    card.setAttribute('stroke', 'var(--border-strong)');
+    card.setAttribute('stroke-width', '1.1');
+    g.appendChild(card);
+    var tx = document.createElementNS(NS, 'text');
+    tx.setAttribute('x', 8); tx.setAttribute('y', 16);
+    tx.setAttribute('font-size', '8.5'); tx.setAttribute('font-weight', '600');
+    tx.setAttribute('fill', 'var(--text)');
+    tx.setAttribute('font-family', '-apple-system,PingFang SC,sans-serif');
+    tx.textContent = n.name;
+    g.appendChild(tx);
+    [[8, 23, 36], [8, 31, 26]].forEach(function (ln) {
+      var r = document.createElementNS(NS, 'rect');
+      r.setAttribute('x', ln[0]); r.setAttribute('y', ln[1]);
+      r.setAttribute('width', ln[2]); r.setAttribute('height', 2.4); r.setAttribute('rx', 1.2);
+      r.setAttribute('fill', 'var(--muted)'); r.setAttribute('opacity', '.4');
+      g.appendChild(r);
+    });
+    svg.appendChild(g);
+    noteEls.push(g);
+
+    // 清单行
+    var row = document.createElementNS(NS, 'g');
+    row.style.opacity = '0';
+    row.style.transition = 'opacity .4s ease';
+    var bg = document.createElementNS(NS, 'rect');
+    bg.setAttribute('x', ROW_X); bg.setAttribute('y', ROWS[i]);
+    bg.setAttribute('width', ROW_W); bg.setAttribute('height', 20); bg.setAttribute('rx', 5);
+    bg.setAttribute('fill', 'var(--surface)');
+    bg.setAttribute('stroke', 'var(--border-strong)');
+    bg.setAttribute('stroke-width', '1');
+    row.appendChild(bg);
+    var ck = document.createElementNS(NS, 'circle');
+    ck.setAttribute('cx', ROW_X + 13); ck.setAttribute('cy', ROWS[i] + 10); ck.setAttribute('r', 6);
+    ck.setAttribute('fill', 'var(--accent-soft)');
+    ck.setAttribute('stroke', 'var(--accent)'); ck.setAttribute('stroke-width', '1.3');
+    row.appendChild(ck);
+    var tick = document.createElementNS(NS, 'path');
+    tick.setAttribute('d', 'M ' + (ROW_X + 10) + ' ' + (ROWS[i] + 10) + ' l 2.2 2.4 l 4 -4.6');
+    tick.setAttribute('fill', 'none'); tick.setAttribute('stroke', 'var(--accent)');
+    tick.setAttribute('stroke-width', '1.6'); tick.setAttribute('stroke-linecap', 'round');
+    row.appendChild(tick);
+    var rt = document.createElementNS(NS, 'text');
+    rt.setAttribute('x', ROW_X + 26); rt.setAttribute('y', ROWS[i] + 13);
+    rt.setAttribute('font-size', '8.5'); rt.setAttribute('font-weight', '600');
+    rt.setAttribute('fill', 'var(--text)');
+    rt.setAttribute('font-family', '-apple-system,PingFang SC,sans-serif');
+    rt.textContent = n.name;
+    row.appendChild(rt);
+    var ok = document.createElementNS(NS, 'text');
+    ok.setAttribute('x', ROW_X + ROW_W - 10); ok.setAttribute('y', ROWS[i] + 13);
+    ok.setAttribute('text-anchor', 'end');
+    ok.setAttribute('font-size', '7.5');
+    ok.setAttribute('fill', 'var(--accent)');
+    ok.setAttribute('font-family', '-apple-system,PingFang SC,sans-serif');
+    ok.textContent = '已交付';
+    row.appendChild(ok);
+    svg.appendChild(row);
+    rowEls.push(row);
+  });
+
+  var chipTimer = null;
+  function cascadeChips() {
+    var k = 0;
+    chipState(0, true); chipState(1, false); chipState(2, false); chipState(3, false);
+    chipTimer = setInterval(function () {
+      k = (k + 1) % 4;
+      for (var j = 0; j < 4; j++) chipState(j, j <= k);
+      if (k === 3) { clearInterval(chipTimer); chipTimer = null; }
+    }, 160);
+  }
+
+  function toOrder() {
+    cascadeChips();
+    noteEls.forEach(function (g, i) {
+      setTimeout(function () {
+        g.style.transform = 'translate(' + (ROW_X - 8) + 'px,' + (ROWS[i] - 3) + 'px) rotate(0deg) scale(.42)';
+        g.style.opacity = '0';
+        rowEls[i].style.opacity = '1';
+      }, 620 + i * 170);
+    });
+  }
+  function toChaos() {
+    if (chipTimer) { clearInterval(chipTimer); chipTimer = null; }
+    for (var j = 0; j < 4; j++) chipState(j, false);
+    noteEls.forEach(function (g, i) {
+      setTimeout(function () {
+        g.style.transition = 'none';
+        g.style.transform = 'translate(' + NOTES[i].x + 'px,' + NOTES[i].y + 'px) rotate(' + NOTES[i].r + 'deg)';
+        g.style.opacity = '1';
+        rowEls[i].style.opacity = '0';
+        void g.getBoundingClientRect();
+        g.style.transition = 'transform 1s cubic-bezier(.35,0,.15,1), opacity .45s ease';
+      }, i * 40);
+    });
+  }
+  if (reduce) {
+    for (var j = 0; j < 4; j++) chipState(j, true);
+    toOrder();
+    return;
+  }
+  setTimeout(toOrder, 500);
+  setInterval(function () { toChaos(); setTimeout(toOrder, 3000); }, 9000);
+})();
+
+/* ── ③ 工单出差：卡片沿轨道推进，盖章，折成包 ── */
+(function () {
+  var ticket = document.getElementById('ticket');
+  var stamps = document.getElementById('stamps');
+  var pack = document.getElementById('pack');
+  if (!ticket) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  ticket.style.transition = 'transform 1.05s cubic-bezier(.45,0,.25,1), opacity .5s ease';
+  var stops = [0, 90, 190, 290, 380];
+  if (reduce) {
+    ticket.style.transform = 'translateX(380px)'; ticket.style.opacity = '0';
+    stamps.style.opacity = '1'; pack.style.opacity = '1';
+    return;
+  }
+  function run() {
+    ticketsReset();
+    stops.forEach(function (s, i) {
+      setTimeout(function () {
+        ticket.style.transform = 'translateX(' + s + 'px)';
+        if (i >= 1 && i <= 3) stamps.style.opacity = String(i / 3);
+        if (i === stops.length - 1) {
+          setTimeout(function () {
+            ticket.style.opacity = '0';
+            pack.style.opacity = '1';
+          }, 900);
+        }
+      }, i * 1100);
+    });
+    setTimeout(run, 7200);
+  }
+  function ticketsReset() {
+    ticket.style.transition = 'none';
+    ticket.style.transform = 'translateX(0)';
+    ticket.style.opacity = '1';
+    stamps.style.opacity = '0';
+    pack.style.opacity = '0';
+    void ticket.getBoundingClientRect();
+    ticket.style.transition = 'transform 1.05s cubic-bezier(.45,0,.25,1), opacity .5s ease';
+  }
+  setTimeout(run, 600);
+})();
+</script>
+</body>
+</html>

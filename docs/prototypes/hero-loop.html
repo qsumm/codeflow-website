@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>主视觉 · 九环节闭环（U 形回路）</title>
+<style>
+:root,[data-theme="dark"]{
+  --bg:#0e0f11;--surface:rgba(28,29,32,.72);--surface2:#1e1f23;
+  --border:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.16);
+  --text:#f5f5f7;--muted:#9a9aa2;
+  --accent:#2383e2;--accent-soft:rgba(35,131,226,.16);--accent-weak:rgba(35,131,226,.08);
+}
+[data-theme="light"]{
+  --bg:#f6f7f9;--surface:#ffffff;--surface2:#eceef2;
+  --border:rgba(0,0,0,.09);--border-strong:rgba(0,0,0,.18);
+  --text:#0b0b0f;--muted:#5b6472;
+  --accent:#1d6ff2;--accent-soft:rgba(29,111,242,.14);--accent-weak:rgba(29,111,242,.07);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"PingFang SC",sans-serif;padding:32px 24px 60px;display:flex;justify-content:center}
+.wrap{max-width:760px;width:100%}
+.head{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.head h1{font-size:1.15rem;font-weight:750}
+.head button{background:var(--surface);border:1px solid var(--border-strong);color:var(--text);
+  border-radius:8px;padding:7px 14px;font-size:.82rem;cursor:pointer;margin-left:auto}
+.note{color:var(--muted);font-size:.78rem;margin-bottom:14px;line-height:1.6}
+.stage{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>九环节闭环 · U 形回路</h1>
+    <button onclick="const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'">切换明暗</button>
+  </div>
+  <p class="note">9 个环节全部保留；只标 5 个锚点（需求澄清 / 开发 / 验证 / 测试 / 交付）；光点沿回路巡游，经过未标注节点时其名称短暂浮现。</p>
+  <div class="stage">
+    <svg viewBox="0 0 560 300" style="width:100%;height:auto;display:block" id="loopSvg"
+         role="img" aria-label="CodeFlow 交付闭环：需求澄清、启动、开发、验证、评审、部署、测试、交付、运维九个环节循环推进">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+
+      <!-- 主回路：上排左→右，右侧折返，下排右→左 -->
+      <path d="M 60 70 H 480 Q 500 70 500 90 V 190 Q 500 210 480 210 H 170"
+            fill="none" stroke="var(--border-strong)" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- 回环：运维 → 需求澄清（虚线 + 箭头） -->
+      <path d="M 170 210 H 60 V 96" fill="none" stroke="var(--accent)" stroke-width="2"
+            stroke-dasharray="5 6" stroke-linecap="round" opacity=".75" marker-end="url(#arrow)"/>
+
+      <!-- 巡游光点 -->
+      <circle id="runner" r="5.5" fill="var(--accent)" opacity="0"
+              style="transition:transform .55s cubic-bezier(.4,0,.2,1),opacity .3s"/>
+      <circle id="runnerGlow" r="13" fill="var(--accent)" opacity="0"
+              style="transition:transform .55s cubic-bezier(.4,0,.2,1),opacity .3s"/>
+    </svg>
+  </div>
+</div>
+
+<script>
+(function () {
+  var svg = document.getElementById('loopSvg');
+  if (!svg) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 九个环节：x, y, 名称, 是否常显（锚点）
+  var NODES = [
+    { x: 60,  y: 70,  name: '需求澄清', anchor: true,  pos: 'top' },
+    { x: 165, y: 70,  name: '启动',     anchor: false, pos: 'top' },
+    { x: 270, y: 70,  name: '开发',     anchor: true,  pos: 'top' },
+    { x: 375, y: 70,  name: '验证',     anchor: true,  pos: 'top' },
+    { x: 460, y: 70,  name: '评审',     anchor: false, pos: 'top' },
+    { x: 460, y: 210, name: '部署',     anchor: false, pos: 'bottom' },
+    { x: 375, y: 210, name: '测试',     anchor: true,  pos: 'bottom' },
+    { x: 270, y: 210, name: '交付',     anchor: true,  pos: 'bottom' },
+    { x: 165, y: 210, name: '运维',     anchor: false, pos: 'bottom' }
+  ];
+
+  var dotEls = [], labelEls = [];
+  NODES.forEach(function (n, i) {
+    // 节点
+    var c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', n.x); c.setAttribute('cy', n.y);
+    c.setAttribute('r', n.anchor ? 5.5 : 4);
+    c.setAttribute('fill', n.anchor ? 'var(--accent)' : 'var(--bg)');
+    c.setAttribute('stroke', n.anchor ? 'none' : 'var(--border-strong)');
+    c.setAttribute('stroke-width', n.anchor ? 0 : 1.8);
+    c.style.transition = 'r .3s ease, fill .3s ease';
+    svg.appendChild(c);
+    dotEls.push(c);
+
+    // 标签
+    var t = document.createElementNS(NS, 'text');
+    t.setAttribute('x', n.x);
+    t.setAttribute('y', n.pos === 'top' ? n.y - 16 : n.y + 24);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('font-size', '10.5');
+    t.setAttribute('font-family', '-apple-system,PingFang SC,sans-serif');
+    t.setAttribute('fill', n.anchor ? 'var(--text)' : 'var(--muted)');
+    t.setAttribute('font-weight', n.anchor ? '600' : '400');
+    t.textContent = n.name;
+    t.style.transition = 'opacity .35s ease, fill .3s ease';
+    if (!n.anchor) t.style.opacity = '0';   // 未标注节点：平时隐藏
+    svg.appendChild(t);
+    labelEls.push(t);
+  });
+
+  var runner = document.getElementById('runner');
+  var glow = document.getElementById('runnerGlow');
+  var i = 0;
+
+  function moveTo(k) {
+    var n = NODES[k];
+    var tf = 'translate(' + n.x + 'px,' + n.y + 'px)';
+    // circle 的坐标来自 cx/cy，这里用 transform 覆盖：先置 0 坐标
+    runner.setAttribute('cx', 0); runner.setAttribute('cy', 0);
+    glow.setAttribute('cx', 0); glow.setAttribute('cy', 0);
+    runner.style.transform = tf;
+    glow.style.transform = tf;
+    runner.style.opacity = '.95';
+    glow.style.opacity = '.12';
+
+    // 当前节点放大 + 标签浮现（含未标注节点）
+    NODES.forEach(function (m, j) {
+      var active = j === k;
+      dotEls[j].setAttribute('r', active ? 7.5 : (m.anchor ? 5.5 : 4));
+      labelEls[j].style.opacity = (m.anchor || active) ? '1' : '0';
+      labelEls[j].setAttribute('fill', active ? 'var(--accent)' : (m.anchor ? 'var(--text)' : 'var(--muted)'));
+    });
+  }
+
+  if (reduce) {
+    // 减动效：全部节点与名称静态展示
+    NODES.forEach(function (m, j) { labelEls[j].style.opacity = '1'; });
+    return;
+  }
+
+  moveTo(0);
+  setInterval(function () {
+    i = (i + 1) % NODES.length;
+    moveTo(i);
+  }, 950);
+})();
+</script>
+</body>
+</html>

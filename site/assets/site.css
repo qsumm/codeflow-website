@@ -692,22 +692,14 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .hero-art svg{width:100%;max-width:620px;height:auto}
 @media (max-width:1000px){.hero-art{margin-top:8px}}
 
-/* ═══════ 首页交付时间轴（进度自动推进） ═══════ */
-.cf-dot{fill:var(--bg);stroke:var(--border-strong);stroke-width:2.2;transition:all .5s ease}
-.cf-dot.done{fill:var(--bg);stroke:var(--accent);stroke-width:2.6}
-.cf-dot.cur{fill:var(--accent);stroke:var(--accent);stroke-width:2.6}
-.cf-ring{fill:none;stroke:var(--accent);stroke-width:2;opacity:0}
-.cf-ring.cur{animation:cfPing 2s ease-out infinite}
-@keyframes cfPing{0%{opacity:.6;r:7}70%,100%{opacity:0;r:15}}
-.cf-lbl{font-size:11.5px;fill:var(--muted);transition:fill .4s}
-.cf-lbl.cur{fill:var(--accent);font-weight:650}
-.cf-st{font-size:9.5px;fill:var(--muted);opacity:.55;transition:all .4s}
-.cf-st.done{opacity:.9}
-.cf-st.cur{opacity:1;fill:var(--accent)}
-.cf-fill{transition:width .7s cubic-bezier(.4,0,.2,1)}
-.cf-check{opacity:.35;transition:opacity .6s}
-.cf-check.done{opacity:1;stroke:var(--accent)}
+
+/* ═══════ 首页主视觉：便签归位（散乱需求 → 结构化交付清单） ═══════ */
+.hn-note{transition:transform 1s cubic-bezier(.35,0,.15,1),opacity .45s ease}
+.hn-row{transition:opacity .45s ease}
+.hn-chip rect,.hn-chip circle,.hn-chip text{transition:fill .25s ease,stroke .25s ease}
+.hn-chip.on rect{fill:var(--accent-weak);stroke:var(--accent)}
+.hn-chip.on circle{fill:var(--accent);opacity:1}
+.hn-chip.on text{fill:var(--accent)}
 @media (prefers-reduced-motion:reduce){
-  .cf-ring.cur{animation:none}
-  .cf-dot,.cf-lbl,.cf-st,.cf-fill,.cf-check{transition:none}
+  .hn-note,.hn-row,.hn-chip rect,.hn-chip circle,.hn-chip text{transition:none}
 }

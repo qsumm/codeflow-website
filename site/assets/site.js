@@ -89,94 +89,68 @@
   });
 })();
 
-// 首页交付时间轴：进度自动推进（仅当 #cfTimeline 存在时运行；减动效直接完工）
+// 首页主视觉：便签归位（散乱需求 → 穿过四道工序 → 结构化交付清单）
 (function () {
-  var svg = document.getElementById("cfTimeline");
+  var svg = document.getElementById("hnSvg");
   if (!svg) return;
-  var $ = function (id) { return document.getElementById(id); };
-  var steps = [
-    { dot: 1, w: 90,  idx: 1, st: "进行中" },
-    { dot: 1, w: 90,  idx: 1, st: "完成" },
-    { dot: 2, w: 180, idx: 2, st: "进行中" },
-    { dot: 2, w: 180, idx: 2, st: "完成" },
-    { dot: 3, w: 248, idx: 3, st: "进行中" },
-    { dot: 3, w: 248, idx: 3, st: "完成" },
-    { dot: 4, w: 326, idx: 4, st: "进行中" },
-    { dot: 4, w: 326, idx: 4, st: "完成" },
-    { end: true, w: 440 }
-  ];
+  var notes = [].slice.call(svg.querySelectorAll(".hn-note"));
+  var rows = svg.querySelectorAll(".hn-row");
+  var chips = [].slice.call(svg.querySelectorAll(".hn-chip"));
+  var ROW_X = 284, ROW_Y = [24, 50, 76, 102, 128, 154];
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var chipTimers = [];
 
-  function paint(k) {
-    var st = steps[k];
-    var fill = $("cfFill");
-    if (fill) fill.setAttribute("width", st.w);
-
-    if (st.end) {
-      $("cfChk").classList.add("done");
-      $("cfEndb").setAttribute("stroke", "var(--accent)");
-      $("cfL5").classList.add("cur");
-      $("cfS5").textContent = "可交付";
-      $("cfS5").className.baseVal = "cf-st cur";
-      for (var d = 1; d <= 4; d++) {
-        $("cfD" + d).className.baseVal = "cf-dot done";
-        $("cfS" + d).textContent = "完成";
-        $("cfS" + d).className.baseVal = "cf-st done";
-      }
-      $("cfRing").classList.remove("cur");
-      return;
-    }
-
-    var cur = $("cfD" + st.dot);
-    $("cfRing").setAttribute("cx", cur.getAttribute("cx"));
-    $("cfRing").classList.toggle("cur", st.st === "进行中");
-
-    for (var j = 1; j <= 4; j++) {
-      var dj = $("cfD" + j), sj = $("cfS" + j), lj = $("cfL" + j);
-      if (j < st.idx) {
-        dj.className.baseVal = "cf-dot done"; sj.textContent = "完成";
-        sj.className.baseVal = "cf-st done"; lj.className.baseVal = "cf-lbl";
-      } else if (j === st.idx) {
-        dj.className.baseVal = "cf-dot" + (st.st === "完成" ? " done" : " cur");
-        sj.textContent = st.st;
-        sj.className.baseVal = "cf-st " + (st.st === "完成" ? "done" : "cur");
-        lj.className.baseVal = "cf-lbl cur";
-      } else {
-        dj.className.baseVal = "cf-dot"; sj.textContent = "待开始";
-        sj.className.baseVal = "cf-st"; lj.className.baseVal = "cf-lbl";
-      }
-    }
+  function chipsAll(on) {
+    chips.forEach(function (c) { c.classList.toggle("on", on); });
   }
 
-  function reset() {
-    $("cfFill").setAttribute("width", 0);
-    $("cfChk").classList.remove("done");
-    $("cfEndb").setAttribute("stroke", "var(--border-strong)");
-    $("cfRing").classList.remove("cur");
-    for (var j = 1; j <= 4; j++) {
-      $("cfD" + j).className.baseVal = "cf-dot";
-      $("cfL" + j).className.baseVal = "cf-lbl";
-      $("cfS" + j).className.baseVal = "cf-st";
-      $("cfS" + j).textContent = "待开始";
-    }
-    $("cfL5").className.baseVal = "cf-lbl";
-    $("cfS5").className.baseVal = "cf-st";
-    $("cfS5").textContent = "待交付";
-    $("cfS0").textContent = "已建";
+  // 四道工序依次点亮（澄清 → 开发 → 测试 → 交付）
+  function cascade() {
+    chipsAll(false);
+    chips.forEach(function (c, i) {
+      chipTimers.push(setTimeout(function () { c.classList.add("on"); }, 180 + i * 220));
+    });
   }
 
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    paint(steps.length - 1);   // 减动效：直接呈现完成态
+  function toOrder() {
+    cascade();
+    notes.forEach(function (n, i) {
+      setTimeout(function () {
+        n.style.transform = "translate(" + (ROW_X - 8) + "px," + (ROW_Y[i] - 3) + "px) rotate(0deg) scale(.42)";
+        n.style.opacity = "0";
+        if (rows[i]) rows[i].style.opacity = "1";
+      }, 300 + i * 170);
+    });
+  }
+
+  function toChaos() {
+    chipTimers.forEach(clearTimeout); chipTimers = [];
+    chipsAll(false);
+    rows.forEach(function (r) { r.style.opacity = "0"; });
+    notes.forEach(function (n, i) {
+      setTimeout(function () {
+        n.style.transition = "none";
+        n.style.transform = n.getAttribute("data-start") || n.style.transform;
+        n.style.opacity = "1";
+        void n.getBoundingClientRect();
+        n.style.transition = "";
+      }, i * 40);
+    });
+  }
+
+  // 记录初始位置用于复位
+  notes.forEach(function (n) { n.setAttribute("data-start", n.style.transform); });
+
+  if (reduce) {
+    chipsAll(true);
+    toOrder();
+    rows.forEach(function (r) { r.style.opacity = "1"; });
     return;
   }
 
-  var i = 0;
-  function tick() {
-    paint(i++);
-    if (i >= steps.length) {
-      setTimeout(function () { reset(); i = 0; tick(); }, 2200);
-      return;
-    }
-    setTimeout(tick, i % 2 === 0 ? 900 : 700);
-  }
-  tick();
+  setTimeout(toOrder, 500);
+  setInterval(function () {
+    toChaos();
+    setTimeout(toOrder, 2600);
+  }, 9200);
 })();
