@@ -406,7 +406,7 @@ def g23() -> None:
         bad.append("访客口径已下线，不允许残留展示位")
     if "/api/counter/hit" not in js:
         bad.append("site.js 缺计数上报")
-    if 'aria-label="CodeFlow 交付轨道示意' not in idx:
+    if 'aria-label="CodeFlow 交付进度示意' not in idx:
         bad.append("首页缺流水线主视觉 SVG")
     if "/blog/" not in blog or blog.count('class="post-card"') < 3:
         bad.append("博客索引缺文章卡")

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方案 E 细化 · 进度时间轴 3 子样式</title>
+<style>
+:root,[data-theme="dark"]{
+  --bg:#0e0f11;--surface:rgba(28,29,32,.72);--surface2:#1e1f23;
+  --border:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.16);
+  --text:#f5f5f7;--muted:#9a9aa2;
+  --accent:#2383e2;--accent-soft:rgba(35,131,226,.16);--accent-weak:rgba(35,131,226,.08);
+}
+[data-theme="light"]{
+  --bg:#f6f7f9;--surface:#ffffff;--surface2:#eceef2;
+  --border:rgba(0,0,0,.09);--border-strong:rgba(0,0,0,.18);
+  --text:#0b0b0f;--muted:#5b6472;
+  --accent:#1d6ff2;--accent-soft:rgba(29,111,242,.14);--accent-weak:rgba(29,111,242,.07);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"PingFang SC",sans-serif;padding:30px 24px 60px}
+.head{max-width:1080px;margin:0 auto 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.head h1{font-size:1.3rem;font-weight:750}
+.head p{color:var(--muted);font-size:.86rem;flex:1;min-width:240px}
+.head button{background:var(--surface);border:1px solid var(--border-strong);color:var(--text);
+  border-radius:8px;padding:8px 16px;font-size:.85rem;cursor:pointer}
+.list{max-width:1080px;margin:0 auto;display:grid;gap:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px 22px}
+.tagline{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.tagline b{font-size:.98rem}
+.tagline span{font-size:.74rem;color:var(--accent);font-weight:650;letter-spacing:.04em}
+.card p.desc{font-size:.78rem;color:var(--muted);margin-bottom:16px;line-height:1.6}
+.stage{max-width:560px}
+/* 当前阶段呼吸环 */
+.pulse{animation:pv 2.2s ease-out infinite}
+@keyframes pv{0%{r:7;opacity:.55}70%,100%{r:13;opacity:0}}
+@media(prefers-reduced-motion:reduce){.pulse{animation:none}}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>方案 E · 进度时间轴</h1>
+  <p>三个细化方向，按首屏右栏真实尺寸（约 520px 宽）预览。选中一个后我落进首页。</p>
+  <button onclick="const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'">切换明暗</button>
+</div>
+
+<div class="list">
+
+  <!-- E1 精简版 -->
+  <div class="card">
+    <div class="tagline"><b>E1 · 精简版</b><span>推荐</span></div>
+    <p class="desc">轨道 + 四个阶段 + 终点交付徽章。当前阶段有呼吸环，已完成的段落实心填充。信息量刚好，手机上也不糊。</p>
+    <div class="stage">
+      <svg viewBox="0 0 520 150" style="width:100%;height:auto;display:block">
+        <rect x="26" y="62" width="440" height="10" rx="5" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
+        <rect x="26" y="62" width="248" height="10" rx="5" fill="var(--accent)"/>
+        <!-- 起点：需求 -->
+        <circle cx="26" cy="67" r="9" fill="var(--accent)"/>
+        <!-- 阶段节点 -->
+        <circle cx="116" cy="67" r="6.5" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.6"/>
+        <circle cx="206" cy="67" r="6.5" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.6"/>
+        <circle cx="274" cy="67" r="7" fill="var(--accent)"/>
+        <circle class="pulse" cx="274" cy="67" r="7" fill="none" stroke="var(--accent)" stroke-width="2"/>
+        <circle cx="352" cy="67" r="6.5" fill="var(--bg)" stroke="var(--border-strong)" stroke-width="2.2"/>
+        <!-- 终点：交付 -->
+        <circle cx="466" cy="67" r="17" fill="var(--accent-soft)" stroke="var(--border-strong)" stroke-width="1.6"/>
+        <path d="M 458 67 L 464 73 L 476 60" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 标签 -->
+        <g font-size="11.5" font-family="-apple-system,sans-serif" fill="var(--muted)">
+          <text x="26" y="104" text-anchor="middle">需求</text>
+          <text x="116" y="104" text-anchor="middle">分析</text>
+          <text x="206" y="104" text-anchor="middle">编码</text>
+          <text x="274" y="104" text-anchor="middle" fill="var(--accent)" font-weight="650">测试</text>
+          <text x="352" y="104" text-anchor="middle">交接</text>
+          <text x="466" y="104" text-anchor="middle">交付</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- E2 带状态 -->
+  <div class="card">
+    <div class="tagline"><b>E2 · 带状态</b><span>信息最全</span></div>
+    <p class="desc">每个阶段下方带状态（完成 / 进行中 / 待开始），终点写明「可交付」。适合展示「交付可观测」这个卖点，但字多一档。</p>
+    <div class="stage">
+      <svg viewBox="0 0 520 170" style="width:100%;height:auto;display:block">
+        <rect x="26" y="48" width="440" height="10" rx="5" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
+        <rect x="26" y="48" width="248" height="10" rx="5" fill="var(--accent)"/>
+        <circle cx="26" cy="53" r="9" fill="var(--accent)"/>
+        <circle cx="116" cy="53" r="6.5" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.6"/>
+        <circle cx="206" cy="53" r="6.5" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.6"/>
+        <circle cx="274" cy="53" r="7" fill="var(--accent)"/>
+        <circle class="pulse" cx="274" cy="53" r="7" fill="none" stroke="var(--accent)" stroke-width="2"/>
+        <circle cx="352" cy="53" r="6.5" fill="var(--bg)" stroke="var(--border-strong)" stroke-width="2.2"/>
+        <circle cx="466" cy="53" r="17" fill="var(--accent-soft)" stroke="var(--border-strong)" stroke-width="1.6"/>
+        <path d="M 458 53 L 464 59 L 476 46" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <g font-size="11.5" font-family="-apple-system,sans-serif" fill="var(--muted)">
+          <text x="26" y="86" text-anchor="middle">需求</text>
+          <text x="116" y="86" text-anchor="middle">分析</text>
+          <text x="206" y="86" text-anchor="middle">编码</text>
+          <text x="274" y="86" text-anchor="middle" fill="var(--accent)" font-weight="650">测试</text>
+          <text x="352" y="86" text-anchor="middle">交接</text>
+          <text x="466" y="86" text-anchor="middle">交付</text>
+        </g>
+        <g font-size="9.5" font-family="-apple-system,sans-serif">
+          <text x="26" y="104" text-anchor="middle" fill="var(--muted)" opacity=".9">已建</text>
+          <text x="116" y="104" text-anchor="middle" fill="var(--muted)" opacity=".9">完成</text>
+          <text x="206" y="104" text-anchor="middle" fill="var(--muted)" opacity=".9">完成</text>
+          <text x="274" y="104" text-anchor="middle" fill="var(--accent)">进行中</text>
+          <text x="352" y="104" text-anchor="middle" fill="var(--muted)" opacity=".55">待开始</text>
+          <text x="466" y="104" text-anchor="middle" fill="var(--muted)" opacity=".55">可交付</text>
+        </g>
+        <!-- 当前步骤耗时 -->
+        <text x="274" y="126" text-anchor="middle" font-size="9.5" font-family="ui-monospace,Menlo,monospace" fill="var(--muted)">step 3 / 4</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- E3 无字版 -->
+  <div class="card">
+    <div class="tagline"><b>E3 · 无字版</b><span>最干净</span></div>
+    <p class="desc">去掉所有文字，只留轨道、节点、填充和终点徽章。配左侧文案时最不抢戏，也最能适配多语言。</p>
+    <div class="stage">
+      <svg viewBox="0 0 520 120" style="width:100%;height:auto;display:block">
+        <rect x="26" y="55" width="440" height="12" rx="6" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
+        <rect x="26" y="55" width="248" height="12" rx="6" fill="var(--accent)"/>
+        <circle cx="26" cy="61" r="10" fill="var(--accent)"/>
+        <circle cx="26" cy="61" r="16" fill="none" stroke="var(--accent)" stroke-width="1.4" opacity=".35"/>
+        <circle cx="116" cy="61" r="7" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.8"/>
+        <circle cx="206" cy="61" r="7" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.8"/>
+        <circle cx="274" cy="61" r="7.5" fill="var(--accent)"/>
+        <circle class="pulse" cx="274" cy="61" r="7.5" fill="none" stroke="var(--accent)" stroke-width="2"/>
+        <circle cx="352" cy="61" r="7" fill="var(--bg)" stroke="var(--border-strong)" stroke-width="2.4"/>
+        <circle cx="466" cy="61" r="19" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+        <path d="M 457 61 L 464 68 L 477 54" fill="none" stroke="var(--accent)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

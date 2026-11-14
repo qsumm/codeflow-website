@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E2 动态版 · 进度自动推进</title>
+<style>
+:root,[data-theme="dark"]{
+  --bg:#0e0f11;--surface:rgba(28,29,32,.72);--surface2:#1e1f23;
+  --border:rgba(255,255,255,.08);--border-strong:rgba(255,255,255,.16);
+  --text:#f5f5f7;--muted:#9a9aa2;
+  --accent:#2383e2;--accent-soft:rgba(35,131,226,.16);--accent-weak:rgba(35,131,226,.08);
+}
+[data-theme="light"]{
+  --bg:#f6f7f9;--surface:#ffffff;--surface2:#eceef2;
+  --border:rgba(0,0,0,.09);--border-strong:rgba(0,0,0,.18);
+  --text:#0b0b0f;--muted:#5b6472;
+  --accent:#1d6ff2;--accent-soft:rgba(29,111,242,.14);--accent-weak:rgba(29,111,242,.07);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"PingFang SC",sans-serif;padding:30px 24px 60px}
+.head{max-width:1080px;margin:0 auto 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.head h1{font-size:1.3rem;font-weight:750}
+.head p{color:var(--muted);font-size:.86rem;flex:1;min-width:240px}
+.head button{background:var(--surface);border:1px solid var(--border-strong);color:var(--text);
+  border-radius:8px;padding:8px 16px;font-size:.85rem;cursor:pointer}
+.list{max-width:1080px;margin:0 auto;display:grid;gap:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px 22px}
+.tagline{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.tagline b{font-size:.98rem}
+.tagline span{font-size:.74rem;color:var(--accent);font-weight:650;letter-spacing:.04em}
+.card p.desc{font-size:.78rem;color:var(--muted);margin-bottom:16px;line-height:1.6}
+.stage{max-width:560px}
+/* ── 节点状态：未到 / 已过 / 当前 ── */
+.dot{fill:var(--bg);stroke:var(--border-strong);stroke-width:2.2;transition:all .5s ease}
+.dot.done{fill:var(--bg);stroke:var(--accent);stroke-width:2.6}
+.dot.cur{fill:var(--accent);stroke:var(--accent);stroke-width:2.6}
+.ring{fill:none;stroke:var(--accent);stroke-width:2;opacity:0}
+.ring.cur{animation:pv 2s ease-out infinite}
+@keyframes pv{0%{opacity:.6;r:7}70%,100%{opacity:0;r:15}}
+.lbl{font-size:11.5px;font-family:-apple-system,sans-serif;fill:var(--muted);transition:fill .4s}
+.lbl.cur{fill:var(--accent);font-weight:650}
+.st{font-size:9.5px;font-family:-apple-system,sans-serif;fill:var(--muted);opacity:.55;transition:all .4s}
+.st.done{opacity:.9}
+.st.cur{opacity:1;fill:var(--accent)}
+.fill{transition:width .7s cubic-bezier(.4,0,.2,1)}
+.check{opacity:.35;transition:all .6s}
+.check.done{opacity:1}
+@media(prefers-reduced-motion:reduce){
+  .ring.cur{animation:none}
+  .dot,.lbl,.st,.fill,.check{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>E2 · 进度自动推进</h1>
+  <p>一轮约 10 秒：需求 → 分析 → 编码 → 测试 → 交接 → 交付，节点依次点亮、状态文案跟随。系统开启「减弱动态效果」时静止不动。</p>
+  <button onclick="const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'">切换明暗</button>
+</div>
+
+<div class="list">
+  <div class="card">
+    <div class="tagline"><b>动态版</b><span>进度驱动</span></div>
+    <p class="desc">时间轴本身在讲「这张工单正在被推进」——比静态图更能表达流水线在跑，节奏刻意放慢避免抢注意力。</p>
+    <div class="stage">
+      <svg viewBox="0 0 520 150" style="width:100%;height:auto;display:block" id="tl">
+        <rect x="26" y="58" width="440" height="10" rx="5" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
+        <rect id="fill" class="fill" x="26" y="58" width="0" height="10" rx="5" fill="var(--accent)"/>
+
+        <circle cx="26" cy="63" r="9" fill="var(--accent)"/>
+
+        <circle id="d1" class="dot" cx="116" cy="63" r="6.5"/>
+        <circle id="d2" class="dot" cx="206" cy="63" r="6.5"/>
+        <circle id="d3" class="dot" cx="274" cy="63" r="6.5"/>
+        <circle id="d4" class="dot" cx="352" cy="63" r="6.5"/>
+        <circle id="ring" class="ring" cx="116" cy="63" r="7"/>
+
+        <circle id="endb" cx="466" cy="63" r="17" fill="var(--accent-soft)" stroke="var(--border-strong)" stroke-width="1.6"/>
+        <path id="chk" class="check" d="M 458 63 L 464 69 L 476 56" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <g font-family="-apple-system,sans-serif">
+          <text x="26"  y="100" text-anchor="middle" class="lbl" id="l0">需求</text>
+          <text x="116" y="100" text-anchor="middle" class="lbl" id="l1">分析</text>
+          <text x="206" y="100" text-anchor="middle" class="lbl" id="l2">编码</text>
+          <text x="274" y="100" text-anchor="middle" class="lbl" id="l3">测试</text>
+          <text x="352" y="100" text-anchor="middle" class="lbl" id="l4">交接</text>
+          <text x="466" y="100" text-anchor="middle" class="lbl" id="l5">交付</text>
+          <text x="26"  y="119" text-anchor="middle" class="st" id="s0">已建</text>
+          <text x="116" y="119" text-anchor="middle" class="st" id="s1">待开始</text>
+          <text x="206" y="119" text-anchor="middle" class="st" id="s2">待开始</text>
+          <text x="274" y="119" text-anchor="middle" class="st" id="s3">待开始</text>
+          <text x="352" y="119" text-anchor="middle" class="st" id="s4">待开始</text>
+          <text x="466" y="119" text-anchor="middle" class="st" id="s5">待交付</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // 每步：目标节点 id、进度条宽度、状态文案
+  var steps = [
+    { dot: 'd1', w: 90, sIdx: 1, st: '进行中',  prev: '已建' },
+    { dot: 'd1', w: 90, sIdx: 1, st: '完成',    prev: null },
+    { dot: 'd2', w: 180, sIdx: 2, st: '进行中',  prev: '完成' },
+    { dot: 'd2', w: 180, sIdx: 2, st: '完成',    prev: null },
+    { dot: 'd3', w: 248, sIdx: 3, st: '进行中',  prev: '完成' },
+    { dot: 'd3', w: 248, sIdx: 3, st: '完成',    prev: null },
+    { dot: 'd4', w: 326, sIdx: 4, st: '进行中',  prev: '完成' },
+    { dot: 'd4', w: 326, sIdx: 4, st: '完成',    prev: null },
+    { end: true, w: 440, st: '可交付' }
+  ];
+  var i = 0, timer = null;
+
+  function setStep(k) {
+    var st = steps[k];
+    var fill = document.getElementById('fill');
+    var ring = document.getElementById('ring');
+    fill.setAttribute('width', st.w);
+
+    if (st.end) {
+      document.getElementById('chk').classList.add('done');
+      var sb = document.getElementById('endb');
+      sb.setAttribute('stroke', 'var(--accent)');
+      document.getElementById('s5').textContent = '可交付';
+      document.getElementById('s5').classList.add('cur');
+      document.getElementById('l5').classList.add('cur');
+      for (var d = 1; d <= 4; d++) {
+        var el = document.getElementById('d' + d);
+        el.classList.add('done'); el.classList.remove('cur');
+        document.getElementById('s' + d).textContent = '完成';
+        document.getElementById('s' + d).className.baseVal = 'st done';
+      }
+      ring.classList.remove('cur');
+      return;
+    }
+
+    var dot = document.getElementById(st.dot);
+    ring.setAttribute('cx', dot.getAttribute('cx'));
+    var idx = st.sIdx;
+
+    // 当前节点点亮 + 呼吸环
+    for (var j = 1; j <= 4; j++) {
+      var dj = document.getElementById('d' + j);
+      var sj = document.getElementById('s' + j);
+      var lj = document.getElementById('l' + j);
+      if (j < idx) { dj.className.baseVal = 'dot done'; sj.textContent = '完成'; sj.className.baseVal = 'st done'; lj.className.baseVal = 'lbl'; }
+      else if (j === idx) { dj.className.baseVal = 'dot' + (st.st === '完成' ? ' done' : ' cur'); sj.textContent = st.st; sj.className.baseVal = 'st ' + (st.st === '完成' ? 'done' : 'cur'); lj.className.baseVal = 'lbl cur'; }
+      else { dj.className.baseVal = 'dot'; sj.textContent = '待开始'; sj.className.baseVal = 'st'; lj.className.baseVal = 'lbl'; }
+    }
+    if (st.st === '进行中') { ring.classList.add('cur'); }
+    else { ring.classList.remove('cur'); }
+  }
+
+  function tick() {
+    setStep(i);
+    i++;
+    if (i >= steps.length) {
+      // 完成态停留 2.2s 后重置
+      timer = setTimeout(function () {
+        i = 0;
+        // 重置
+        document.getElementById('fill').setAttribute('width', 0);
+        document.getElementById('chk').classList.remove('done');
+        document.getElementById('endb').setAttribute('stroke', 'var(--border-strong)');
+        for (var j = 1; j <= 4; j++) {
+          document.getElementById('d' + j).className.baseVal = 'dot';
+          document.getElementById('l' + j).className.baseVal = 'lbl';
+          document.getElementById('s' + j).className.baseVal = 'st';
+          document.getElementById('s' + j).textContent = '待开始';
+        }
+        document.getElementById('s0').textContent = '已建';
+        document.getElementById('s5').textContent = '待交付';
+        document.getElementById('l5').className.baseVal = 'lbl';
+        document.getElementById('s5').className.baseVal = 'st';
+        tick();
+      }, 2200);
+      return;
+    }
+    timer = setTimeout(tick, i % 2 === 0 ? 900 : 700);
+  }
+
+  if (reduce) {
+    // 减动效：直接展示完成态
+    setStep(steps.length - 1);
+  } else {
+    tick();
+  }
+})();
+</script>
+</body>
+</html>

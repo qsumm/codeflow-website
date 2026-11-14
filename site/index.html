@@ -11,7 +11,7 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "CodeFlow · 从需求到交付的数字员工平台", "applicationCategory": "DeveloperApplication", "operatingSystem": "Linux, macOS", "softwareVersion": "1.2.0", "license": "https://opensource.org/licenses/MIT", "description": "从需求到交付的数字员工研发平台 + 执行器运行时：数字员工按 SDLC 流水线自动完成分析、开发、测试、验证与交接，人只做需求澄清与验收。真实交付闭环已验证，平台源码 MIT。"}
 </script>
-<link rel="stylesheet" href="/assets/site.css?v=3d5f8f94">
+<link rel="stylesheet" href="/assets/site.css?v=9377b864">
 <meta property="og:title" content="CodeFlow · 从需求到交付的数字员工平台 — 需求进，交付出">
   <meta property="og:description" content="从需求到交付的数字员工研发平台 + 执行器运行时：数字员工按 SDLC 流水线自动完成分析、开发、测试、验证与交接，人只做需求澄清与验收。真实交付闭环已验证，平台源码 MIT。">
   <meta property="og:type" content="website">
@@ -90,46 +90,43 @@
       </div>
     </div>
     <div class="hero-art">
-      <svg viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CodeFlow 交付轨道示意：工作项从左侧进入，经过四个流水线阶段，在右侧变成一个可交付的分支" style="width:100%;height:auto;display:block">
-        <!-- 轨道：一条从左到右的主线，末端分叉 -->
-        <line x1="34" y1="200" x2="486" y2="200" stroke="var(--border-strong)" stroke-width="2.5" stroke-linecap="round"/>
-        <line class="flow" x1="34" y1="200" x2="486" y2="200" stroke="var(--accent)" stroke-width="2.5"
-              stroke-dasharray="5 22" stroke-linecap="round" opacity=".9"/>
+      <svg viewBox="0 0 520 150" xmlns="http://www.w3.org/2000/svg" role="img"
+           aria-label="CodeFlow 交付进度示意：需求经分析、编码、测试、交接四个阶段，最终完成交付"
+           style="width:100%;height:auto;display:block" id="cfTimeline">
+        <!-- 轨道底 -->
+        <rect x="26" y="58" width="440" height="10" rx="5" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/>
+        <rect id="cfFill" class="cf-fill" x="26" y="58" width="0" height="10" rx="5" fill="var(--accent)"/>
 
-        <!-- 入口：工作项（实心卡片，最左） -->
-        <g>
-          <rect x="18" y="170" width="40" height="60" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
-          <rect x="26" y="181" width="24" height="4" rx="2" fill="var(--accent)" opacity=".9"/>
-          <rect x="26" y="191" width="18" height="3" rx="1.5" fill="var(--muted)" opacity=".55"/>
-          <rect x="26" y="199" width="22" height="3" rx="1.5" fill="var(--muted)" opacity=".55"/>
-          <rect x="26" y="207" width="14" height="3" rx="1.5" fill="var(--muted)" opacity=".55"/>
+        <!-- 起点：需求 -->
+        <circle cx="26" cy="63" r="9" fill="var(--accent)"/>
+
+        <!-- 四个阶段节点 -->
+        <circle id="cfD1" class="cf-dot" cx="116" cy="63" r="6.5"/>
+        <circle id="cfD2" class="cf-dot" cx="206" cy="63" r="6.5"/>
+        <circle id="cfD3" class="cf-dot" cx="274" cy="63" r="6.5"/>
+        <circle id="cfD4" class="cf-dot" cx="352" cy="63" r="6.5"/>
+        <circle id="cfRing" class="cf-ring" cx="116" cy="63" r="7"/>
+
+        <!-- 终点：交付 -->
+        <circle id="cfEndb" cx="466" cy="63" r="17" fill="var(--accent-soft)" stroke="var(--border-strong)" stroke-width="1.6"/>
+        <path id="cfChk" class="cf-check" d="M 458 63 L 464 69 L 476 56" fill="none" stroke="var(--muted)"
+              stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- 阶段名 + 状态 -->
+        <g font-family="-apple-system,PingFang SC,sans-serif">
+          <text x="26"  y="100" text-anchor="middle" class="cf-lbl" id="cfL0">需求</text>
+          <text x="116" y="100" text-anchor="middle" class="cf-lbl" id="cfL1">分析</text>
+          <text x="206" y="100" text-anchor="middle" class="cf-lbl" id="cfL2">编码</text>
+          <text x="274" y="100" text-anchor="middle" class="cf-lbl" id="cfL3">测试</text>
+          <text x="352" y="100" text-anchor="middle" class="cf-lbl" id="cfL4">交接</text>
+          <text x="466" y="100" text-anchor="middle" class="cf-lbl" id="cfL5">交付</text>
+          <text x="26"  y="119" text-anchor="middle" class="cf-st" id="cfS0">已建</text>
+          <text x="116" y="119" text-anchor="middle" class="cf-st" id="cfS1">待开始</text>
+          <text x="206" y="119" text-anchor="middle" class="cf-st" id="cfS2">待开始</text>
+          <text x="274" y="119" text-anchor="middle" class="cf-st" id="cfS3">待开始</text>
+          <text x="352" y="119" text-anchor="middle" class="cf-st" id="cfS4">待开始</text>
+          <text x="466" y="119" text-anchor="middle" class="cf-st" id="cfS5">待交付</text>
         </g>
-
-        <!-- 四个阶段：小圆点，前三个已过（实心），最后一个当前（环） -->
-        <circle cx="130" cy="200" r="7" fill="var(--accent)"/>
-        <circle cx="230" cy="200" r="7" fill="var(--accent)"/>
-        <circle cx="330" cy="200" r="7" fill="var(--accent)" opacity=".55"/>
-        <circle cx="430" cy="200" r="12" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
-
-        <!-- 出口：分支向上生长，三个提交点（越大越靠上） -->
-        <path d="M 486 200 C 486 200 470 150 455 118" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="478" cy="176" r="4.5" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.2"/>
-        <circle cx="467" cy="146" r="4.5" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.2"/>
-        <circle cx="456" cy="117" r="7" fill="var(--accent)"/>
-
-        <!-- 交付物：右上角一块成品卡（无字，靠形状表达"产物"） -->
-        <g opacity=".95">
-          <rect x="352" y="46" width="128" height="52" rx="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
-          <rect x="364" y="60" width="46" height="5" rx="2.5" fill="var(--accent)" opacity=".85"/>
-          <rect x="364" y="72" width="86" height="3.5" rx="1.75" fill="var(--muted)" opacity=".45"/>
-          <rect x="364" y="81" width="66" height="3.5" rx="1.75" fill="var(--muted)" opacity=".45"/>
-        </g>
-
-        <!-- 流水线脉冲：沿轨道行进的亮点 -->
-        <circle r="5" fill="var(--accent)">
-          <animateMotion dur="4.6s" repeatCount="indefinite" path="M 40 200 L 486 200"/>
-          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.88;1" dur="4.6s" repeatCount="indefinite"/>
-        </circle>
       </svg>
     </div>
   </div>
@@ -371,6 +368,6 @@ bash build.sh && bash bootstrap.sh</code>
   <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
 </aside>
 
-<script src="/assets/site.js?v=3d5f8f94" defer></script>
+<script src="/assets/site.js?v=9377b864" defer></script>
 </body>
 </html>
