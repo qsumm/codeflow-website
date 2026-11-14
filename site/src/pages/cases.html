@@ -1,151 +1,108 @@
 <div class="wrap">
-<section class="hero" style="padding:64px 0 36px">
-  <span class="eyebrow">案例集</span>
-  <h1 style="font-size:clamp(1.8rem,3.4vw,2.6rem)">不是演示项目。<br>是我们自己天天在用的。</h1>
-  <p class="lede">下面每个案例都来自 CodeFlow 的真实使用：生产上跑的平台、真实工单流转、外部开发者的开源协作。验证状态如实标注——✅ 是完整跑通并有原始记录的，📄 是生产环境实际发生的。</p>
+<section class="hero" style="padding:64px 0 30px">
+  <span class="eyebrow">交付案例</span>
+  <h1 style="font-size:clamp(1.9rem,3.6vw,2.8rem)">一个工作项进来，<br>一个可验收的产品出去。</h1>
+  <p class="lede">下面每一例都是 CodeFlow 真实施工出来的产物：从工单进入，走完澄清、编码、测试、交接，交付物和报告回到那张工单。截图、数据、产物清单都可以核对。</p>
 </section>
 </div>
 
+<!-- ── 案例 1：性能测试平台 ── -->
 <div class="wrap">
-<section class="tight" id="case-dogfood">
-  <div class="head-row">
-    <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 1 · 自举（用 CodeFlow 开发 CodeFlow）</span><span class="tag">✅ 真实闭环实测</span></div>
-      <h2 style="font-size:1.4rem">生产上的登录功能，是数字员工写的</h2>
-    </div>
-  </div>
-  <div class="step-grid">
-    <div class="step-card">
-      <h3 style="margin-top:0">项目背景</h3>
-      <p>我们自己的社区版平台（生产环境在跑）要加「会员登录页记住我」功能，随后又来了一条缺陷：「勾选后刷新页面，勾选状态丢失」。两件事都走 CodeFlow——我们没有自己写。</p>
-    </div>
-    <div class="step-card">
-      <h3 style="margin-top:0">发生了什么</h3>
-      <p>禅道建单 → 数字员工自主定位真实 git 仓库，自建分支 <code style="font-family:var(--font-mono);font-size:.82rem">feat/10007-remember-me</code>：LoginPage 80 行、新建 RememberMeService、3 个测试类，推送分支。缺陷单 52 分钟修复，工单「已关闭」，修复报告幂等回写禅道。</p>
-      <p><b>价值：</b>现在生产上跑的这个功能，就是数字员工的交付物——自举不是概念，是我们的日常。</p>
-    </div>
-  </div>
-</section>
-</div>
-
-<div class="wrap">
-<section class="tight" id="case-clarify">
-  <div class="head-row">
-    <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 2 · 需求澄清</span><span class="tag">✅ 真实闭环实测</span></div>
-      <h2 style="font-size:1.4rem">在工单里直接问，数字员工实时读单后开工</h2>
-    </div>
-  </div>
-  <div class="step-grid">
-    <div class="step-card">
-      <h3 style="margin-top:0">场景</h3>
-      <p>需求写得不清不楚，传统做法是拉会、约时间、来回传话——澄清成本常常比开发还高。</p>
-      <p><b>适合：</b>需求方和开发不在一地、需求描述天然模糊的远程协作。</p>
-    </div>
-    <div class="step-card">
-      <h3 style="margin-top:0">怎么用 CodeFlow</h3>
-      <p>在工单里直接与数字员工对话：它经平台 MCP 实时读取工单（标题、状态、外部来源）后作答与追问——上面案例 1 的真实闭环里，复现路径就是这么澄清出来的。事实不清时它会主动问，而不是自作主张。</p>
-      <p><b>价值：</b>澄清发生在工单里，留下文字记录，开工口径有据可查。</p>
+<section class="tight">
+  <div class="post-meta" style="margin-bottom:10px"><span class="post-cat">Web 压测工具</span><span>工作项 #10047</span><span class="tag">✅ 产物可运行</span></div>
+  <div class="case-hero">
+    <div class="case-shot"><img src="/assets/shots/cases/perf-report.jpg" alt="性能测试平台生成的压测报告：QPS、耗时分位数图表" loading="lazy"></div>
+    <div class="case-meta">
+      <div class="case-big">50<small>分钟</small></div>
+      <p class="case-line">从一张需求工单，到一个能压测自己的 Web 压测平台。</p>
+      <dl class="case-spec">
+        <div><dt>验收标准</dt><dd>并发 20 · 持续 10 秒 · 产出含 QPS/P95 的报告</dd></div>
+        <div><dt>实测结果</dt><dd>151,277 请求 · QPS 15,127 · P95 1.43 ms · 错误率 0%</dd></div>
+        <div><dt>交付清单</dt><dd>可运行代码 · 启动/停止/状态脚本 · 自测脚本 · 交付报告</dd></div>
+      </dl>
     </div>
   </div>
 </section>
 </div>
 
+<!-- ── 案例 2：电商商城 ── -->
 <div class="wrap">
-<section class="tight" id="case-sdlc">
-  <div class="head-row">
-    <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 3 · 从零到可运行</span><span class="tag">✅ 真实闭环实测</span></div>
-      <h2 style="font-size:1.4rem">真模型 12 分钟交付一个完整小工具</h2>
-    </div>
-  </div>
-  <div class="step-grid">
-    <div class="step-card">
-      <h3 style="margin-top:0">项目背景</h3>
-      <p>一个独立小需求（内部脚本、工具页、小功能），不值得占用整块人力，但要"真的能跑"。</p>
-    </div>
-    <div class="step-card">
-      <h3 style="margin-top:0">发生了什么</h3>
-      <p>工单写清需求 → 8 秒内派发受理 → 4 步 SDLC 12 分钟跑完 → 可运行代码 + 19 个单元测试全过 + 自动 git 初始化 + 全套文档。边界诚实：坏模型名 40 秒如实 FAILED 交回真人。</p>
-      <p><b>价值：</b>小需求不再排队等人，也不用接受一段跑不起来的伪代码。</p>
+<section class="tight">
+  <div class="post-meta" style="margin-bottom:10px"><span class="post-cat">交易系统</span><span>工作项 #10049</span><span class="tag">✅ 产物可运行</span></div>
+  <div class="case-hero">
+    <div class="case-shot"><img src="/assets/shots/cases/ecom-shipped.jpg" alt="电商商城管理端：订单列表与发货完成状态" loading="lazy"></div>
+    <div class="case-meta">
+      <div class="case-big">20<small>分钟</small></div>
+      <p class="case-line">从商品浏览到管理端发货，一条完整的交易闭环。</p>
+      <dl class="case-spec">
+        <div><dt>验收链路</dt><dd>浏览 → 加购 → 下单（NO202611120555218625）→ 发货 → 已发货</dd></div>
+        <div><dt>数据一致性</dt><dd>下单在单事务内完成校验→扣库存→建单，失败整体回滚；取消订单回滚库存</dd></div>
+        <div><dt>交付清单</dt><dd>商店前台 + 管理端 · 内置 SQLite/JSON 降级存储 · 启动脚本 · 交付报告</dd></div>
+      </dl>
     </div>
   </div>
 </section>
 </div>
 
+<!-- ── 案例 3：澄清 ── -->
 <div class="wrap">
-<section class="tight" id="case-squad">
-  <div class="head-row">
-    <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 4 · 多角色流水线</span><span class="tag">✅ 真实闭环实测</span></div>
-      <h2 style="font-size:1.4rem">开发者 → 评审，双角色零人工接棒</h2>
-    </div>
-  </div>
-  <div class="step-grid">
-    <div class="step-card">
-      <h3 style="margin-top:0">项目背景</h3>
-      <p>评审要求严格的团队，流水线每个角色之间都要人工重新指派——"一个人盯一条流水线"。</p>
-    </div>
-    <div class="step-card">
-      <h3 style="margin-top:0">发生了什么</h3>
-      <p>双人小队（Developer + Reviewer，workflow 模板定义职责与证据引用）→ SDLC 步骤间自动接棒：成功进下一步、失败按预算重试、END 自动到达 DONE。实测全链路零人工重新指派。</p>
-      <p><b>价值：</b>评审门槛没有降——降的是"催活"的人力。</p>
+<section class="tight">
+  <div class="post-meta" style="margin-bottom:10px"><span class="post-cat">需求澄清</span><span class="tag">✅ 真实对话记录</span></div>
+  <div class="case-hero">
+    <div class="case-shot"><img src="/assets/shots/cases/clarify.jpg" alt="AI 需求澄清对话：开工前逐项确认交付口径" loading="lazy"></div>
+    <div class="case-meta">
+      <div class="case-big">19<small>个问题</small></div>
+      <p class="case-line">动手之前，它先把该问的都问清楚了。</p>
+      <dl class="case-spec">
+        <div><dt>问的是什么</dt><dd>git 仓库归属、部署路径与权限、验收口径、边界条件</dd></div>
+        <div><dt>留下什么</dt><dd>澄清结论作为文档与评论沉淀在工单里，不是口头共识</dd></div>
+        <div><dt>卡住怎么办</dt><dd>工单停在「待决策」，@ 回复一句，下一轮派发带着你的意见继续</dd></div>
+      </dl>
     </div>
   </div>
 </section>
 </div>
 
+<!-- ── 案例 4：交付进度可观测 ── -->
 <div class="wrap">
-<section class="tight" id="case-priv">
-  <div class="head-row">
-    <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 5 · 生产环境实证</span><span class="tag">📄 生产环境实际发生</span></div>
-      <h2 style="font-size:1.4rem">一台 2 核 2G 的机器，长期跑着 CodeFlow 社区版</h2>
-    </div>
-  </div>
-  <div class="step-grid">
-    <div class="step-card">
-      <h3 style="margin-top:0">项目背景</h3>
-      <p>客户常说：先低成本试起来，数据不能出域。我们的答案不是 PPT，是这台跑了很久的生产机。</p>
-    </div>
-    <div class="step-card">
-      <h3 style="margin-top:0">实际状态</h3>
-      <p>同一台 2C2G 服务器上：CodeFlow 社区版平台 + MySQL / Redis / MinIO / SeekDB 数据底座，全部自托管在跑；执行器 runtime 纯标准库（Python 3.11）独立部署；模型接任意 Anthropic 兼容端点，账单走自己的 key。</p>
-      <p><b>价值：</b>私有化不是降配演示，是可长期运行的生产形态。</p>
+<section class="tight">
+  <div class="post-meta" style="margin-bottom:10px"><span class="post-cat">交付过程</span><span class="tag">✅ 平台界面实拍</span></div>
+  <div class="case-hero">
+    <div class="case-shot"><img src="/assets/shots/cases/tracking.jpg" alt="交付进度跟踪面板：当前派发、流水线步骤、产物与历史执行" loading="lazy"></div>
+    <div class="case-meta">
+      <div class="case-big">4<small>步</small></div>
+      <p class="case-line">干到哪一步、卡在哪、为什么卡，面板上直接看。</p>
+      <dl class="case-spec">
+        <div><dt>流程</dt><dd>分析与分支准备 → 编码与测试 → 验证与交付 → 交接评审</dd></div>
+        <div><dt>卡住会说原因</dt><dd>「等待运行器上线」+ 指数退避；上线自动唤醒，不用人工重发</dd></div>
+        <div><dt>失败可复跑</dt><dd>就地重试，记为新 attempt，前几轮记录全部保留可查</dd></div>
+      </dl>
     </div>
   </div>
 </section>
 </div>
 
+<!-- ── 次案例：一行条 ── -->
 <div class="wrap">
-<section class="tight" id="case-oss">
-  <div class="head-row">
-    <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 6 · 开源协作</span><span class="tag">📄 生产环境实际发生</span></div>
-      <h2 style="font-size:1.4rem">外部开发者 fork 仓库，给官网加上了视频</h2>
-    </div>
-  </div>
-  <div class="step-grid">
-    <div class="step-card">
-      <h3 style="margin-top:0">项目背景</h3>
-      <p>官网开源上线的第一周，一位外部开发者（BPCKeeeeeepOn）fork 了官网仓库，新建分支，给首页做了产品演示视频区块并推送——从 fork 到推送当天完成。</p>
-    </div>
-    <div class="step-card">
-      <h3 style="margin-top:0">发生了什么</h3>
-      <p>我们逐文件审查（视频 8.6MB、播放器实现 preload=none 点击才加载），合入上游 main，当天部署上线。全程标准开源协作流：fork → 分支 → 审查 → 合入。</p>
-      <p><b>价值：</b>官网本身就是 CodeFlow 生态的第一个开源协作现场——欢迎你也来。</p>
-    </div>
+<section class="tight">
+  <div class="sec-head"><div class="sec-kicker">还有这些</div>
+  <h2 style="font-size:1.3rem">同一套轨道，换不同的活</h2></div>
+  <div class="case-rows">
+    <div class="case-row"><b>52 分钟</b><span>一条禅道缺陷 → 一个可合并的分支（自建分支 + 服务类 + 3 个测试类）</span><span class="tag">缺陷修复</span></div>
+    <div class="case-row"><b>12 分钟</b><span>一个命令行小工具 → 可运行代码 + 19 个单元测试全过</span><span class="tag">小需求</span></div>
+    <div class="case-row"><b>零依赖</b><span>每日交付巡检工具 → 不连数据库，离线可回放、可单测</span><span class="tag">例行任务</span></div>
+    <div class="case-row"><b>自动回写</b><span>禅道需求/缺陷自动进轨道，交付报告幂等回写源头工单</span><span class="tag">外部连接</span></div>
   </div>
 </section>
 </div>
 
 <div class="wrap">
 <section class="final">
-  <h2 style="font-size:clamp(1.5rem,3vw,2.1rem)">下一个案例，可以是你的项目。</h2>
-  <p style="margin:12px 0 22px;color:var(--muted)">照着部署指南把平台跑起来，接上你的工单仓库，第一个需求交给数字员工。</p>
+  <h2 style="font-size:clamp(1.5rem,3vw,2.1rem)">把你的第一个工作项交给它。</h2>
+  <p style="margin:12px 0 22px;color:var(--muted)">单机 4C8G 起全栈，执行器节点 2C2G。接上你的工单平台，需求进来就能开工。</p>
   <div class="hero-cta" style="justify-content:center">
     <a class="btn btn-primary" href="/deploy.html">安装并开始使用</a>
-    <a class="btn btn-ghost" href="/blog.html">看工程实践博客</a>
+    <a class="btn btn-ghost" href="/features.html">看产品能力</a>
   </div>
 </section>
 </div>
