@@ -23,7 +23,9 @@
   // 滚动到位置自动播放：静音循环内联播（浏览器政策要求静音）；离开视口暂停省带宽；
   // prefers-reduced-motion 用户保持封面不自动播；点击封面仍是弹窗带声音播放。
   const inline = preview.querySelector('video.product-demo-inline');
-  const motionOK = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // 只在桌面宽度自动播放：手机流量敏感，改为点击后播放
+  const motionOK = !matchMedia('(prefers-reduced-motion: reduce)').matches
+    && matchMedia('(min-width: 861px)').matches;
   if (inline && motionOK && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       for (const en of entries) {
