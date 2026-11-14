@@ -96,7 +96,7 @@
   var notes = [].slice.call(svg.querySelectorAll(".hn-note"));
   var rows = svg.querySelectorAll(".hn-row");
   var chips = [].slice.call(svg.querySelectorAll(".hn-chip"));
-  var ROW_X = 284, ROW_Y = [24, 50, 76, 102, 128, 154];
+  var ROW_X = 430, ROW_Y = [26, 52, 78, 104, 130, 156];
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var chipTimers = [];
 
