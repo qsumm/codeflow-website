@@ -11,7 +11,7 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "CodeFlow · 从需求到交付的数字员工平台", "applicationCategory": "DeveloperApplication", "operatingSystem": "Linux, macOS", "softwareVersion": "1.2.0", "license": "https://opensource.org/licenses/MIT", "description": "从需求到交付的数字员工研发平台 + 执行器运行时：数字员工按 SDLC 流水线自动完成分析、开发、测试、验证与交接，人只做需求澄清与验收。真实交付闭环已验证，平台源码 MIT。"}
 </script>
-<link rel="stylesheet" href="/assets/site.css?v=dc709914">
+<link rel="stylesheet" href="/assets/site.css?v=3d5f8f94">
 <meta property="og:title" content="CodeFlow · 从需求到交付的数字员工平台 — 需求进，交付出">
   <meta property="og:description" content="从需求到交付的数字员工研发平台 + 执行器运行时：数字员工按 SDLC 流水线自动完成分析、开发、测试、验证与交接，人只做需求澄清与验收。真实交付闭环已验证，平台源码 MIT。">
   <meta property="og:type" content="website">
@@ -90,59 +90,45 @@
       </div>
     </div>
     <div class="hero-art">
-      <svg viewBox="0 0 560 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CodeFlow 流水线示意：需求工单经分析、编码、测试、交接四个站点，输出携带提交的交付分支" style="width:100%;height:auto;display:block">
-        <!-- 远景：并行的其他泳道（小队并行处理多个工单） -->
-        <line x1="140" y1="330" x2="380" y2="330" stroke="var(--border)" stroke-width="2" opacity="0.55"/>
-        <line x1="170" y1="356" x2="330" y2="356" stroke="var(--border)" stroke-width="2" opacity="0.35"/>
-        <!-- 输入：需求工单卡 -->
-        <g transform="translate(28,185)">
-          <rect x="0" y="0" width="120" height="150" rx="10" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
-          <rect x="14" y="16" width="58" height="8" rx="4" fill="var(--accent)" opacity="0.85"/>
-          <rect x="14" y="42" width="92" height="6" rx="3" fill="var(--border)"/>
-          <rect x="14" y="58" width="78" height="6" rx="3" fill="var(--border)"/>
-          <rect x="14" y="74" width="88" height="6" rx="3" fill="var(--border)"/>
-          <rect x="14" y="112" width="76" height="22" rx="7" fill="var(--accent-soft)"/>
-          <text x="52" y="127" text-anchor="middle" font-size="10.5" fill="var(--accent)" font-weight="600">需求 #10007</text>
+      <svg viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CodeFlow 交付轨道示意：工作项从左侧进入，经过四个流水线阶段，在右侧变成一个可交付的分支" style="width:100%;height:auto;display:block">
+        <!-- 轨道：一条从左到右的主线，末端分叉 -->
+        <line x1="34" y1="200" x2="486" y2="200" stroke="var(--border-strong)" stroke-width="2.5" stroke-linecap="round"/>
+        <line class="flow" x1="34" y1="200" x2="486" y2="200" stroke="var(--accent)" stroke-width="2.5"
+              stroke-dasharray="5 22" stroke-linecap="round" opacity=".9"/>
+
+        <!-- 入口：工作项（实心卡片，最左） -->
+        <g>
+          <rect x="18" y="170" width="40" height="60" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="26" y="181" width="24" height="4" rx="2" fill="var(--accent)" opacity=".9"/>
+          <rect x="26" y="191" width="18" height="3" rx="1.5" fill="var(--muted)" opacity=".55"/>
+          <rect x="26" y="199" width="22" height="3" rx="1.5" fill="var(--muted)" opacity=".55"/>
+          <rect x="26" y="207" width="14" height="3" rx="1.5" fill="var(--muted)" opacity=".55"/>
         </g>
-        <line x1="150" y1="260" x2="196" y2="260" stroke="var(--border-strong)" stroke-width="3"/>
-        <!-- 主轨道：底轨 + 流动虚线 -->
-        <line x1="150" y1="260" x2="470" y2="260" stroke="var(--border-strong)" stroke-width="3"/>
-        <line class="flow" x1="150" y1="260" x2="470" y2="260" stroke="var(--accent)" stroke-width="3" stroke-dasharray="6 16" stroke-linecap="round"/>
-        <!-- 四个站点 -->
-        <g font-size="12.5" fill="var(--muted)" text-anchor="middle">
-          <circle cx="205" cy="260" r="15" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
-          <circle cx="205" cy="260" r="5" fill="var(--accent-soft)"/>
-          <text x="205" y="297">分析</text>
-          <circle cx="275" cy="260" r="15" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
-          <circle cx="275" cy="260" r="5" fill="var(--accent)"/>
-          <text x="275" y="297">编码</text>
-          <circle cx="345" cy="260" r="15" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
-          <circle cx="345" cy="260" r="5" fill="var(--accent-soft)"/>
-          <text x="345" y="297">测试</text>
-          <circle cx="415" cy="260" r="15" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
-          <circle cx="415" cy="260" r="5" fill="var(--accent-soft)"/>
-          <text x="415" y="297">交接</text>
+
+        <!-- 四个阶段：小圆点，前三个已过（实心），最后一个当前（环） -->
+        <circle cx="130" cy="200" r="7" fill="var(--accent)"/>
+        <circle cx="230" cy="200" r="7" fill="var(--accent)"/>
+        <circle cx="330" cy="200" r="7" fill="var(--accent)" opacity=".55"/>
+        <circle cx="430" cy="200" r="12" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+
+        <!-- 出口：分支向上生长，三个提交点（越大越靠上） -->
+        <path d="M 486 200 C 486 200 470 150 455 118" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="478" cy="176" r="4.5" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="467" cy="146" r="4.5" fill="var(--bg)" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="456" cy="117" r="7" fill="var(--accent)"/>
+
+        <!-- 交付物：右上角一块成品卡（无字，靠形状表达"产物"） -->
+        <g opacity=".95">
+          <rect x="352" y="46" width="128" height="52" rx="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+          <rect x="364" y="60" width="46" height="5" rx="2.5" fill="var(--accent)" opacity=".85"/>
+          <rect x="364" y="72" width="86" height="3.5" rx="1.75" fill="var(--muted)" opacity=".45"/>
+          <rect x="364" y="81" width="66" height="3.5" rx="1.75" fill="var(--muted)" opacity=".45"/>
         </g>
-        <!-- 输出：交付分支（git 曲线 + 提交点） -->
-        <path d="M 470 260 C 512 260 512 168 548 150" fill="none" stroke="var(--border-strong)" stroke-width="3"/>
-        <path d="M 470 260 C 512 260 512 168 548 150" fill="none" stroke="var(--accent)" stroke-width="3"/>
-        <line x1="470" y1="260" x2="548" y2="260" stroke="var(--border-strong)" stroke-width="2.5" opacity="0.8"/>
-        <circle cx="497" cy="247" r="5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5"/>
-        <circle cx="516" cy="205" r="5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5"/>
-        <circle cx="536" cy="163" r="5.5" fill="var(--accent)"/>
-        <text x="452" y="150" text-anchor="end" font-size="11.5" fill="var(--accent)" font-family="var(--font-mono)">feat/10007-remember-me</text>
-        <text x="548" y="285" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--font-mono)">main</text>
-        <!-- 交付物小卡 -->
-        <g transform="translate(452,52)">
-          <rect x="0" y="0" width="100" height="58" rx="9" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
-          <rect x="12" y="12" width="52" height="7" rx="3.5" fill="var(--accent)" opacity="0.85"/>
-          <rect x="12" y="28" width="72" height="5" rx="2.5" fill="var(--border)"/>
-          <text x="12" y="48" font-size="10" fill="var(--muted)" font-family="var(--font-mono)">+80 行 · 3 tests</text>
-        </g>
-        <!-- 流水线脉冲 -->
-        <circle r="6" fill="var(--accent)">
-          <animateMotion dur="5s" repeatCount="indefinite" path="M150 260 L470 260" keyPoints="0;1" keyTimes="0;1"/>
-          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="5s" repeatCount="indefinite"/>
+
+        <!-- 流水线脉冲：沿轨道行进的亮点 -->
+        <circle r="5" fill="var(--accent)">
+          <animateMotion dur="4.6s" repeatCount="indefinite" path="M 40 200 L 486 200"/>
+          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.08;.88;1" dur="4.6s" repeatCount="indefinite"/>
         </circle>
       </svg>
     </div>
@@ -385,6 +371,6 @@ bash build.sh && bash bootstrap.sh</code>
   <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
 </aside>
 
-<script src="/assets/site.js?v=dc709914" defer></script>
+<script src="/assets/site.js?v=3d5f8f94" defer></script>
 </body>
 </html>

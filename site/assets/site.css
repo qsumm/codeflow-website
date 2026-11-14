@@ -686,3 +686,8 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   .case-row{grid-template-columns:1fr;gap:6px;padding:14px 2px}
   .case-row span:nth-child(2){margin-top:2px}
 }
+
+/* hero 轨道图：放大并居中，避免在右栏显小 */
+.hero-art{display:flex;align-items:center;justify-content:center;width:100%}
+.hero-art svg{width:100%;max-width:620px;height:auto}
+@media (max-width:1000px){.hero-art{margin-top:8px}}
