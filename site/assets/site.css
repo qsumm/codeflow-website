@@ -703,3 +703,42 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 @media (prefers-reduced-motion:reduce){
   .hn-note,.hn-row,.hn-chip rect,.hn-chip circle,.hn-chip text{transition:none}
 }
+
+/* hero 品类定义：副标题一行功能清单 */
+.hero-sub{font-size:1.02rem;font-weight:600;color:var(--text);margin-bottom:12px;letter-spacing:.01em}
+.lede-sm{font-size:.86rem;color:var(--muted);margin-top:10px}
+@media (max-width:620px){.hero-sub{font-size:.92rem;line-height:1.7}}
+
+/* ═══════ 首页能力矩阵（TestHub 式 3 列卡） ═══════ */
+.cap-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.cap-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:20px 20px 18px;display:flex;flex-direction:column}
+.cap-card h3{font-size:.98rem;margin-bottom:6px}
+.cap-card p{font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:14px;flex:1}
+.cap-tags{display:flex;flex-wrap:wrap;gap:6px}
+.cap-tags span{font-size:.7rem;color:var(--muted);border:1px solid var(--border);
+  border-radius:999px;padding:3px 9px;white-space:nowrap}
+/* FAQ */
+.faq{display:grid;gap:10px;max-width:52em}
+.faq details{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px}
+.faq summary{cursor:pointer;font-weight:600;font-size:.95rem;list-style:none;position:relative;padding-right:22px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:0;top:-2px;color:var(--muted);font-size:1.1rem}
+.faq details[open] summary::after{content:"−"}
+.faq details p{color:var(--muted);font-size:.88rem;line-height:1.7;margin-top:10px}
+@media (max-width:1000px){.cap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.cap-grid{grid-template-columns:1fr}}
+
+/* ═══════ 首屏居中版式（文案居中，主视觉移至下方） ═══════ */
+.hero-center{display:block;text-align:center;padding:72px 0 30px}
+.hero-center .hero-meta{justify-content:center}
+.hero-center h1{margin:18px auto 12px;max-width:16em}
+.hero-center .hero-sub{margin:0 auto 14px;max-width:46em;font-size:.96rem}
+.hero-center .lede{margin:0 auto;max-width:40em}
+.hero-center .lede-sm{max-width:40em;margin-left:auto;margin-right:auto}
+.hero-center .hero-cta{justify-content:center;margin-top:24px}
+.hero-center .hero-art{margin:36px auto 0;max-width:620px}
+@media (max-width:620px){
+  .hero-center{padding:48px 0 20px}
+  .hero-center .hero-art{margin-top:26px}
+}
