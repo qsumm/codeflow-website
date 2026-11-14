@@ -810,3 +810,12 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 /* H1 单行：宽屏不折行，刚好铺满内容区 */
 @media (min-width:1000px){.hero-center h1{white-space:nowrap}}
 @media (max-width:620px){.hero-center h1{font-size:1.72rem}}
+
+/* 案例页：实操录屏入口 */
+.video-link{color:var(--accent);font-weight:600;text-decoration:none}
+.video-link:hover{text-decoration:underline}
+
+/* 导航右上角浏览量胶囊 */
+.pv-pill-nav{padding:5px 11px;gap:6px;border-color:var(--border);background:transparent;flex:none}
+.pv-pill-nav .pv-num{font-size:.8rem;color:var(--muted)}
+@media (max-width:760px){.pv-pill-nav{display:none}}

@@ -400,13 +400,13 @@ def g23() -> None:
     blog = (SITE / "blog.html").read_text(encoding="utf-8")
     if 'id="pv-total"' not in idx:
         bad.append("页脚缺计数展示位")
-    if 'id="pv-hero"' not in idx or 'class="pv-pill"' not in idx:
+    if 'id="pv-hero"' not in idx or 'pv-pill' not in idx:
         bad.append("首页缺浏览量胶囊（pv-pill/pv-hero）")
     if 'id="pv-uv"' in idx or 'id="pv-hero-uv"' in idx:
         bad.append("访客口径已下线，不允许残留展示位")
     if "/api/counter/hit" not in js:
         bad.append("site.js 缺计数上报")
-    if 'aria-label="散乱的需求便签经澄清、开发、测试、交付四道工序' not in idx:
+    if 'aria-label="散乱的需求便签经澄清、启动、开发、验证、评审、部署、测试、交付、运维九道环节' not in idx:
         bad.append("首页缺流水线主视觉 SVG")
     if "/blog/" not in blog or blog.count('class="post-card"') < 3:
         bad.append("博客索引缺文章卡")
