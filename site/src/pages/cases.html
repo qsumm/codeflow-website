@@ -2,7 +2,7 @@
 <section class="hero" style="padding:64px 0 36px">
   <span class="eyebrow">案例集</span>
   <h1 style="font-size:clamp(1.8rem,3.4vw,2.6rem)">不是演示项目。<br>是我们自己天天在用的。</h1>
-  <p class="lede">下面每个案例都来自我们的真实项目与生产环境：生产上跑的平台、真机故障演练、给 AI Agent 建的考场。验证状态如实标注——✅ 是完整跑通并有原始记录的，📄 是生产环境实际发生的。</p>
+  <p class="lede">下面每个案例都来自 CodeFlow 的真实使用：生产上跑的平台、真实工单流转、外部开发者的开源协作。验证状态如实标注——✅ 是完整跑通并有原始记录的，📄 是生产环境实际发生的。</p>
 </section>
 </div>
 
@@ -29,44 +29,23 @@
 </div>
 
 <div class="wrap">
-<section class="tight" id="case-ops-drill">
+<section class="tight" id="case-clarify">
   <div class="head-row">
     <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 2 · 智能运维模块 · 生产级真机演练</span><span class="tag">📄 生产环境实际发生</span></div>
-      <h2 style="font-size:1.4rem">真机 nginx 进程死亡：82 秒根因报告，10 分钟恢复</h2>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 2 · 需求澄清</span><span class="tag">✅ 真实闭环实测</span></div>
+      <h2 style="font-size:1.4rem">在工单里直接问，数字员工实时读单后开工</h2>
     </div>
   </div>
   <div class="step-grid">
     <div class="step-card">
-      <h3 style="margin-top:0">项目背景</h3>
-      <p>真实靶机上故意停掉 nginx（真实业务端口探活失败）。这是对智能运维模块的实战验收——不是回放演示，是真机、真 LLM、真服务。</p>
+      <h3 style="margin-top:0">场景</h3>
+      <p>需求写得不清不楚，传统做法是拉会、约时间、来回传话——澄清成本常常比开发还高。</p>
+      <p><b>适合：</b>需求方和开发不在一地、需求描述天然模糊的远程协作。</p>
     </div>
     <div class="step-card">
-      <h3 style="margin-top:0">发生了什么</h3>
-      <p>3 条探活告警同时 firing → 收敛为 1 个事件 → AI 诊断 16 步取证、12.3 万 tokens、8 个只读工具，<b>82 秒出带证据链的根因报告</b> → 白名单处置、真机重启 → <b>10 分钟告警到恢复全流程</b> → 同快照回放两次结论逐字段一致。</p>
-      <p><b>价值：</b>值班工程师从"排查 40 分钟"变成"审一份带证据的报告"。</p>
-    </div>
-  </div>
-</section>
-</div>
-
-<div class="wrap">
-<section class="tight" id="case-evaldeck">
-  <div class="head-row">
-    <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 3 · 给 AI Agent 建考场</span><span class="tag">✅ 真实闭环实测</span></div>
-      <h2 style="font-size:1.4rem">诊断 Agent 改了提示词，怎么知道变好还是变坏？</h2>
-    </div>
-  </div>
-  <div class="step-grid">
-    <div class="step-card">
-      <h3 style="margin-top:0">项目背景</h3>
-      <p>AI 功能的回归测试是个行业难题：改一版提示词，整体是好了还是坏了没人说得清。我们为智能运维模块的诊断 Agent 建了评测平台（EvalDeck）。</p>
-    </div>
-    <div class="step-card">
-      <h3 style="margin-top:0">发生了什么</h3>
-      <p>故障注入脚本即标注机：每轮真实故障自动变成带标准答案的评测题。版本化数据集 + 11 个预置评估器 + 保留集隔离（调优轮自动排除最终验收题）+ 轮次对比逐字段定位哪几条变差。</p>
-      <p><b>价值：</b>AI 功能也能做回归测试——诊断评测闭环已随 v1.8.1 发布。</p>
+      <h3 style="margin-top:0">怎么用 CodeFlow</h3>
+      <p>在工单里直接与数字员工对话：它经平台 MCP 实时读取工单（标题、状态、外部来源）后作答与追问——上面案例 1 的真实闭环里，复现路径就是这么澄清出来的。事实不清时它会主动问，而不是自作主张。</p>
+      <p><b>价值：</b>澄清发生在工单里，留下文字记录，开工口径有据可查。</p>
     </div>
   </div>
 </section>
@@ -76,7 +55,7 @@
 <section class="tight" id="case-sdlc">
   <div class="head-row">
     <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 4 · 从零到可运行</span><span class="tag">✅ 真实闭环实测</span></div>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 3 · 从零到可运行</span><span class="tag">✅ 真实闭环实测</span></div>
       <h2 style="font-size:1.4rem">真模型 12 分钟交付一个完整小工具</h2>
     </div>
   </div>
@@ -98,7 +77,7 @@
 <section class="tight" id="case-squad">
   <div class="head-row">
     <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 5 · 多角色流水线</span><span class="tag">✅ 真实闭环实测</span></div>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 4 · 多角色流水线</span><span class="tag">✅ 真实闭环实测</span></div>
       <h2 style="font-size:1.4rem">开发者 → 评审，双角色零人工接棒</h2>
     </div>
   </div>
@@ -120,8 +99,8 @@
 <section class="tight" id="case-priv">
   <div class="head-row">
     <div>
-      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 6 · 生产环境实证</span><span class="tag">📄 生产环境实际发生</span></div>
-      <h2 style="font-size:1.4rem">一台 2 核 2G 的机器，跑着我们整个产品矩阵</h2>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 5 · 生产环境实证</span><span class="tag">📄 生产环境实际发生</span></div>
+      <h2 style="font-size:1.4rem">一台 2 核 2G 的机器，长期跑着 CodeFlow 社区版</h2>
     </div>
   </div>
   <div class="step-grid">
@@ -131,8 +110,30 @@
     </div>
     <div class="step-card">
       <h3 style="margin-top:0">实际状态</h3>
-      <p>同一台 2C2G 服务器上：CodeFlow 社区版平台 + 智能运维模块 + MySQL / Redis / MinIO / SeekDB 数据底座，全部自托管在跑。执行器 runtime 纯标准库（Python 3.11），模型接任意 Anthropic 兼容端点，账单走客户自己的 key。</p>
+      <p>同一台 2C2G 服务器上：CodeFlow 社区版平台 + MySQL / Redis / MinIO / SeekDB 数据底座，全部自托管在跑；执行器 runtime 纯标准库（Python 3.11）独立部署；模型接任意 Anthropic 兼容端点，账单走自己的 key。</p>
       <p><b>价值：</b>私有化不是降配演示，是可长期运行的生产形态。</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-oss">
+  <div class="head-row">
+    <div>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 6 · 开源协作</span><span class="tag">📄 生产环境实际发生</span></div>
+      <h2 style="font-size:1.4rem">外部开发者 fork 仓库，给官网加上了视频</h2>
+    </div>
+  </div>
+  <div class="step-grid">
+    <div class="step-card">
+      <h3 style="margin-top:0">项目背景</h3>
+      <p>官网开源上线的第一周，一位外部开发者（BPCKeeeeeepOn）fork 了官网仓库，新建分支，给首页做了产品演示视频区块并推送——从 fork 到推送当天完成。</p>
+    </div>
+    <div class="step-card">
+      <h3 style="margin-top:0">发生了什么</h3>
+      <p>我们逐文件审查（视频 8.6MB、播放器实现 preload=none 点击才加载），合入上游 main，当天部署上线。全程标准开源协作流：fork → 分支 → 审查 → 合入。</p>
+      <p><b>价值：</b>官网本身就是 CodeFlow 生态的第一个开源协作现场——欢迎你也来。</p>
     </div>
   </div>
 </section>
