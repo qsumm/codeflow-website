@@ -91,3 +91,20 @@
   object-fit: cover;
   pointer-events: none;
 }
+
+/* 播放中：隐藏播放按钮，画面干净；悬停时浮现，提示可点开有声大屏版 */
+.product-demo-play {
+  transition: opacity .3s ease, transform .3s ease;
+}
+.product-demo.is-playing .product-demo-play {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.85);
+  pointer-events: none;
+}
+.product-demo.is-playing .product-demo-preview:hover .product-demo-play {
+  opacity: .92;
+  transform: translate(-50%, -50%) scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-demo-play { transition: none; }
+}

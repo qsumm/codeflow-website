@@ -39,4 +39,12 @@
     }, { threshold: 0.5 });
     io.observe(preview);
   }
+
+  // 播放中隐藏封面上的播放按钮；悬停时再浮现（提示可点开有声大屏版）
+  const wrap = document.getElementById('product-demo');
+  if (inline && wrap) {
+    inline.addEventListener('play', () => wrap.classList.add('is-playing'));
+    inline.addEventListener('pause', () => wrap.classList.remove('is-playing'));
+    inline.addEventListener('ended', () => wrap.classList.remove('is-playing'));
+  }
 })();
