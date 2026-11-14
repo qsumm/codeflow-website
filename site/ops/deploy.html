@@ -28,6 +28,7 @@
     </a>
     <nav class="nav-links">
       <a href="/features.html" data-nav="features">产品</a>
+      <a href="/cases.html" data-nav="cases">案例集</a>
       <a href="/blog.html" data-nav="blog">博客</a>
       <a href="/deploy.html" data-nav="deploy">部署</a>
       <a href="/open-source.html" data-nav="open-source">开源</a>
@@ -50,6 +51,7 @@
   </div>
 <div id="navMobile" class="nav-mobile" hidden>
   <a href="/features.html" data-nav="features">产品</a>
+      <a href="/cases.html" data-nav="cases">案例集</a>
   <a href="/blog.html" data-nav="blog">博客</a>
   <a href="/deploy.html" data-nav="deploy">部署</a>
   <a href="/open-source.html" data-nav="open-source">开源</a>
@@ -68,43 +70,9 @@
 <section class="tight">
   <div class="sec-head"><div class="sec-kicker">开源路径</div>
   <h2 style="font-size:1.5rem">Docker Compose 一键部署</h2></div>
-  <div class="term"><div class="term-bar"><span class="tl"><i></i><i></i><i></i></span><span>bash — 快速开始（与产品仓逐字一致）</span></div><div class="term-body"><div># 1. 准备环境变量（可选，不填也能跑）</div>
-<div>cat > .env &lt;&lt;'EOF'</div>
-<div>DB_PASSWORD=</div>
-<div>JWT_SECRET=&lt;随机 48 字节，见下></div>
-<div>KEY_STORE_SECRET=&lt;随机 48 字节，见下></div>
-<div># 想要 AI 功能就填（不填则 AI 功能明确报错，采集/告警/巡检不受影响）</div>
-<div>LLM_BASE_URL=https://api.minimaxi.com/v1</div>
-<div>LLM_API_KEY=sk-...</div>
-<div>LLM_MODEL_MAIN=MiniMax-M3</div>
-<div>LLM_MODEL_FAST=MiniMax-M2.7-highspeed</div>
-<div>EOF</div>
-<div># 生成随机密钥：python -c "import secrets;print(secrets.token_urlsafe(48))"</div>
-<div></div>
-<div># 2. 拉起：数据库 + 平台 + 2 台模拟主机</div>
-<div>#    ⚠ 必须带 --env-file .env：-f 指向子目录时 compose 的项目目录变成 deploy/，</div>
-<div>#      根目录 .env 不会被自动读取，LLM/密钥变量会全为空（实测踩过）</div>
-<div>docker compose --env-file .env -f deploy/docker-compose.yaml up -d --build</div>
-<div>#    ⚠ 拉代码超时是 GitHub 在国内网络的常态（实测三种报错：end of file / 连接超时 / 5 分钟零字节），</div>
-<div>#      重试 2~3 次通常能过；持续不通时用镜像加速：</div>
-<div>#      git clone https://gh-proxy.com/https://github.com/qsumm/TestOPS.git</div>
-<div>#      （第三方加速器仅代理只读 clone，密钥类信息不经过它）</div>
-<div></div>
-<div># 3. 让两台模拟主机接入（D16 起注册强制一次性安装令牌）：</div>
-<div>#    a. 打开 http://127.0.0.1:8848 用 admin / admin123 登录</div>
-<div>#       → 主机管理 → 接入新主机 → 生成安装令牌 **两次**（令牌一次性，两台主机各一枚）</div>
-<div>#    b. 两枚令牌分别写进 .env：</div>
-<div>#         echo 'AIOPS_INSTALL_TOKEN_1=&lt;第1枚>' >> .env   # mock-web-01 用</div>
-<div>#         echo 'AIOPS_INSTALL_TOKEN_2=&lt;第2枚>' >> .env   # mock-db-01 用</div>
-<div>#    c. 重建 agent 容器（不用 --build）：</div>
-<div>#       docker compose --env-file .env -f deploy/docker-compose.yaml up -d</div>
-<div>#    两台 mock 主机即上线并开始每 15s 上报。</div>
-<div></div>
-<div># 4. 种演示数据（7 天历史指标 + 规则 + 历史事件 + 案例卡 + LLM 配置）</div>
-<div>docker compose --env-file .env -f deploy/docker-compose.yaml exec platform \</div>
-<div>    python scripts/seed_demo.py --days 7</div>
-<div></div>
-<div># 5. 打开 http://127.0.0.1:8848 （首登请改密码）</div></div></div>
+  <div class="term"><div class="term-bar"><span class="tl"><i></i><i></i><i></i></span><span>bash — 快速开始（与产品仓逐字一致）</span></div><div class="term-body"><div>docker compose version</div>
+<div>free -m | head -2</div>
+<div>df -h / | tail -1</div></div></div>
   <div class="caps" style="margin-top:18px">
     <div class="cap"><div class="cap-h"><span class="cap-ico">①</span><h3>前置条件</h3></div>
       <ul class="cap-list">

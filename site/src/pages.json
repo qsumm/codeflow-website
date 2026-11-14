@@ -24,6 +24,14 @@
    "nav": "none"
   },
   {
+   "slug": "cases",
+   "file": "cases",
+   "title": "案例集 · 用 CodeFlow 解决什么 · 从需求到交付",
+   "desc": "六个真实场景：禅道需求自动流转交付、真模型 12 分钟跑完 SDLC、双人小队零人工接棒、Cron 定时派发、钉钉/飞书群内派活、私有化与模型自由——每个案例标注验证状态。",
+   "nav": "main",
+   "nav_active": "cases"
+  },
+  {
    "slug": "blog",
    "file": "blog",
    "title": "博客 · 工程实践与交付实录 · CodeFlow",

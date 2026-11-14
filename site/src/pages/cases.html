@@ -1,0 +1,153 @@
+<div class="wrap">
+<section class="hero" style="padding:64px 0 36px">
+  <span class="eyebrow">案例集</span>
+  <h1 style="font-size:clamp(1.8rem,3.4vw,2.6rem)">用 CodeFlow 解决什么？<br>看这几个真实场景。</h1>
+  <p class="lede">每个案例都标注了验证状态：打 ✅ 的是在真实系统里完整跑通的（原始记录在开源仓库 docs/），打 ⚙️ 的是平台已就绪能力、按文档配置即可复现。不写没有发生过的数字。</p>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-zentao">
+  <div class="head-row">
+    <div>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 1 · 外包式交付</span><span class="tag">✅ 真实闭环实测</span></div>
+      <h2 style="font-size:1.4rem">禅道建需求建缺陷，数字员工交付并回写</h2>
+    </div>
+  </div>
+  <div class="step-grid">
+    <div class="step-card">
+      <h3 style="margin-top:0">场景</h3>
+      <p>甲方用禅道管需求。开发团队不想手工转录、排期、来回同步状态——希望"建单即开工，修完即回写"。</p>
+      <p><b>适合：</b>软件外包、接乙方需求单的团队、有工单平台但人力排队的研发组。</p>
+    </div>
+    <div class="step-card">
+      <h3 style="margin-top:0">怎么用 CodeFlow</h3>
+      <p>平台绑定禅道产品 → 需求/缺陷自动拉取入库 → 指派数字员工 → 4 步 SDLC 执行 → 交付备注幂等回写源头。</p>
+      <p>实测记录：需求「记住我功能」从建单到交付；缺陷「勾选状态丢失」52 分钟编码修复，分支推送，工单关闭回写。</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-sdlc">
+  <div class="head-row">
+    <div>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 2 · 从零实现一个小工具</span><span class="tag">✅ 真实闭环实测</span></div>
+      <h2 style="font-size:1.4rem">真模型 12 分钟跑完 SDLC，交付可运行代码</h2>
+    </div>
+  </div>
+  <div class="step-grid">
+    <div class="step-card">
+      <h3 style="margin-top:0">场景</h3>
+      <p>一个独立小需求（脚本、工具页、内部小功能），不想占用整块人力，但要"真的能用"——不是一段伪代码。</p>
+      <p><b>适合：</b>内部工具、原型验证、小功能快速落地。</p>
+    </div>
+    <div class="step-card">
+      <h3 style="margin-top:0">怎么用 CodeFlow</h3>
+      <p>工单写清需求 → 指派数字员工 → 8 秒内派发受理 → 4 步 SDLC 12 分钟跑完 → 交付可运行代码 + 19 个单元测试全过 + 全套文档。</p>
+      <p>边界诚实：坏模型名 40 秒内如实 FAILED 上报交回真人，不静默吞错。</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-squad">
+  <div class="head-row">
+    <div>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 3 · 小队自动接棒</span><span class="tag">✅ 真实闭环实测</span></div>
+      <h2 style="font-size:1.4rem">开发者 → 评审，双角色零人工接棒</h2>
+    </div>
+  </div>
+  <div class="step-grid">
+    <div class="step-card">
+      <h3 style="margin-top:0">场景</h3>
+      <p>流水线里有多个角色（实现、评审、验证），传统做法是每个角色之间人工重新指派——"一个人盯一条流水线"。</p>
+      <p><b>适合：</b>评审要求严格的团队、想跑多角色流水线的研发组。</p>
+    </div>
+    <div class="step-card">
+      <h3 style="margin-top:0">怎么用 CodeFlow</h3>
+      <p>配置双人小队（Developer + Reviewer，workflow 模板定义职责与证据引用）→ SDLC 步骤间自动接棒 → 成功进下一步、失败按预算重试、END 自动到达 DONE。</p>
+      <p>实测记录：双角色全链路自动接棒，零人工重新指派。</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-cron">
+  <div class="head-row">
+    <div>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 4 · 例行工作自动化</span><span class="tag">⚙️ 平台能力就绪</span></div>
+      <h2 style="font-size:1.4rem">Cron 式定时派发：每日巡检类工作项</h2>
+    </div>
+  </div>
+  <div class="step-grid">
+    <div class="step-card">
+      <h3 style="margin-top:0">场景</h3>
+      <p>有些活儿是周期性的：每日依赖巡检、每周报表整理、定期依赖升级检查。人工做是"日历提醒 + 手工开工"。</p>
+      <p><b>适合：</b>运维周检、数据整理、文档同步等例行研发杂务。</p>
+    </div>
+    <div class="step-card">
+      <h3 style="margin-top:0">怎么用 CodeFlow</h3>
+      <p>在平台创建定时任务（Cron 语义）→ 到点自动派发工作项给数字员工 → 每次运行有独立 Run 记录与日志 → 结果进效能分析。</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-im">
+  <div class="head-row">
+    <div>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 5 · 群里直接派活</span><span class="tag">⚙️ 平台能力就绪</span></div>
+      <h2 style="font-size:1.4rem">钉钉 / 飞书群里 @数字员工对话</h2>
+    </div>
+  </div>
+  <div class="step-grid">
+    <div class="step-card">
+      <h3 style="margin-top:0">场景</h3>
+      <p>需求讨论发生在 IM 群里。切换到另一个系统里录工单，上下文就断了——希望"群里说，群里开工"。</p>
+      <p><b>适合：</b>以钉钉/飞书为主要协作场所的团队。</p>
+    </div>
+    <div class="step-card">
+      <h3 style="margin-top:0">怎么用 CodeFlow</h3>
+      <p>绑定钉钉或飞书群（平台内置 Provider 与群准入、身份守卫）→ 群成员 @数字员工 即可对话与派活 → 讨论上下文与工单联动。</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-priv">
+  <div class="head-row">
+    <div>
+      <div class="post-meta" style="margin-bottom:6px"><span class="post-cat">案例 6 · 私有化与模型自由</span><span class="tag">⚙️ 平台能力就绪</span></div>
+      <h2 style="font-size:1.4rem">数据不出域，模型走自己的 key</h2>
+    </div>
+  </div>
+  <div class="step-grid">
+    <div class="step-card">
+      <h3 style="margin-top:0">场景</h3>
+      <p>金融、央国企等场景对"代码可审计、数据不出域"有硬要求，且模型账单不愿被单一厂商锁定。</p>
+      <p><b>适合：</b>对合规有采购门槛的组织、想用自选模型的团队。</p>
+    </div>
+    <div class="step-card">
+      <h3 style="margin-top:0">怎么用 CodeFlow</h3>
+      <p>平台源码 MIT 克隆自部署（单机 4C8G）→ 执行器纯标准库独立部署（2C2G）→ 模型接任意 Anthropic 兼容端点（GLM / Kimi / DeepSeek / 私有模型）→ 账单走自己的 API key。</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="final">
+  <h2 style="font-size:clamp(1.5rem,3vw,2.1rem)">你的场景在里面吗？</h2>
+  <p style="margin:12px 0 22px;color:var(--muted)">没找到也没关系——核心能力就一条：工单进来，数字员工交付出去。照着部署指南跑一遍，用你自己的需求试。</p>
+  <div class="hero-cta" style="justify-content:center">
+    <a class="btn btn-primary" href="/deploy.html">安装并开始使用</a>
+    <a class="btn btn-ghost" href="/blog.html">看工程实践博客</a>
+  </div>
+</section>
+</div>
