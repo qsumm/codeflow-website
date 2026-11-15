@@ -833,18 +833,17 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   position:relative;z-index:40;
   border-radius:8px;
 }
-.img-lightbox{
-  position:fixed;inset:0;z-index:200;display:grid;place-items:center;
-  background:rgba(8,9,11,.9);backdrop-filter:blur(4px);cursor:zoom-out;padding:24px;
+
+/* 案例图：悬浮在旁边浮出大图（不弹窗、不占布局） */
+.case-shot img{transition:transform .2s ease,box-shadow .2s ease;cursor:zoom-in}
+.case-shot img:hover{transform:scale(1.03);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.img-preview{
+  position:fixed;z-index:200;pointer-events:none;
+  border:1px solid var(--border-strong);border-radius:10px;overflow:hidden;
+  background:var(--surface2);box-shadow:0 28px 80px rgba(0,0,0,.62);
+  animation:imgIn .16s ease-out;
 }
-.img-lightbox[hidden]{display:none}
-.img-lightbox img{
-  max-width:min(1400px,94vw);max-height:90vh;width:auto;height:auto;
-  border-radius:10px;box-shadow:0 24px 80px rgba(0,0,0,.6);
-}
-.img-lightbox-close{
-  position:absolute;top:18px;right:22px;width:44px;height:44px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;
-  font-size:1.5rem;line-height:1;cursor:pointer;
-}
-@media (max-width:860px){.case-shot:hover img{transform:none;box-shadow:none}}
+.img-preview[hidden]{display:none}
+.img-preview img{display:block;width:100%;height:auto}
+@keyframes imgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.img-preview{animation:none}}

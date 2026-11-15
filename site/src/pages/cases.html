@@ -93,7 +93,7 @@
     <div class="case-row"><b>52 分钟</b><span>一条禅道缺陷 → 一个可合并的分支（自建分支 + 服务类 + 3 个测试类）</span><span class="tag">缺陷修复</span></div>
     <div class="case-row"><b>12 分钟</b><span>一个命令行小工具 → 可运行代码 + 19 个单元测试全过</span><span class="tag">小需求</span></div>
     <div class="case-row"><b>零依赖</b><span>每日交付巡检工具 → 不连数据库，离线可回放、可单测</span><span class="tag">例行任务</span></div>
-    <div class="case-row"><b>自动回写</b><span>禅道需求/缺陷自动进轨道，交付报告幂等回写源头工单</span><span class="tag">外部连接</span></div>
+    <div class="case-row"><b>自动回写</b><span><b>禅道 / TAPD</b> 的需求与缺陷自动进轨道，交付报告幂等回写源头工单（TAPD 已实测回写 <code style="font-family:var(--font-mono);font-size:.8rem">PUSHED-200</code>）</span><span class="tag">外部连接</span></div>
   </div>
 </section>
 </div>
@@ -110,26 +110,45 @@
 </div>
 
 
-<div id="imgLightbox" class="img-lightbox" hidden aria-label="图片预览">
-  <img alt="">
-  <button class="img-lightbox-close" aria-label="关闭预览">×</button>
-</div>
+
+<div id="imgPreview" class="img-preview" hidden aria-hidden="true"><img alt=""></div>
 <script>
 (function () {
-  var lb = document.getElementById("imgLightbox");
-  if (!lb) return;
-  var big = lb.querySelector("img");
+  var box = document.getElementById("imgPreview");
+  if (!box) return;
+  var big = box.querySelector("img");
+  var W = Math.min(920, Math.round(innerWidth * 0.62));
+  box.style.width = W + "px";
+
+  function show(img) {
+    big.src = img.getAttribute("src");
+    box.hidden = false;
+    var r = img.getBoundingClientRect();
+    var h = box.getBoundingClientRect().height || W * 0.625;
+    var x = r.right + 18;
+    if (x + W > innerWidth - 16) x = r.left - W - 18;      // 右侧放不下就放左侧
+    if (x < 16) x = Math.max(16, (innerWidth - W) / 2);    // 两侧都放不下就居中
+    var y = r.top + r.height / 2 - h / 2;
+    y = Math.max(16, Math.min(y, innerHeight - h - 16));
+    box.style.left = x + "px";
+    box.style.top = y + "px";
+  }
+  function hide() { box.hidden = true; }
+
   document.querySelectorAll(".case-shot img").forEach(function (img) {
-    img.addEventListener("click", function () {
-      big.src = img.getAttribute("src");
-      big.alt = img.getAttribute("alt") || "";
-      lb.hidden = false;
-      document.body.style.overflow = "hidden";
+    img.addEventListener("mouseenter", function () { show(img); });
+    img.addEventListener("mouseleave", hide);
+    // 触屏：点一下切换
+    img.addEventListener("click", function (e) {
+      if (box.hidden) { show(img); } else { hide(); }
+      e.stopPropagation();
     });
   });
-  function close() { lb.hidden = true; document.body.style.overflow = ""; }
-  lb.addEventListener("click", function (e) { if (e.target !== big || true) close(); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !lb.hidden) close(); });
+  document.addEventListener("click", function (e) {
+    if (!box.hidden && !box.contains(e.target)) hide();
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") hide(); });
+  addEventListener("scroll", hide, { passive: true });
 })();
 </script>
 
