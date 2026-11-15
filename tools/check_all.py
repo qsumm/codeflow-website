@@ -183,6 +183,13 @@ def g12() -> None:
         for m in re.finditer(r'<(script|link|img)[^>]+(?:src|href)="(https?://[^"]+)"', s):
             if "schema.org" in m.group(2) or "w3.org" in m.group(2):
                 continue
+            # 本站自身域名（base_url）不算外部资源
+            _base = (SRC / "pages.json")
+            if _base.exists():
+                import json as _j
+                _host = _j.loads(_base.read_text(encoding="utf-8")).get("base_url", "").split("//")[-1]
+                if _host and _host in m.group(2):
+                    continue
             bad.append(f"{p.name} {m.group(1)}→{m.group(2)[:40]}")
     g("G12", not bad, "; ".join(bad[:3]))
 

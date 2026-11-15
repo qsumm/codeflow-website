@@ -853,3 +853,11 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .case-meta .post-cat{font-size:.92rem;font-weight:650}
 .case-meta > span:not(.post-cat):not(.tag){font-size:.88rem;color:var(--muted)}
 .case-meta .tag{font-size:.8rem;padding:4px 11px}
+
+/* 首页：适用行业标签行 */
+.industry-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:22px;
+  padding-top:20px;border-top:1px solid var(--border)}
+.industry-label{font-size:.78rem;color:var(--muted);letter-spacing:.06em;margin-right:4px}
+.industry-row .tag{font-size:.78rem;padding:4px 12px}
+.industry-note{font-size:.76rem;color:var(--muted);margin-left:6px}
+@media (max-width:620px){.industry-row{gap:6px}.industry-note{display:block;margin:6px 0 0}}

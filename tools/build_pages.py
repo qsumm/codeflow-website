@@ -403,7 +403,10 @@ def build(quiet: bool = False) -> dict[str, str]:
               f'  <meta property="og:image:width" content="1200">\n'
               f'  <meta property="og:image:height" content="630">\n')
         html = html.replace("{{OG}}", og)
-        html = html.replace("{{CANONICAL}}", f'<link rel="canonical" href="{base}/{slug}">' if base else "")
+        _canon = "" if not base else (
+            f'<link rel="canonical" href="{base}/">' if slug == "index"
+            else f'<link rel="canonical" href="{base}/{slug}.html">')
+        html = html.replace("{{CANONICAL}}", _canon)
         html = html.replace("{{EXTRA_HEAD}}", "")
         for token, fn in HOOKS.items():
             if f"{{{{{token}}}}}" in frag:

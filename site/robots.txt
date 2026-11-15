@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://REPLACE-BEFORE-LAUNCH/sitemap.xml
+Sitemap: http://103.39.64.76:63028/sitemap.xml
