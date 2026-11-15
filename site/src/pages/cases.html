@@ -109,6 +109,30 @@
 </section>
 </div>
 
+
+<div id="imgLightbox" class="img-lightbox" hidden aria-label="图片预览">
+  <img alt="">
+  <button class="img-lightbox-close" aria-label="关闭预览">×</button>
+</div>
+<script>
+(function () {
+  var lb = document.getElementById("imgLightbox");
+  if (!lb) return;
+  var big = lb.querySelector("img");
+  document.querySelectorAll(".case-shot img").forEach(function (img) {
+    img.addEventListener("click", function () {
+      big.src = img.getAttribute("src");
+      big.alt = img.getAttribute("alt") || "";
+      lb.hidden = false;
+      document.body.style.overflow = "hidden";
+    });
+  });
+  function close() { lb.hidden = true; document.body.style.overflow = ""; }
+  lb.addEventListener("click", function (e) { if (e.target !== big || true) close(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !lb.hidden) close(); });
+})();
+</script>
+
 <dialog id="videoDialog" class="product-demo-player" aria-label="实操录屏">
   <form method="dialog" class="product-demo-player-bar">
     <button type="submit" class="product-demo-close" aria-label="关闭播放器" autofocus>×</button>
