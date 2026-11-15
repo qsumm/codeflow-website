@@ -135,10 +135,11 @@ def g09() -> None:
         hits.append("竞品名:Keep")
     # 部署目标主机豁免（显式且窄口径）：官网必须指向评测平台地址，该主机是**唯一**允许出现的
     # 公网 IP；其余公网 IP 一律仍禁。先把该主机替换掉再扫，避免整条规则被豁免。
-    _dep = evaldeck_url()
-    _m = re.search(r"\b(\d{1,3}(?:\.\d{1,3}){3})\b", _dep)
-    if _m:
-        t = t.replace(_m.group(1), "DEPLOY_TARGET_HOST")
+    # 豁免：评测平台主机 + 本站自身部署地址（base_url）——它们必须在页面里出现
+    for _u in (evaldeck_url(), json.loads((SRC / "pages.json").read_text(encoding="utf-8")).get("base_url", "")):
+        _m = re.search(r"\b(\d{1,3}(?:\.\d{1,3}){3})\b", _u or "")
+        if _m:
+            t = t.replace(_m.group(1), "DEPLOY_TARGET_HOST")
     for pat, label in [(r"sk-[A-Za-z0-9_-]{20,}", "密钥形态"), (r"LTAI[A-Za-z0-9]{12,}", "密钥形态"),
                        (r"AKID[A-Za-z0-9]{10,}", "密钥形态"), (r"AccessKeySecret\s*[:=]\s*\S{12,}", "密钥形态"),
                        (r"1[3-9]\d{9}", "手机号"), (r"(?<![\d.])(?!127\.|10\.|192\.168\.|0\.0\.0\.0)(?:\d{1,3}\.){3}\d{1,3}(?=:)", "公网IP")]:
