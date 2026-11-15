@@ -847,3 +847,9 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .img-preview img{display:block;width:100%;height:auto}
 @keyframes imgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.img-preview{animation:none}}
+
+/* 案例页元信息行：字号放大一档 */
+.case-meta{font-size:.92rem;gap:14px;margin-bottom:12px;align-items:center;flex-wrap:wrap}
+.case-meta .post-cat{font-size:.92rem;font-weight:650}
+.case-meta > span:not(.post-cat):not(.tag){font-size:.88rem;color:var(--muted)}
+.case-meta .tag{font-size:.8rem;padding:4px 11px}
