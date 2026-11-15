@@ -257,7 +257,12 @@ DOC_SHELL = """<div class="wrap">
 
 
 def build_doc_pages() -> dict[str, tuple]:
-    """P3：教程 / 学习文章 / 题库的正文壳页 + md 资产拷贝（智能运维模块 → ops/ 前缀）。"""
+    """智能运维模块已从站点移除：教程/学习/题库壳页不再生成。"""
+    return {}
+
+
+def _build_doc_pages_unused() -> dict[str, tuple]:
+    """（历史实现，保留以备恢复）"""
     assets_md = SITE / "assets" / "md"
     jobs = []
     # 12 篇教程（产物进 /ops/docs/tutorials/，md 资产仍在 /assets/md/ 供壳页 fetch）
@@ -303,10 +308,6 @@ def build_doc_pages() -> dict[str, tuple]:
 
 
 HOOKS = {
-    "SKILL_CARDS": hook_skill_cards,
-    "LEARN_TESTOPS_CARDS": lambda: hook_learn_cards("aiops", None),
-    "LEARN_SRE_CARDS": lambda: hook_learn_cards("sre-basics", None),
-    "TUTORIAL_GRID": hook_tutorial_cards,
     "DEPLOY_COMMANDS": hook_deploy_commands,
     "VERSION": hook_version,
     "CHANGELOG_ROWS": hook_changelog_rows,
@@ -461,7 +462,6 @@ def build(quiet: bool = False) -> dict[str, str]:
                           f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{locs}\n</urlset>\n')
     out["robots.txt"] = "User-agent: *\nAllow: /\nSitemap: " + (base or "https://REPLACE-BEFORE-LAUNCH") + "/sitemap.xml\n"
     cf_pages = [p for p in reg["pages"] if p["slug"] != "404" and not p["slug"].startswith("ops/")]
-    tps_pages = [p for p in reg["pages"] if p["slug"] != "404" and p["slug"].startswith("ops/")]
 
     def _llm_line(p: dict) -> str:
         rel = "" if p["slug"] == "index" else p["slug"] + ".html"
@@ -470,13 +470,10 @@ def build(quiet: bool = False) -> dict[str, str]:
     out["llms.txt"] = f"""# {BRAND} · AI 交付工厂（含智能运维模块）
 
 > {BRAND}：需求进、交付出——数字员工按 SDLC 流水线自动完成分析、开发、测试、验证与交接，人只做需求澄清与验收。平台源码 MIT（上游 CodeFlow Community），执行器 runtime 纯标准库、可独立部署。
-> {TESTOPS_BRAND}：开源自托管的 AI 运维监控平台——拉取式 Agent（零入站端口）、指纹状态机告警、带证据链的 AI 根因诊断、九道护栏下的分级处置。版本 {hook_version()}。
 
 ## CodeFlow 主要页面
 """ + "\n".join(_llm_line(p) for p in cf_pages) + f"""
 
-## 智能运维模块（/ops/）
-""" + "\n".join(_llm_line(p) for p in tps_pages) + f"""
 
 ## 部署（CodeFlow）
 ```bash

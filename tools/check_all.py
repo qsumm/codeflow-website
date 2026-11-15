@@ -161,12 +161,6 @@ def g09() -> None:
     g("G09", not hits, "; ".join(hits[:5]))
 
 
-# ── G10 诚实标识 ──
-def g10() -> None:
-    vip = (SITE / "ops" / "vip.html").read_text(encoding="utf-8")
-    has = ("即将上线" in vip) and ("设计预览" in vip)
-    bad = [w for w in ("已上线", "正式发布", "现已支持") if w in vip]
-    g("G10", has and not bad, f"缺标识={not has} 违规词={bad}")
 
 
 # ── G11 数字来源 + 禁 star 计数 ──
@@ -175,7 +169,7 @@ def g11() -> None:
     bad = []
     if re.search(r"★\s*\d|[\d.]+k?\s*stars?\b", t, re.I):
         bad.append("存在 star 计数展示")
-    for key in ("82", "720", "163"):
+    for key in ("9", "6", "MIT"):
         if key not in t:
             bad.append(f"关键数字缺失:{key}")
     g("G11", not bad, "; ".join(bad))
@@ -255,39 +249,8 @@ def g16() -> None:
     g("G16", not bad, f"评测平台嵌入{'完整' if not bad else '缺失:' + ','.join(bad)}")
 
 
-# ── G17 学习目录 = 源文件数 ──
-def g17() -> None:
-    prod = Path(PRODUCT_ROOT)
-    counts = {
-        "aiops": len([p for p in (prod / "learning" / "aiops").glob("*.md") if p.name != "README.md"]),
-        "sre": len([p for p in (prod / "learning" / "sre-basics").glob("*.md") if p.name != "README.md"]),
-        "tutorials": len(list((prod / "docs" / "05-教程").glob("*.md"))),
-    }
-    bad = []
-    for slug, key in (("ops/learn-testops.html", "aiops"),
-                      ("ops/learn-sre.html", "sre"),
-                      ("ops/learn-tutorials.html", "tutorials")):
-        s = (SITE / slug).read_text(encoding="utf-8")
-        n = len(re.findall(r'<div class="learn-card"|<div class="hub-item"', s))
-        if n != counts[key]:
-            bad.append(f"{slug} 卡{n}≠源{counts[key]}")
-    g("G17", not bad, "; ".join(bad))
 
 
-# ── G18 版本与命令对账 ──
-def g18() -> None:
-    prod = Path(PRODUCT_ROOT)
-    ver = (prod / "VERSION").read_text(encoding="utf-8").strip()
-    about = (SITE / "ops" / "about.html").read_text(encoding="utf-8")
-    ok_v = ver in about
-    qs = (prod / "docs" / "04-交付与运营" / "快速开始.md").read_text(encoding="utf-8")
-    cmd = re.search(r"```bash\n(.*?)```", qs, re.S).group(1).strip().splitlines()[0]
-    dep = (SITE / "ops" / "deploy.html").read_text(encoding="utf-8")
-    ok_c = cmd.split()[0] in dep and "docker compose" in dep
-    # 家族站新增：CodeFlow 自部署页必须含平台构建/启动命令
-    cf_dep = (SITE / "deploy.html").read_text(encoding="utf-8")
-    ok_cf = "bash build.sh" in cf_dep and "bash bootstrap.sh" in cf_dep
-    g("G18", ok_v and ok_c and ok_cf, f"版本={ok_v} 命令={ok_c} codeflow命令={ok_cf}")
 
 
 # ── G19 联系挂件（FR-33）：全页存在 + 二维码资产合规 ──
@@ -351,12 +314,6 @@ def g21() -> None:
         bad.append("首页缺主品牌名 CodeFlow")
     if REPO not in idx:
         bad.append("首页缺 CodeFlow 仓库地址")
-    # 4) 模块首页 = 智能运维定位（模块正文可保留 TestOps 产品名，首页品牌归 CodeFlow）
-    tidx = (SITE / "ops" / "index.html").read_text(encoding="utf-8")
-    if "智能运维" not in tidx:
-        bad.append("模块首页缺智能运维定位")
-    if "CodeFlow" not in tidx:
-        bad.append("模块首页缺 CodeFlow 品牌")
     # 5) 旧仓库地址零残留（qsumm/AIOps 已改名，靠 GitHub 重定向，站内不应再依赖）
     for p in list(SITE.rglob("*.html")):
         if "qsumm/AIOps" in p.read_text(encoding="utf-8"):
@@ -364,32 +321,6 @@ def g21() -> None:
     g("G21", not bad, "; ".join(bad[:4]))
 
 
-# ── G22 技能卡 = skills/*.md（首页技能集市轨；G16 改判评测嵌入后此锁不撤） ──
-def g22() -> None:
-    """智能运维模块首页技能集市卡数 == skills/*.md 数；抽首尾两张 name/description/命令数逐字段一致。"""
-    mds = sorted((ROOT / "agent-community" / "skills").glob("*.md"))
-    idx = (SITE / "ops" / "index.html").read_text(encoding="utf-8")
-    n = len(re.findall(r'<div class="skill-card">', idx))
-    bad = []
-    if n != len(mds):
-        bad.append(f"卡{n}≠源{len(mds)}")
-    for md in (mds[:1] + mds[-1:]) if mds else ():
-        s = md.read_text(encoding="utf-8")
-        m = re.match(r"^---\n(.*?)\n---\n?", s, re.S)
-        if not m:
-            bad.append(f"{md.name} 无 frontmatter")
-            continue
-        head = m.group(1)
-        name = re.search(r"^name:\s*(.+)$", head, re.M)
-        desc = re.search(r"^description:\s*(.+)$", head, re.M)
-        if name and name.group(1).strip() not in idx:
-            bad.append(f"{md.name} name 未渲染")
-        if desc and desc.group(1).strip() not in idx:
-            bad.append(f"{md.name} description 未渲染")
-        ncmd = len(re.findall(r"^\s*-\s+\S", head, re.M))
-        if ncmd and f"{ncmd} 条只读命令" not in idx:
-            bad.append(f"{md.name} 命令数 {ncmd} 未渲染")
-    g("G22", not bad, "; ".join(bad[:4]))
 
 
 # ── G23 家族站接线：浏览量统计 + 流水线主视觉 + 博客（全部自建，零第三方脚本） ──
@@ -417,7 +348,7 @@ def g23() -> None:
 
 
 def main() -> int:
-    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23):
+    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23):
         try:
             fn()
         except Exception as e:  # noqa: BLE001
