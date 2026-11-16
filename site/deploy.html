@@ -8,7 +8,7 @@
 <title>自部署指南 · CodeFlow</title>
 <meta name="description" content="平台前后端与执行器 runtime 的自部署命令：单机 4C8G 起步，build.sh / bootstrap.sh 一条命令起全栈，执行器节点 2C2G 即可接入。">
 <link rel="icon" type="image/svg+xml" href="/assets/codeflow-logo.svg">
-<link rel="stylesheet" href="/assets/site.css?v=66101954">
+<link rel="stylesheet" href="/assets/site.css?v=9165dc25">
 <meta property="og:title" content="自部署指南 · CodeFlow">
   <meta property="og:description" content="平台前后端与执行器 runtime 的自部署命令：单机 4C8G 起步，build.sh / bootstrap.sh 一条命令起全栈，执行器节点 2C2G 即可接入。">
   <meta property="og:type" content="website">
@@ -51,7 +51,10 @@
       <button class="icon-btn" id="themeBtn" aria-label="切换明暗主题">
         <svg id="themeIcon" width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm0 1.5a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 12.5Zm0-11a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 1.5ZM3.05 3.05a.75.75 0 0 1 1.06 0l.7.7a.75.75 0 1 1-1.06 1.06l-.7-.7a.75.75 0 0 1 0-1.06Zm9.14 1.76a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Zm.31 4.69a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1a.75.75 0 0 1 .75.75Zm-10 0a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 2.5 11Zm1.19 4.44a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 0 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0ZM12.95 3.05a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Z"/></svg>
       </button>
-      <a class="btn btn-primary btn-sm" href="/deploy.html">开始部署</a>
+      <div class="nav-auth-zone" id="navAuthZone">
+        <button type="button" class="btn btn-ghost btn-sm nav-auth-btn" id="navAuthBtn" aria-label="账号登录或注册">登录 / 注册</button>
+      </div>
+      <a class="btn btn-primary btn-sm" href="/deploy.html" data-require-auth="自部署指南与安装脚本">开始部署</a>
     </div>
   </div>
 <div id="navMobile" class="nav-mobile" hidden>
@@ -60,6 +63,7 @@
   <a href="/blog.html" data-nav="blog">博客</a>
   <a href="/deploy.html" data-nav="deploy" aria-current="page" aria-current="page">部署</a>
   <a href="/open-source.html" data-nav="open-source">开源</a>
+  <button type="button" class="nav-mobile-auth" id="navMobileAuthBtn">手机号登录 / 注册</button>
 </div>
 </header>
 
@@ -69,8 +73,13 @@
   <span class="eyebrow">自部署指南</span>
   <h1 style="font-size:clamp(1.8rem,3.4vw,2.7rem)">克隆即部署：<br>两条命令起全栈，执行器节点 2C2G。</h1>
   <p class="lede">平台前后端与执行器 runtime 全部可自部署。以下命令与开源仓库 README 逐字一致；最低配置单机 <strong>4C8G</strong>（跑全栈），纯执行器节点 <strong>2C2G</strong> 即可。</p>
+  <div class="hero-cta" style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap">
+    <button type="button" class="btn btn-primary" data-auth-download="/api/resources/deploy-bundle">下载一键部署脚本 (.sh)</button>
+    <button type="button" class="btn btn-ghost" data-auth-trial="1">申请私有化 / 商业版支持</button>
+  </div>
 </section>
 
+<div id="deployProtectedArea" data-auth-protected="自部署脚本与执行器接入指南">
 <section class="tight" id="platform">
   <div class="sec-head"><div class="sec-kicker">A · 平台前后端</div>
   <h2 style="font-size:1.5rem">构建镜像 + 起依赖与应用</h2></div>
@@ -114,6 +123,7 @@
   </div>
   <p style="margin-top:12px;font-size:.8rem;color:var(--muted)">约束：同一个 executorId + token 同时只允许一个 daemon 实例（服务端单会话，后来者顶掉先来者）。</p>
 </section>
+</div>
 
 <section class="tight" id="requirements">
   <div class="sec-head"><div class="sec-kicker">前置条件</div>
@@ -159,7 +169,7 @@
       </div>
       <div class="foot-col">
         <h4>开源</h4>
-        <a href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener">GitHub 仓库</a><a href="https://github.com/qsumm/CodeFlow/issues" target="_blank" rel="noopener">问题反馈</a><a href="/open-source.html">开源与合规</a>
+        <a href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener">GitHub 仓库</a><a href="https://github.com/qsumm/CodeFlow/issues" target="_blank" rel="noopener">问题反馈</a><a href="/open-source.html">开源与合规</a><a href="/privacy.html">隐私协议</a>
       </div>
       <div class="foot-col">
         <h4>内容</h4>
@@ -179,6 +189,6 @@
   <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
 </aside>
 
-<script src="/assets/site.js?v=66101954" defer></script>
+<script src="/assets/site.js?v=9165dc25" defer></script>
 </body>
 </html>

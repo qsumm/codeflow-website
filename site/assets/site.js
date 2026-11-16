@@ -154,3 +154,837 @@
     setTimeout(toOrder, 2600);
   }, 9200);
 })();
+
+// 官网独立注册/登录体系（含 SVG 图形验证码 + 阿里云短信 + 顶栏用户下拉卡片与资料编辑 + 受限资源守卫）
+(function () {
+  var state = {
+    user: null,
+    ready: false,
+    pendingAction: null,
+    tab: "login",       // "login" | "register"
+    loginMode: "sms",   // "sms" | "password"
+    captchaId: "",
+    timer: 0,
+    cd: 0
+  };
+  var modalMask = null;
+  var trialMask = null;
+
+  var PROFESSIONS = [
+    "", "后端开发", "前端开发", "测试工程师", "架构师", "运维 / SRE", "产品经理", "技术管理", "其他"
+  ];
+
+  function escHtml(s) {
+    return String(s || "").replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function refreshCaptcha() {
+    var box = document.getElementById("authCaptchaBtn");
+    var input = document.getElementById("authCaptchaCode");
+    if (input) input.value = "";
+    fetch("/api/auth/captcha", { credentials: "same-origin" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.ok) {
+          state.captchaId = d.captchaId;
+          if (box) box.innerHTML = d.svg;
+        }
+      })
+      .catch(function () {});
+  }
+
+  function syncModalMode() {
+    if (!modalMask) return;
+    var isReg = state.tab === "register";
+    var isPwd = !isReg && state.loginMode === "password";
+    var isReset = !isReg && state.loginMode === "reset";
+    var isSms = !isPwd;
+
+    document.querySelectorAll("[data-auth-tab]").forEach(function (b) {
+      b.classList.toggle("active", b.getAttribute("data-auth-tab") === state.tab);
+    });
+    var subBar = document.getElementById("authSubtabs");
+    if (subBar) subBar.hidden = isReg;
+    document.querySelectorAll("[data-login-mode]").forEach(function (b) {
+      var mode = b.getAttribute("data-login-mode");
+      b.classList.toggle("active", mode === state.loginMode || (isReset && mode === "password"));
+    });
+
+    var titleEl = document.getElementById("authModalTitle");
+    var subBtn = document.getElementById("authSubmitBtn");
+    var pwdLbl = document.getElementById("lblRegPwd");
+    var pwd2Lbl = document.getElementById("lblRegPwd2");
+    if (isReg) {
+      titleEl.textContent = "注册账号";
+      subBtn.textContent = "完成注册并登录";
+      if (pwdLbl) pwdLbl.textContent = "设置登录密码（至少 6 位）";
+      if (pwd2Lbl) pwd2Lbl.textContent = "确认登录密码";
+    } else if (isReset) {
+      titleEl.textContent = "设置 / 重置登录密码";
+      subBtn.textContent = "确认设置并登录";
+      if (pwdLbl) pwdLbl.textContent = "设置新密码（至少 6 位）";
+      if (pwd2Lbl) pwd2Lbl.textContent = "确认新密码";
+    } else if (isPwd) {
+      titleEl.textContent = "账号密码登录";
+      subBtn.textContent = "立即登录";
+    } else {
+      titleEl.textContent = "手机号验证码登录";
+      subBtn.textContent = "立即登录 / 解锁";
+    }
+
+    document.getElementById("fieldPhone").hidden = isPwd;
+    document.getElementById("fieldAccount").hidden = !isPwd;
+    document.getElementById("fieldSmsCode").hidden = !isSms;
+    document.getElementById("fieldLoginPwd").hidden = !isPwd;
+    document.getElementById("fieldRegExtra").hidden = !(isReg || isReset);
+    var msgEl = document.getElementById("authMsg");
+    if (msgEl) { msgEl.textContent = ""; msgEl.className = "auth-msg"; }
+  }
+
+  var privacyMask = null;
+  function openPrivacyModal() {
+    if (!privacyMask) {
+      privacyMask = document.createElement("div");
+      privacyMask.className = "auth-modal-mask";
+      privacyMask.style.zIndex = "340";
+      privacyMask.hidden = true;
+      privacyMask.innerHTML =
+        '<div class="auth-modal privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privModalTitle">' +
+          '<div class="auth-modal-head">' +
+            '<div class="auth-title" id="privModalTitle">CodeFlow 用户服务与隐私协议</div>' +
+            '<button type="button" class="auth-close" id="privCloseBtn" aria-label="关闭协议弹窗">×</button>' +
+          '</div>' +
+          '<div class="privacy-scroll">' +
+            '<h4>一、我们收集的信息范围</h4>' +
+            '<p>1. 账号基础信息：注册或登录时收集您的手机号码（用于唯一识别账号与接收验证码）、登录密码（采用 PBKDF2-HMAC-SHA256 加盐哈希加密存储，绝不保存明文）及昵称。</p>' +
+            '<p>2. 验证码信息：图形验证码与短信验证码仅用于当次核验，验证后立即失效销毁。</p>' +
+            '<p>3. 个人资料（选填）：您登录后在个人中心主动完善或修改的昵称、所属部门、职业/岗位、公司/团队名称、联系邮箱，仅用于个人资料展示及为您提供技术支持服务。</p>' +
+            '<p>4. 安全审计：记录必要的登录时间与网络地址摘要，仅用于防范恶意刷取短信接口与安全审计。</p>' +
+            '<h4>二、信息的使用目的</h4>' +
+            '<p>用于提供官网账号注册、登录认证、会话维持、个人资料管理，以及在认证后向您开放自部署脚本下载与私有化/商业版技术支持申请。</p>' +
+            '<h4>三、信息共享与披露边界</h4>' +
+            '<p>我们不会向任何无关第三方出售、出租或非法提供您的手机号及个人资料。短信验证码仅经授权短信通道发送核验，不作任何营销用途。</p>' +
+            '<h4>四、数据存储与安全保护</h4>' +
+            '<p>全部用户数据均存储在中华人民共和国境内服务器，不进行跨境传输。会话采用 HttpOnly 安全 Cookie 保护，不使用任何第三方追踪或广告 Cookie。</p>' +
+            '<h4>五、您的权利</h4>' +
+            '<p>登录后您可随时在页面右上角个人昵称下拉卡片中查看并修改昵称、部门、职业、公司及邮箱，或随时退出登录、申请注销账户。完整条款也可访问 <a href="/privacy.html" target="_blank" style="color:var(--accent)">/privacy.html</a> 查看。</p>' +
+          '</div>' +
+          '<button type="button" class="auth-submit" id="privAgreeBtn">我已阅读并同意</button>' +
+        '</div>';
+      document.body.appendChild(privacyMask);
+      document.getElementById("privCloseBtn").addEventListener("click", function () { privacyMask.hidden = true; });
+      privacyMask.addEventListener("click", function (e) { if (e.target === privacyMask) privacyMask.hidden = true; });
+      document.getElementById("privAgreeBtn").addEventListener("click", function () {
+        var ck = document.getElementById("authAgreeCheck");
+        if (ck) ck.checked = true;
+        privacyMask.hidden = true;
+      });
+    }
+    privacyMask.hidden = false;
+  }
+
+  function ensureLoginModal() {
+    if (modalMask) return modalMask;
+    modalMask = document.createElement("div");
+    modalMask.className = "auth-modal-mask";
+    modalMask.hidden = true;
+    modalMask.innerHTML =
+      '<div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">' +
+        '<div class="auth-modal-head">' +
+          '<div class="auth-title" id="authModalTitle">手机号验证码登录</div>' +
+          '<button type="button" class="auth-close" id="authCloseBtn" aria-label="关闭登录弹窗">×</button>' +
+        '</div>' +
+        '<div class="auth-tabs" role="tablist">' +
+          '<button type="button" class="auth-tab active" data-auth-tab="login">登录</button>' +
+          '<button type="button" class="auth-tab" data-auth-tab="register">注册账号</button>' +
+        '</div>' +
+        '<div class="auth-subtabs" id="authSubtabs">' +
+          '<button type="button" class="auth-subtab active" data-login-mode="sms">短信验证码登录</button>' +
+          '<button type="button" class="auth-subtab" data-login-mode="password">密码登录</button>' +
+        '</div>' +
+        '<form id="authForm" autocomplete="off" novalidate>' +
+          '<div class="auth-field" id="fieldPhone">' +
+            '<label for="authPhone">手机号码</label>' +
+            '<input class="auth-input" id="authPhone" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入 11 位中国大陆手机号">' +
+          '</div>' +
+          '<div class="auth-field" id="fieldAccount" hidden>' +
+            '<label for="authAccount">账号（手机号 / 昵称）</label>' +
+            '<input class="auth-input" id="authAccount" type="text" maxlength="48" placeholder="请输入手机号或昵称">' +
+          '</div>' +
+          '<div class="auth-field" id="fieldLoginPwd" hidden>' +
+            '<div class="auth-label-row">' +
+              '<label for="authLoginPwd">登录密码</label>' +
+              '<button type="button" class="auth-link-btn" id="authForgotBtn">忘记 / 设置密码？</button>' +
+            '</div>' +
+            '<input class="auth-input" id="authLoginPwd" type="password" maxlength="64" placeholder="请输入登录密码">' +
+          '</div>' +
+          '<div class="auth-field" id="fieldCaptcha">' +
+            '<label for="authCaptchaCode">图形验证码（点击图片可刷新）</label>' +
+            '<div class="auth-code-row">' +
+              '<input class="auth-input" id="authCaptchaCode" type="text" maxlength="4" placeholder="请输入 4 位图形码">' +
+              '<button type="button" class="auth-captcha-btn" id="authCaptchaBtn" title="点击刷新图形验证码" aria-label="刷新图形验证码"></button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="auth-field" id="fieldSmsCode">' +
+            '<label for="authCode">短信验证码</label>' +
+            '<div class="auth-code-row">' +
+              '<input class="auth-input" id="authCode" type="text" inputmode="numeric" maxlength="6" placeholder="请输入 6 位短信验证码">' +
+              '<button type="button" class="auth-send-btn" id="authSendBtn">获取验证码</button>' +
+            '</div>' +
+          '</div>' +
+          '<div id="fieldRegExtra" hidden>' +
+            '<div class="auth-field">' +
+              '<label for="authRegPwd" id="lblRegPwd">设置登录密码（至少 6 位）</label>' +
+              '<input class="auth-input" id="authRegPwd" type="password" maxlength="64" placeholder="设置 6 位以上登录密码">' +
+            '</div>' +
+            '<div class="auth-field">' +
+              '<label for="authRegPwd2" id="lblRegPwd2">确认登录密码</label>' +
+              '<input class="auth-input" id="authRegPwd2" type="password" maxlength="64" placeholder="请再次输入登录密码">' +
+            '</div>' +
+          '</div>' +
+          '<button type="submit" class="auth-submit" id="authSubmitBtn">立即登录 / 解锁</button>' +
+          '<div class="auth-agree">' +
+            '<input type="checkbox" id="authAgreeCheck">' +
+            '<label for="authAgreeCheck">我已阅读并同意</label>' +
+            '<button type="button" class="auth-link-btn" id="authPrivacyLink">《用户服务与隐私协议》</button>' +
+          '</div>' +
+          '<div class="auth-msg" id="authMsg" role="status"></div>' +
+        '</form>' +
+      '</div>';
+    document.body.appendChild(modalMask);
+
+    var closeBtn = document.getElementById("authCloseBtn");
+    var sendBtn = document.getElementById("authSendBtn");
+    var capBtn = document.getElementById("authCaptchaBtn");
+    var form = document.getElementById("authForm");
+    var phoneIn = document.getElementById("authPhone");
+    var capIn = document.getElementById("authCaptchaCode");
+    var codeIn = document.getElementById("authCode");
+    var msgEl = document.getElementById("authMsg");
+    var subBtn = document.getElementById("authSubmitBtn");
+
+    function setMsg(text, kind) {
+      msgEl.textContent = text || "";
+      msgEl.className = "auth-msg" + (kind ? " " + kind : "");
+    }
+
+    function startCooldown(sec) {
+      clearInterval(state.timer);
+      state.cd = sec;
+      sendBtn.disabled = true;
+      sendBtn.textContent = state.cd + "s 后重发";
+      state.timer = setInterval(function () {
+        state.cd -= 1;
+        if (state.cd <= 0) {
+          clearInterval(state.timer);
+          sendBtn.disabled = false;
+          sendBtn.textContent = "重新获取";
+          refreshCaptcha();
+        } else {
+          sendBtn.textContent = state.cd + "s 后重发";
+        }
+      }, 1000);
+    }
+
+    modalMask.querySelectorAll("[data-auth-tab]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.tab = b.getAttribute("data-auth-tab");
+        if (state.tab === "login" && state.loginMode === "reset") state.loginMode = "sms";
+        syncModalMode();
+        if (!state.captchaId) refreshCaptcha();
+      });
+    });
+    modalMask.querySelectorAll("[data-login-mode]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.loginMode = b.getAttribute("data-login-mode");
+        syncModalMode();
+        if (!state.captchaId) refreshCaptcha();
+      });
+    });
+    var forgotBtn = document.getElementById("authForgotBtn");
+    if (forgotBtn) {
+      forgotBtn.addEventListener("click", function () {
+        state.loginMode = "reset";
+        syncModalMode();
+        if (!state.captchaId) refreshCaptcha();
+      });
+    }
+
+    capBtn.addEventListener("click", refreshCaptcha);
+    var privLink = document.getElementById("authPrivacyLink");
+    if (privLink) privLink.addEventListener("click", openPrivacyModal);
+
+    closeBtn.addEventListener("click", function () {
+      modalMask.hidden = true;
+      state.pendingAction = null;
+    });
+    modalMask.addEventListener("click", function (e) {
+      if (e.target === modalMask) {
+        modalMask.hidden = true;
+        state.pendingAction = null;
+      }
+    });
+
+    sendBtn.addEventListener("click", function () {
+      var phone = (phoneIn.value || "").trim();
+      var capCode = (capIn.value || "").trim();
+      var agreeCk = document.getElementById("authAgreeCheck");
+      if (agreeCk && !agreeCk.checked) {
+        setMsg("请先阅读并勾选同意《用户服务与隐私协议》", "err");
+        return;
+      }
+      if (!/^1[3-9]\d{9}$/.test(phone)) {
+        setMsg("请输入有效的 11 位中国大陆手机号", "err");
+        phoneIn.focus();
+        return;
+      }
+      if (capCode.length !== 4) {
+        setMsg("请先输入 4 位图形验证码", "err");
+        capIn.focus();
+        return;
+      }
+      var smsScene = state.tab === "register" ? "register" : (state.loginMode === "reset" ? "reset" : "login");
+      sendBtn.disabled = true;
+      sendBtn.textContent = "发送中…";
+      setMsg("");
+      fetch("/api/auth/send-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          phone: phone,
+          scene: smsScene,
+          captchaId: state.captchaId,
+          captchaCode: capCode
+        })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (!d.ok) {
+            if (d.code === "CAPTCHA_INVALID") refreshCaptcha();
+            setMsg(d.message || "发送失败，请稍后重试", "err");
+            if (d.retryAfter) startCooldown(Number(d.retryAfter));
+            else {
+              sendBtn.disabled = false;
+              sendBtn.textContent = "获取验证码";
+            }
+            return;
+          }
+          setMsg(d.message || "短信验证码已发送，请注意查收", "ok");
+          startCooldown(Number(d.cooldown || 60));
+          codeIn.focus();
+        })
+        .catch(function () {
+          setMsg("网络异常，请确认站点服务已启动", "err");
+          sendBtn.disabled = false;
+          sendBtn.textContent = "获取验证码";
+        });
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var agreeCk = document.getElementById("authAgreeCheck");
+      if (agreeCk && !agreeCk.checked) {
+        setMsg("请先阅读并勾选同意《用户服务与隐私协议》", "err");
+        return;
+      }
+      var isReg = state.tab === "register";
+      var isPwd = !isReg && state.loginMode === "password";
+      var isReset = !isReg && state.loginMode === "reset";
+      var url = "/api/auth/login";
+      var payload = {};
+
+      if (isPwd) {
+        var acc = (document.getElementById("authAccount").value || "").trim();
+        var pwd = document.getElementById("authLoginPwd").value || "";
+        var cap = (capIn.value || "").trim();
+        if (!acc || !pwd) {
+          setMsg("请输入账号和登录密码", "err");
+          return;
+        }
+        if (cap.length !== 4) {
+          setMsg("请输入 4 位图形验证码", "err");
+          capIn.focus();
+          return;
+        }
+        url = "/api/auth/login-password";
+        payload = { account: acc, password: pwd, captchaId: state.captchaId, captchaCode: cap };
+      } else {
+        var phone = (phoneIn.value || "").trim();
+        var code = (codeIn.value || "").trim();
+        if (!/^1[3-9]\d{9}$/.test(phone)) {
+          setMsg("请输入有效的 11 位中国大陆手机号", "err");
+          return;
+        }
+        if (!/^\d{4,8}$/.test(code)) {
+          setMsg("请输入短信中的数字验证码", "err");
+          return;
+        }
+        if (isReg || isReset) {
+          var rpwd = document.getElementById("authRegPwd").value || "";
+          var rpwd2 = document.getElementById("authRegPwd2").value || "";
+          if (rpwd.length < 6) {
+            setMsg("请设置至少 6 位登录密码", "err");
+            document.getElementById("authRegPwd").focus();
+            return;
+          }
+          if (rpwd !== rpwd2) {
+            setMsg("两次输入的密码不一致，请重新核对", "err");
+            document.getElementById("authRegPwd2").focus();
+            return;
+          }
+          if (isReg) {
+            url = "/api/auth/register";
+            payload = { phone: phone, code: code, password: rpwd, confirmPassword: rpwd2 };
+          } else {
+            url = "/api/auth/reset-password";
+            payload = { phone: phone, code: code, newPassword: rpwd, confirmPassword: rpwd2 };
+          }
+        } else {
+          url = "/api/auth/login";
+          payload = { phone: phone, code: code };
+        }
+      }
+
+      subBtn.disabled = true;
+      subBtn.textContent = "处理中…";
+      setMsg("");
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify(payload)
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          subBtn.disabled = false;
+          syncModalMode();
+          if (!d.ok) {
+            if (isPwd) refreshCaptcha();
+            setMsg(d.message || "操作失败，请重试", "err");
+            return;
+          }
+          state.user = d.user;
+          state.captchaId = "";
+          codeIn.value = "";
+          var rp1 = document.getElementById("authRegPwd");
+          var rp2 = document.getElementById("authRegPwd2");
+          var lp = document.getElementById("authLoginPwd");
+          if (rp1) rp1.value = "";
+          if (rp2) rp2.value = "";
+          if (lp) lp.value = "";
+          setMsg("");
+          modalMask.hidden = true;
+          renderAuthState();
+          var fn = state.pendingAction;
+          state.pendingAction = null;
+          if (typeof fn === "function") fn();
+        })
+        .catch(function () {
+          subBtn.disabled = false;
+          syncModalMode();
+          setMsg("网络异常，请稍后重试", "err");
+        });
+    });
+
+    return modalMask;
+  }
+
+  function openLoginModal(reason, afterLogin, defaultTab) {
+    ensureLoginModal();
+    state.pendingAction = afterLogin || null;
+    state.tab = defaultTab || "login";
+    if (state.tab === "login" && state.loginMode === "reset") state.loginMode = "sms";
+    syncModalMode();
+    if (!state.captchaId) refreshCaptcha();
+    modalMask.hidden = false;
+    var phoneIn = document.getElementById("authPhone");
+    if (phoneIn && !phoneIn.hidden) phoneIn.focus();
+  }
+
+  function openTrialModal() {
+    if (!trialMask) {
+      trialMask = document.createElement("div");
+      trialMask.className = "auth-modal-mask";
+      trialMask.hidden = true;
+      trialMask.innerHTML =
+        '<div class="auth-modal" role="dialog" aria-modal="true">' +
+          '<div class="auth-modal-head">' +
+            '<div class="auth-title">登记团队信息</div>' +
+            '<button type="button" class="auth-close" id="trialCloseBtn" aria-label="关闭弹窗">×</button>' +
+          '</div>' +
+          '<p class="auth-sub">我们将通过您当前登录的手机号与您联系，提供私有化部署指导或商业授权方案。</p>' +
+          '<form id="trialForm">' +
+            '<div class="auth-field">' +
+              '<label for="trialCompany">企业或团队名称</label>' +
+              '<input class="auth-input" id="trialCompany" type="text" maxlength="120" placeholder="例如：某科技研发中心" required>' +
+            '</div>' +
+            '<div class="auth-field">' +
+              '<label for="trialScenario">部署规模或需求说明（选填）</label>' +
+              '<input class="auth-input" id="trialScenario" type="text" maxlength="300" placeholder="例如：内网私有化部署 / 对接禅道或企微">' +
+            '</div>' +
+            '<button type="submit" class="auth-submit" id="trialSubmitBtn">提交申请</button>' +
+            '<div class="auth-msg" id="trialMsg"></div>' +
+          '</form>' +
+        '</div>';
+      document.body.appendChild(trialMask);
+      document.getElementById("trialCloseBtn").addEventListener("click", function () { trialMask.hidden = true; });
+      trialMask.addEventListener("click", function (e) { if (e.target === trialMask) trialMask.hidden = true; });
+      document.getElementById("trialForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var comp = (document.getElementById("trialCompany").value || "").trim();
+        var scen = (document.getElementById("trialScenario").value || "").trim();
+        var msg = document.getElementById("trialMsg");
+        var btn = document.getElementById("trialSubmitBtn");
+        btn.disabled = true;
+        fetch("/api/resources/trial-apply", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({ company: comp, scenario: scen })
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            btn.disabled = false;
+            msg.textContent = d.message || (d.ok ? "提交成功" : "提交失败");
+            msg.className = "auth-msg " + (d.ok ? "ok" : "err");
+          })
+          .catch(function () {
+            btn.disabled = false;
+            msg.textContent = "网络异常，请稍后重试";
+            msg.className = "auth-msg err";
+          });
+      });
+    }
+    var compIn = document.getElementById("trialCompany");
+    if (compIn && state.user && state.user.company && !compIn.value) {
+      compIn.value = state.user.company;
+    }
+    var msg = document.getElementById("trialMsg");
+    if (msg) { msg.textContent = ""; msg.className = "auth-msg"; }
+    trialMask.hidden = false;
+  }
+
+  function doLogout() {
+    fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" })
+      .then(function () {
+        state.user = null;
+        renderAuthState();
+      })
+      .catch(function () {});
+  }
+
+  function buildUserZoneHtml(u) {
+    var roleText = escHtml(u.vipType || "普通用户") + (u.profession ? " · " + escHtml(u.profession) : "");
+    var profOpts = PROFESSIONS.map(function (p) {
+      var sel = (u.profession || "") === p ? " selected" : "";
+      return '<option value="' + escHtml(p) + '"' + sel + '>' + (p || "未设置") + '</option>';
+    }).join("");
+
+    var pwdLabel = u.hasPassword ? "修改密码" : "设置密码";
+    var oldPwdField = u.hasPassword
+      ? '<div><label for="udInOldPwd">原密码</label><input id="udInOldPwd" type="password" maxlength="64" placeholder="请输入原登录密码" required></div>'
+      : '<div class="ud-tip">当前账号暂未设置密码，设置后可使用「账号密码登录」。</div>';
+
+    return (
+      '<button type="button" class="nav-user-pill" id="navUserPill" aria-expanded="false">' +
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+        '<span>' + escHtml(u.nickname) + '</span>' +
+      '</button>' +
+      '<button type="button" class="nav-logout-icon" id="navLogoutBtn" title="退出登录" aria-label="退出登录">' +
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>' +
+      '</button>' +
+      '<div class="user-dropdown" id="navUserDropdown" hidden>' +
+        '<div class="ud-head">' +
+          '<div class="ud-avatar">' +
+            '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+          '</div>' +
+          '<div class="ud-meta">' +
+            '<div class="ud-name">' + escHtml(u.nickname) + '</div>' +
+            '<div class="ud-role">' + roleText + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ud-actions">' +
+          '<button type="button" class="ud-act-btn" id="udEditBtn">编辑资料</button>' +
+          '<button type="button" class="ud-act-btn" id="udPwdBtn">' + pwdLabel + '</button>' +
+        '</div>' +
+        '<div class="ud-rows" id="udViewRows">' +
+          '<div class="ud-row"><span class="ud-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>VIP类型</span><span class="ud-v">' + escHtml(u.vipType || "普通用户") + '</span></div>' +
+          '<div class="ud-row"><span class="ud-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>到期时间</span><span class="ud-v">' + escHtml(u.vipExpireAt || "--") + '</span></div>' +
+          '<div class="ud-row"><span class="ud-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>绑定手机号</span><span class="ud-v">' + escHtml(u.phone) + '</span></div>' +
+        '</div>' +
+        '<form class="ud-form" id="udEditForm" hidden>' +
+          '<div><label for="udInNick">昵称</label><input id="udInNick" type="text" maxlength="32" value="' + escHtml(u.nickname) + '" required></div>' +
+          '<div><label for="udInDept">所属部门</label><input id="udInDept" type="text" maxlength="48" value="' + escHtml(u.department) + '" placeholder="如：研发部 / 测试部 / 运维部"></div>' +
+          '<div><label for="udInProf">职业 / 岗位</label><select id="udInProf">' + profOpts + '</select></div>' +
+          '<div><label for="udInComp">公司 / 团队</label><input id="udInComp" type="text" maxlength="80" value="' + escHtml(u.company) + '" placeholder="企业或团队名称"></div>' +
+          '<div><label for="udInEmail">联系邮箱</label><input id="udInEmail" type="email" maxlength="80" value="' + escHtml(u.email) + '" placeholder="name@example.com"></div>' +
+          '<div class="ud-form-act">' +
+            '<button type="submit" class="ud-save" id="udSaveBtn">保存资料</button>' +
+            '<button type="button" class="ud-cancel" id="udCancelBtn">取消</button>' +
+          '</div>' +
+          '<div class="auth-msg" id="udMsg"></div>' +
+        '</form>' +
+        '<form class="ud-form" id="udPwdForm" hidden>' +
+          oldPwdField +
+          '<div><label for="udInNewPwd">设置新密码（至少 6 位）</label><input id="udInNewPwd" type="password" maxlength="64" placeholder="请输入 6 位以上新密码" required></div>' +
+          '<div><label for="udInNewPwd2">确认新密码</label><input id="udInNewPwd2" type="password" maxlength="64" placeholder="请再次输入新密码" required></div>' +
+          '<div class="ud-form-act">' +
+            '<button type="submit" class="ud-save" id="udPwdSaveBtn">保存密码</button>' +
+            '<button type="button" class="ud-cancel" id="udPwdCancelBtn">取消</button>' +
+          '</div>' +
+          '<div class="auth-msg" id="udPwdMsg"></div>' +
+        '</form>' +
+      '</div>'
+    );
+  }
+
+  function renderAuthState() {
+    var zone = document.getElementById("navAuthZone");
+    var mBtn = document.getElementById("navMobileAuthBtn");
+
+    if (zone) {
+      if (!state.user) {
+        zone.innerHTML = '<button type="button" class="btn btn-ghost btn-sm nav-auth-btn" id="navAuthBtn" aria-label="账号登录或注册">登录 / 注册</button>';
+        var btn = document.getElementById("navAuthBtn");
+        if (btn) btn.addEventListener("click", function () { openLoginModal(""); });
+      } else {
+        zone.innerHTML = buildUserZoneHtml(state.user);
+        var pill = document.getElementById("navUserPill");
+        var drop = document.getElementById("navUserDropdown");
+        var outBtn = document.getElementById("navLogoutBtn");
+        var editBtn = document.getElementById("udEditBtn");
+        var pwdBtn = document.getElementById("udPwdBtn");
+        var viewRows = document.getElementById("udViewRows");
+        var editForm = document.getElementById("udEditForm");
+        var pwdForm = document.getElementById("udPwdForm");
+        var cancelBtn = document.getElementById("udCancelBtn");
+        var pwdCancelBtn = document.getElementById("udPwdCancelBtn");
+
+        function switchPanel(panel) {
+          viewRows.hidden = panel !== "view";
+          editForm.hidden = panel !== "edit";
+          pwdForm.hidden = panel !== "pwd";
+          editBtn.classList.toggle("active", panel === "edit");
+          pwdBtn.classList.toggle("active", panel === "pwd");
+        }
+
+        function setOpen(open) {
+          if (!drop || !pill) return;
+          drop.hidden = !open;
+          pill.setAttribute("aria-expanded", open ? "true" : "false");
+        }
+
+        pill.addEventListener("click", function (e) {
+          e.stopPropagation();
+          setOpen(drop.hidden);
+        });
+        outBtn.addEventListener("click", doLogout);
+
+        editBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          switchPanel(editForm.hidden ? "edit" : "view");
+        });
+        pwdBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          switchPanel(pwdForm.hidden ? "pwd" : "view");
+        });
+        cancelBtn.addEventListener("click", function () { switchPanel("view"); });
+        pwdCancelBtn.addEventListener("click", function () { switchPanel("view"); });
+
+        pwdForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var oldEl = document.getElementById("udInOldPwd");
+          var np1 = document.getElementById("udInNewPwd").value || "";
+          var np2 = document.getElementById("udInNewPwd2").value || "";
+          var msg = document.getElementById("udPwdMsg");
+          var btn = document.getElementById("udPwdSaveBtn");
+          if (np1.length < 6) {
+            msg.textContent = "新密码长度至少为 6 位";
+            msg.className = "auth-msg err";
+            return;
+          }
+          if (np1 !== np2) {
+            msg.textContent = "两次输入的新密码不一致，请重新核对";
+            msg.className = "auth-msg err";
+            return;
+          }
+          btn.disabled = true;
+          btn.textContent = "保存中…";
+          fetch("/api/auth/password", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({
+              oldPassword: oldEl ? oldEl.value : "",
+              newPassword: np1,
+              confirmPassword: np2
+            })
+          })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+              btn.disabled = false;
+              btn.textContent = "保存密码";
+              if (!d.ok) {
+                msg.textContent = d.message || "保存失败";
+                msg.className = "auth-msg err";
+                return;
+              }
+              state.user = d.user;
+              renderAuthState();
+              var newDrop = document.getElementById("navUserDropdown");
+              var newPill = document.getElementById("navUserPill");
+              if (newDrop && newPill) {
+                newDrop.hidden = false;
+                newPill.setAttribute("aria-expanded", "true");
+              }
+            })
+            .catch(function () {
+              btn.disabled = false;
+              btn.textContent = "保存密码";
+              msg.textContent = "网络异常，请重试";
+              msg.className = "auth-msg err";
+            });
+        });
+        editForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var saveBtn = document.getElementById("udSaveBtn");
+          var msg = document.getElementById("udMsg");
+          saveBtn.disabled = true;
+          saveBtn.textContent = "保存中…";
+          fetch("/api/auth/profile", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({
+              nickname: (document.getElementById("udInNick").value || "").trim(),
+              department: (document.getElementById("udInDept").value || "").trim(),
+              profession: document.getElementById("udInProf").value || "",
+              company: (document.getElementById("udInComp").value || "").trim(),
+              email: (document.getElementById("udInEmail").value || "").trim()
+            })
+          })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+              saveBtn.disabled = false;
+              saveBtn.textContent = "保存资料";
+              if (!d.ok) {
+                msg.textContent = d.message || "保存失败";
+                msg.className = "auth-msg err";
+                return;
+              }
+              state.user = d.user;
+              renderAuthState();
+              var newDrop = document.getElementById("navUserDropdown");
+              var newPill = document.getElementById("navUserPill");
+              if (newDrop && newPill) {
+                newDrop.hidden = false;
+                newPill.setAttribute("aria-expanded", "true");
+              }
+            })
+            .catch(function () {
+              saveBtn.disabled = false;
+              saveBtn.textContent = "保存资料";
+              msg.textContent = "网络异常，请重试";
+              msg.className = "auth-msg err";
+            });
+        });
+      }
+    }
+
+    if (mBtn) {
+      mBtn.textContent = state.user
+        ? ("已登录 " + state.user.nickname + "（点击退出）")
+        : "手机号登录 / 注册";
+      mBtn.onclick = function () {
+        if (state.user) doLogout();
+        else openLoginModal("");
+      };
+    }
+
+    var area = document.getElementById("deployProtectedArea");
+    if (area) {
+      area.classList.add("auth-locked-wrap");
+      var existingGate = document.getElementById("deployGateCard");
+      if (state.user) {
+        area.classList.remove("is-locked");
+        if (existingGate) existingGate.hidden = true;
+      } else {
+        area.classList.add("is-locked");
+        if (!existingGate) {
+          existingGate = document.createElement("div");
+          existingGate.id = "deployGateCard";
+          existingGate.className = "auth-gate-card";
+          existingGate.innerHTML =
+            '<span class="eyebrow">受保护资源</span>' +
+            '<h3>登录后解锁完整部署命令与脚本包下载</h3>' +
+            '<p>使用手机号完成注册或登录，即可查看平台全栈构建命令、执行器接入参数，并下载一键部署脚本包。</p>' +
+            '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' +
+              '<button type="button" class="btn btn-primary" id="deployUnlockBtn">登录解锁</button>' +
+              '<button type="button" class="btn btn-ghost" id="deployRegBtn">新用户注册</button>' +
+            '</div>';
+          area.insertBefore(existingGate, area.firstChild);
+          document.getElementById("deployUnlockBtn").addEventListener("click", function () {
+            openLoginModal("自部署命令与脚本包", null, "login");
+          });
+          document.getElementById("deployRegBtn").addEventListener("click", function () {
+            openLoginModal("自部署命令与脚本包", null, "register");
+          });
+        }
+        existingGate.hidden = false;
+      }
+    }
+  }
+
+  document.addEventListener("click", function (e) {
+    var drop = document.getElementById("navUserDropdown");
+    var zone = document.getElementById("navAuthZone");
+    if (drop && !drop.hidden && zone && !zone.contains(e.target)) {
+      drop.hidden = true;
+      var pill = document.getElementById("navUserPill");
+      if (pill) pill.setAttribute("aria-expanded", "false");
+    }
+
+    var dl = e.target.closest ? e.target.closest("[data-auth-download]") : null;
+    if (dl) {
+      e.preventDefault();
+      var url = dl.getAttribute("data-auth-download");
+      if (state.user) {
+        location.href = url;
+      } else {
+        openLoginModal("一键部署脚本下载", function () { location.href = url; });
+      }
+      return;
+    }
+    var tr = e.target.closest ? e.target.closest("[data-auth-trial]") : null;
+    if (tr) {
+      e.preventDefault();
+      if (state.user) openTrialModal();
+      else openLoginModal("私有化 / 商业版支持申请", function () { openTrialModal(); });
+      return;
+    }
+    var req = e.target.closest ? e.target.closest("[data-require-auth]") : null;
+    if (req && !state.user) {
+      e.preventDefault();
+      var href = req.getAttribute("href");
+      var label = req.getAttribute("data-require-auth") || "受限资源";
+      openLoginModal(label, function () {
+        if (href) location.href = href;
+      });
+    }
+  });
+
+  fetch("/api/auth/me", { credentials: "same-origin" })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      state.user = d && d.authenticated ? d.user : null;
+      state.ready = true;
+      renderAuthState();
+    })
+    .catch(function () {
+      state.ready = true;
+      renderAuthState();
+    });
+})();
