@@ -1110,9 +1110,9 @@
     }
     var manualBtn = document.getElementById("demoManualBtn");
     if (manualBtn) manualBtn.addEventListener("click", function () {
-      // 登录模块渲染用户卡（navUserPill）即视为已登录
+      // 登录模块渲染用户卡（navUserPill）即视为已登录；未登录转点登录按钮（同源门禁）
       if (document.getElementById("navUserPill")) downloadManual();
-      else if (typeof openLoginModal === "function") openLoginModal("用户操作手册下载");
+      else { var b = document.getElementById("navAuthBtn"); if (b) b.click(); }
     });
 
     // 分享按钮：复制分享页链接
@@ -1128,3 +1128,26 @@
     });
   });
 })();
+
+// 锚点兜底：smooth 滚动在部分内嵌/无头浏览器里不生效，700ms 后未到位则直接跳
+document.addEventListener("click", function (e) {
+  var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+  if (!a) return;
+  var id = a.getAttribute("href").slice(1);
+  if (!id) return;
+  var el = document.getElementById(id);
+  if (!el) return;
+  setTimeout(function () {
+    var top = el.getBoundingClientRect().top;
+    if (Math.abs(top) > 60) {
+      var style = getComputedStyle(document.documentElement);
+      if (style.scrollBehavior === "smooth") {
+        var st = document.createElement("style");
+        st.textContent = "html{scroll-behavior:auto!important}";
+        document.head.appendChild(st);
+        el.scrollIntoView();
+        setTimeout(function () { st.remove(); }, 100);
+      }
+    }
+  }, 700);
+}, true);
