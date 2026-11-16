@@ -377,8 +377,74 @@ def g24() -> None:
     g("G24", not bad, "; ".join(sorted(set(bad))[:6]))
 
 
+# ── G25 文字对比度：正文类令牌不得低于 WCAG AA（4.5:1），强调文字色另有门槛 ──
+def _g25_rel_lum(hex_color: str) -> float:
+    h = hex_color.strip().lstrip("#")
+    if len(h) == 3:
+        h = "".join(ch * 2 for ch in h)
+    out = []
+    for i in (0, 2, 4):
+        v = int(h[i:i + 2], 16) / 255
+        out.append(v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * out[0] + 0.7152 * out[1] + 0.0722 * out[2]
+
+
+def _g25_ratio(fg: str, bg: str) -> float:
+    la, lb = _g25_rel_lum(fg), _g25_rel_lum(bg)
+    hi, lo = max(la, lb), min(la, lb)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def _g25_theme_vars(css: str, marker: str) -> dict:
+    """取某个主题块里的 --变量 定义（marker 之后到下一个 '}' 之前）。"""
+    i = css.find(marker)
+    if i < 0:
+        return {}
+    j = css.find("}", i)
+    block = css[i:j]
+    out = {}
+    for m in re.finditer(r"(--[a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{3,8})\s*;", block):
+        out[m.group(1)] = m.group(2)
+    return out
+
+
+def g25() -> None:
+    """站点的灰字是上一轮被点名的问题：正文类颜色不得低于 AA 4.5:1。
+    亮色主题尤其要盯住 --muted（曾只有 4.54:1）与 --accent 文字色。"""
+    css = (SITE / "assets" / "site.css").read_text(encoding="utf-8")
+    dark = _g25_theme_vars(css, ":root")
+    light = _g25_theme_vars(css, '[data-theme="light"]')
+    bad = []
+    # 每套主题：文字色令牌 vs 该主题的底色（正文对比 ≥4.5；强调文字色 ≥4.5）
+    for name, vars_ in (("dark", dark), ("light", light)):
+        bg = vars_.get("--bg")
+        if not bg:
+            bad.append(f"{name} 主题缺少 --bg")
+            continue
+        for token in ("--text", "--text-soft", "--muted", "--skip"):
+            c = vars_.get(token)
+            if not c:
+                bad.append(f"{name} 缺少 {token}")
+                continue
+            r = _g25_ratio(c, bg)
+            if r < 4.5:
+                bad.append(f"{name} {token} {c} 对比度 {r:.2f}:1 < 4.5:1")
+        # 强调文字色必须能压在 accent 浅底上（accent-weak 叠在 bg 上）
+        at = vars_.get("--accent-text")
+        if not at:
+            bad.append(f"{name} 缺少 --accent-text")
+        else:
+            r = _g25_ratio(at, bg)
+            if r < 4.5:
+                bad.append(f"{name} --accent-text {at} 对比度 {r:.2f}:1 < 4.5:1")
+        # 文字色不许直接用品牌主色（浅底上只有 3.1:1）
+        if re.search(r"(?<![\w-])color:var\(--accent\)(?![\w-])", css):
+            bad.append("存在 color:var(--accent) 的文字：应改用 var(--accent-text)")
+    g("G25", not bad, "; ".join(bad[:5]))
+
+
 def main() -> int:
-    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24):
+    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25):
         try:
             fn()
         except Exception as e:  # noqa: BLE001
