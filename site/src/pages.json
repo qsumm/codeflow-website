@@ -43,7 +43,7 @@
    "slug": "deploy",
    "file": "deploy",
    "title": "自部署指南 · CodeFlow",
-   "desc": "平台前后端与执行器 runtime 的自部署命令：单机 4C8G 起步，build.sh / bootstrap.sh 一条命令起全栈，执行器节点 2C2G 即可接入。",
+   "desc": "平台前后端与执行器 runtime 的自部署命令：单机 4 核 4G 起步，build.sh / bootstrap.sh 一条命令起全栈。",
    "nav": "main",
    "nav_active": "deploy"
   },
