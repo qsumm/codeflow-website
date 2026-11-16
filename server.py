@@ -956,7 +956,7 @@ async def auth_repo(request: Request):
 MEDIA_SECRET = os.environ.get("MEDIA_TOKEN_SECRET", "").strip() or secrets.token_hex(32)
 MEDIA_DIR = Path(os.environ.get("MEDIA_DIR", "/opt/codeflow-app/media"))
 # 名称 → 文件白名单（路径不可拼接，只允许枚举键）
-MEDIA_FILES = {"demo": "demo.mp4", "ecom": "ecom.mp4", "perf": "perf.mp4"}
+MEDIA_FILES = {"demo": "demo.mp4", "ecom": "ecom.mp4", "perf": "perf.mp4", "manual": "manual.pdf"}
 MEDIA_TTL_SEC = 30 * 60
 
 
@@ -975,8 +975,10 @@ def _media_check(name: str, token: str) -> bool:
 
 
 @app.get("/api/media/token")
-async def media_token(request: Request):
-    """发短时效视频令牌（浏览器 <video> 取流用；直链文件已在站点目录外，404）。"""
+async def media_token(request: Request, name: str = "demo"):
+    """发短时效媒体令牌（视频取流 / 手册下载用；直链文件已在站点目录外，404）。"""
+    if name not in MEDIA_FILES:
+        return JSONResponse({"ok": False, "message": "未知媒体"}, status_code=404)
     return JSONResponse({"ok": True, "t": _media_token(int(time.time())), "ttl": MEDIA_TTL_SEC})
 
 
@@ -991,7 +993,15 @@ async def media_stream(name: str, request: Request):
     path = MEDIA_DIR / MEDIA_FILES[name]
     if not path.exists():
         return JSONResponse({"ok": False, "message": "媒体文件缺失"}, status_code=404)
-    # nginx internal：由 X-Accel-Redirect 转发，自动支持 Range 拖动进度条
+    # nginx internal：由 X-Accel-Redirect 转发；视频支持 Range 拖动进度条，PDF 以附件下发
+    if name == "manual":
+        return Response(
+            status_code=200,
+            headers={"X-Accel-Redirect": f"/_media/{MEDIA_FILES[name]}",
+                     "Content-Type": "application/pdf",
+                     "Content-Disposition": 'attachment; filename="CodeFlow-User-Manual-v2.0.1.pdf"',
+                     "Cache-Control": "no-store"},
+        )
     return Response(
         status_code=200,
         headers={"X-Accel-Redirect": f"/_media/{MEDIA_FILES[name]}",

@@ -917,6 +917,8 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .repo-mask--open{filter:none;color:inherit}
 
 /* 「分享视频」按钮：预览图上方右上角悬浮，点按复制分享链接 */
+.demo-actions{position:absolute;top:14px;right:14px;z-index:3;display:flex;gap:8px}
+.demo-actions .demo-share-btn{position:static}
 .demo-share-btn{position:absolute;top:14px;right:14px;z-index:3;
   display:inline-flex;align-items:center;gap:6px;
   padding:8px 14px;border-radius:999px;cursor:pointer;

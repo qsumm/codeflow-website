@@ -11,7 +11,7 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "CodeFlow · AI 软件交付工厂", "applicationCategory": "DeveloperApplication", "operatingSystem": "Linux, macOS", "softwareVersion": "1.2.0", "license": "https://www.gnu.org/licenses/gpl-3.0.html", "description": "研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水线自动推进，人只做澄清确认与验收。开源协议 GPL-3.0，支持私有化部署与二次开发。"}
 </script>
-<link rel="stylesheet" href="/assets/site.css?v=97b8fbdb">
+<link rel="stylesheet" href="/assets/site.css?v=dcf665e0">
 <meta property="og:title" content="CodeFlow · AI 软件交付工厂 — 需求进，可验收的交付出">
   <meta property="og:description" content="研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水线自动推进，人只做澄清确认与验收。开源协议 GPL-3.0，支持私有化部署与二次开发。">
   <meta property="og:type" content="website">
@@ -230,7 +230,10 @@
 <link href="/assets/product-demo.css?v=20261116" rel="stylesheet">
 <div class="wrap">
   <div id="product-demo" class="product-demo">
-    <button type="button" class="demo-share-btn" id="demoShareBtn" aria-label="复制视频分享链接">🔗 分享视频</button>
+    <div class="demo-actions">
+      <button type="button" class="demo-share-btn" id="demoShareBtn" aria-label="复制视频分享链接">🔗 分享视频</button>
+      <button type="button" class="demo-share-btn" id="demoManualBtn" aria-label="登录后下载用户操作手册" data-auth-manual>📘 使用手册</button>
+    </div>
     <a class="product-demo-preview" href="#product-demo-player"
        aria-label="播放视频">
       <img src="/assets/media/codeflow-demo-v2-cover.jpg" alt="" width="960" height="540" loading="lazy" decoding="async">
@@ -564,6 +567,6 @@ bash build.sh && bash bootstrap.sh</code>
   </div>
 </aside>
 
-<script src="/assets/site.js?v=97b8fbdb" defer></script>
+<script src="/assets/site.js?v=dcf665e0" defer></script>
 </body>
 </html>

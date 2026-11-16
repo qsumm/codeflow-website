@@ -1099,6 +1099,22 @@
       }
       dialog.addEventListener("close", function () { big.pause(); });
     }
+    // 使用手册：登录后凭令牌下载 PDF（未登录弹登录门禁）
+    function downloadManual() {
+      mediaTokenUrl("manual", function (u) {
+        if (!u) { alert("手册下载暂不可用，请稍后再试"); return; }
+        var a = document.createElement("a");
+        a.href = u; a.download = "CodeFlow-User-Manual-v2.0.1.pdf";
+        document.body.appendChild(a); a.click(); a.remove();
+      });
+    }
+    var manualBtn = document.getElementById("demoManualBtn");
+    if (manualBtn) manualBtn.addEventListener("click", function () {
+      // 登录模块渲染用户卡（navUserPill）即视为已登录
+      if (document.getElementById("navUserPill")) downloadManual();
+      else if (typeof openLoginModal === "function") openLoginModal("用户操作手册下载");
+    });
+
     // 分享按钮：复制分享页链接
     var btn = document.getElementById("demoShareBtn");
     if (btn) btn.addEventListener("click", function () {
