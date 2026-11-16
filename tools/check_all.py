@@ -443,8 +443,30 @@ def g25() -> None:
     g("G25", not bad, "; ".join(bad[:5]))
 
 
+# ── G26 源码地址永久打码：正文里出现的仓库地址必须在 .repo-mask 内，且悬浮不得还原 ──
+def g26() -> None:
+    """源码仓库地址属敏感信息：页面正文里出现时必须套 .repo-mask（打码），
+    且 CSS 不得在 :hover 时把模糊撤掉（那等于明文暴露）。"""
+    bad = []
+    css = (SITE / "assets" / "site.css").read_text(encoding="utf-8")
+    # 1) 悬浮不得还原
+    for m in re.finditer(r"([^{}]*\.repo-mask[^{}]*)\{([^}]*)\}", css):
+        if re.search(r"filter\s*:\s*blur\(\s*0(?:px)?\s*\)", m.group(2)):
+            bad.append(f"规则 {m.group(1).strip()[:40]} 还原了模糊（明文暴露）")
+    if ".repo-mask{" not in css:
+        bad.append("缺少 .repo-mask 样式")
+    # 2) 正文里的仓库地址必须都在 .repo-mask 内
+    for p_ in html_pages():
+        html = p_.read_text(encoding="utf-8")
+        for m in re.finditer(r"<(\w+)([^>]*?)>([^<]*github\.com/qsumm[^<]*)<", html):
+            tag, attrs, text = m.group(1), m.group(2), m.group(3)
+            if "repo-mask" not in attrs:
+                bad.append(f"{p_.name}: 仓库地址未打码 → {text.strip()[:40]}")
+    g("G26", not bad, "; ".join(sorted(set(bad))[:5]))
+
+
 def main() -> int:
-    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25):
+    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25, g26):
         try:
             fn()
         except Exception as e:  # noqa: BLE001
