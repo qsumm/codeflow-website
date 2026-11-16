@@ -8,7 +8,7 @@
 <title>用户服务与隐私协议 · CodeFlow</title>
 <meta name="description" content="CodeFlow 官网用户服务与隐私保护协议：说明账号手机号与个人资料收集范围、加密存储机制、数据境内存储原则及用户权利。">
 <link rel="icon" type="image/svg+xml" href="/assets/codeflow-logo.svg">
-<link rel="stylesheet" href="/assets/site.css?v=b782f204">
+<link rel="stylesheet" href="/assets/site.css?v=9da9cd98">
 <meta property="og:title" content="用户服务与隐私协议 · CodeFlow">
   <meta property="og:description" content="CodeFlow 官网用户服务与隐私保护协议：说明账号手机号与个人资料收集范围、加密存储机制、数据境内存储原则及用户权利。">
   <meta property="og:type" content="website">
@@ -165,12 +165,20 @@
   </div>
 </footer>
 
-<!-- 右下角常驻联系挂件（FR-33）：文案在上、二维码在下；fixed 定位不占文档流 -->
+<!-- 右下角常驻联系挂件（FR-33）：桌面常显卡片；手机端收成一枚气泡，点开才展开二维码 -->
 <aside class="wx-contact" aria-label="联系方式">
-  <p class="wx-contact-label">扫码或添加微信号：<code>cloud288</code></p>
-  <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
+  <button type="button" class="wx-toggle" aria-expanded="false" aria-label="展开微信联系方式">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M9.4 3.6c-3.7 0-6.7 2.5-6.7 5.6 0 1.8 1 3.4 2.6 4.4l-.7 2.2 2.5-1.3c.7.2 1.5.4 2.3.4h.4a5.6 5.6 0 0 1-.2-1.5c0-3.1 3-5.7 6.7-5.7h.6c-.7-2.4-3.4-4.1-6.5-4.1Z"/>
+      <path d="M21.3 13.4c0-2.6-2.5-4.7-5.6-4.7s-5.6 2.1-5.6 4.7 2.5 4.7 5.6 4.7c.7 0 1.3-.1 1.9-.3l2.1 1.1-.6-1.8c1.3-.9 2.2-2.2 2.2-3.7Z"/>
+    </svg>
+  </button>
+  <div class="wx-body">
+    <p class="wx-contact-label">扫码或添加微信号：<code>cloud288</code></p>
+    <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
+  </div>
 </aside>
 
-<script src="/assets/site.js?v=b782f204" defer></script>
+<script src="/assets/site.js?v=9da9cd98" defer></script>
 </body>
 </html>

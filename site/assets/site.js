@@ -988,3 +988,25 @@
       renderAuthState();
     });
 })();
+
+// 移动端联系挂件：气泡点开显示二维码，点空白处收起（桌面端 toggle 不显示，不影响）
+(function () {
+  var box = document.querySelector(".wx-contact");
+  var btn = box && box.querySelector(".wx-toggle");
+  if (!box || !btn) return;
+  function set(open) {
+    box.classList.toggle("open", open);
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "收起微信联系方式" : "展开微信联系方式");
+  }
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    set(!box.classList.contains("open"));
+  });
+  document.addEventListener("click", function (e) {
+    if (box.classList.contains("open") && !box.contains(e.target)) set(false);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && box.classList.contains("open")) set(false);
+  });
+})();

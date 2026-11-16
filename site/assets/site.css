@@ -1134,3 +1134,32 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 
 /* 导航 GitHub 强化 */
 .gh-star-accent{border-color:var(--accent-ring)!important;background:var(--accent-weak);color:var(--accent)!important;font-weight:600}
+
+/* ═══════ H5 联系挂件：390 屏上常驻卡片占 36% 宽度，压正文 → 收成气泡，点开再展开 ═══════ */
+.wx-toggle{display:none}
+@media (max-width:620px){
+  .wx-contact{right:14px;bottom:14px;width:52px;height:52px;padding:0;border-radius:50%;
+    display:grid;place-items:center;background:var(--accent);border-color:transparent;
+    box-shadow:0 8px 22px rgba(var(--accent-rgb),.45)}
+  .wx-contact .wx-toggle{display:grid;place-items:center;width:100%;height:100%;
+    padding:0;border:0;background:none;color:#fff;cursor:pointer}
+  .wx-contact .wx-body{display:none}
+  .wx-contact.open{width:228px;height:auto;padding:16px 14px 12px;border-radius:16px;display:block;
+    background:var(--surface);border-color:var(--border-strong);box-shadow:var(--shadow-pop)}
+  .wx-contact.open .wx-body{display:block}
+  .wx-contact.open .wx-toggle{position:absolute;top:5px;right:5px;width:26px;height:26px;
+    color:var(--muted);background:var(--surface2);border-radius:50%}
+  .wx-contact.open .wx-toggle svg{width:14px;height:14px}
+  .wx-contact img{width:120px;height:120px}
+  .wx-contact-label{font-size:.8rem}
+  /* 小字标签在手机上抬到 12px，避免糊成一片 */
+  .cap-tags span,.case-meta .tag,.post-cat,.case-rows .tag,.ev-points .k,.doc-toc h4{font-size:.75rem}
+  /* 页脚链接触控高度抬到 32px 左右 */
+  .foot-col a{padding:7px 0}
+  /* 目录锚点与「返回博客」：手机上点按区不小于 34px */
+  .doc-toc a{padding:7px 0;min-height:34px;display:flex;align-items:center}
+  .l-more{display:inline-flex;align-items:center;min-height:34px}
+  /* 卡片里的文字链接（看案例/看全部/录屏/仓库地址）同样抬到 34px */
+  .post-more,.head-row>a,.video-link{display:inline-flex;align-items:center;min-height:34px}
+  .m-p,.m-p a{min-height:34px;display:inline-flex;align-items:center}
+}

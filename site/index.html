@@ -11,7 +11,7 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "CodeFlow · AI 软件交付工厂", "applicationCategory": "DeveloperApplication", "operatingSystem": "Linux, macOS", "softwareVersion": "1.2.0", "license": "https://www.gnu.org/licenses/gpl-3.0.html", "description": "研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水线自动推进，人只做澄清确认与验收。开源协议 GPL-3.0，支持私有化部署与二次开发。"}
 </script>
-<link rel="stylesheet" href="/assets/site.css?v=b782f204">
+<link rel="stylesheet" href="/assets/site.css?v=9da9cd98">
 <meta property="og:title" content="CodeFlow · AI 软件交付工厂 — 需求进，可验收的交付出">
   <meta property="og:description" content="研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水线自动推进，人只做澄清确认与验收。开源协议 GPL-3.0，支持私有化部署与二次开发。">
   <meta property="og:type" content="website">
@@ -538,12 +538,20 @@ bash build.sh && bash bootstrap.sh</code>
   </div>
 </footer>
 
-<!-- 右下角常驻联系挂件（FR-33）：文案在上、二维码在下；fixed 定位不占文档流 -->
+<!-- 右下角常驻联系挂件（FR-33）：桌面常显卡片；手机端收成一枚气泡，点开才展开二维码 -->
 <aside class="wx-contact" aria-label="联系方式">
-  <p class="wx-contact-label">扫码或添加微信号：<code>cloud288</code></p>
-  <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
+  <button type="button" class="wx-toggle" aria-expanded="false" aria-label="展开微信联系方式">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M9.4 3.6c-3.7 0-6.7 2.5-6.7 5.6 0 1.8 1 3.4 2.6 4.4l-.7 2.2 2.5-1.3c.7.2 1.5.4 2.3.4h.4a5.6 5.6 0 0 1-.2-1.5c0-3.1 3-5.7 6.7-5.7h.6c-.7-2.4-3.4-4.1-6.5-4.1Z"/>
+      <path d="M21.3 13.4c0-2.6-2.5-4.7-5.6-4.7s-5.6 2.1-5.6 4.7 2.5 4.7 5.6 4.7c.7 0 1.3-.1 1.9-.3l2.1 1.1-.6-1.8c1.3-.9 2.2-2.2 2.2-3.7Z"/>
+    </svg>
+  </button>
+  <div class="wx-body">
+    <p class="wx-contact-label">扫码或添加微信号：<code>cloud288</code></p>
+    <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
+  </div>
 </aside>
 
-<script src="/assets/site.js?v=b782f204" defer></script>
+<script src="/assets/site.js?v=9da9cd98" defer></script>
 </body>
 </html>
