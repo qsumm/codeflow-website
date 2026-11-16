@@ -1061,12 +1061,37 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .cta-primary:hover .cta-arrow{transform:translateX(3px)}
 .cta-primary:active{transform:translateY(0);box-shadow:0 6px 18px rgba(var(--accent-rgb),.45),inset 0 1px 0 rgba(255,255,255,.2)}
 .cta-primary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* 次级强 CTA：「获取源码」（登录后可见仓库地址）—— 蓝底描边 + 代码图标，
+   明显高于普通次级按钮，但仍低于主 CTA（不抢「安装并开始使用」的重心） */
+.cta-source{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:15px 26px;border-radius:12px;
+  font-size:1rem;font-weight:650;letter-spacing:.01em;white-space:nowrap;
+  color:var(--accent)!important;text-decoration:none;
+  background:rgba(var(--accent-rgb),.14);
+  border:1.5px solid rgba(var(--accent-rgb),.5);
+  box-shadow:0 2px 12px rgba(var(--accent-rgb),.18), inset 0 1px 0 rgba(255,255,255,.06);
+  transition:transform .16s ease,background .16s ease,border-color .16s ease,box-shadow .2s ease;
+}
+.cta-source svg{flex:none}
+.cta-source:hover{
+  transform:translateY(-1px);
+  background:rgba(var(--accent-rgb),.24);
+  border-color:var(--accent);
+  box-shadow:0 8px 22px rgba(var(--accent-rgb),.34);
+}
+.cta-source:active{transform:translateY(0)}
+.cta-source:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.cta-source,.cta-source:hover{transition:none;transform:none}}
+
 /* 主 CTA 旁边的次级按钮：留白与字号略收，让主按钮独占视觉重心 */
 .hero-cta{align-items:center}
 .hero-cta .btn-ghost,.hero-cta .btn-outline-accent{padding:12px 20px;font-size:.93rem}
 @media (max-width:620px){
   .hero-cta{align-items:stretch}
   .cta-primary{width:100%;padding:18px 24px;font-size:1.02rem}
+  /* 次行两枚按钮等分，避免一宽一窄失衡 */
+  .hero-cta .btn-ghost,.cta-source{flex:1 1 0;min-width:0}
 }
 @media (prefers-reduced-motion:reduce){
   .cta-primary::after{animation:none;display:none}
