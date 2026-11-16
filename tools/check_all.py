@@ -170,7 +170,7 @@ def g11() -> None:
     bad = []
     if re.search(r"★\s*\d|[\d.]+k?\s*stars?\b", t, re.I):
         bad.append("存在 star 计数展示")
-    for key in ("9", "6", "MIT"):
+    for key in ("9", "6", "GPL-3.0"):
         if key not in t:
             bad.append(f"关键数字缺失:{key}")
     g("G11", not bad, "; ".join(bad))

@@ -380,6 +380,7 @@ def build(quiet: bool = False) -> dict[str, str]:
         return (t.replace("{{BRAND}}", BRAND)
                  .replace("{{REPO_CLONE}}", REPO_CLONE)
                  .replace("{{REPO}}", REPO)
+                 .replace("{{REPO_HOST}}", REPO.split("//")[-1])
                  .replace("{{TESTOPS_REPO_CLONE}}", TESTOPS_REPO_CLONE)
                  .replace("{{TESTOPS_REPO}}", TESTOPS_REPO)
                  .replace("{{TESTOPS_BRAND}}", TESTOPS_BRAND)
@@ -431,7 +432,7 @@ def build(quiet: bool = False) -> dict[str, str]:
                   json.dumps({"@context": "https://schema.org", "@type": "SoftwareApplication",
                               "name": f"{BRAND} · AI 软件交付工厂", "applicationCategory": "DeveloperApplication",
                               "operatingSystem": "Linux, macOS", "softwareVersion": hook_cf_version(),
-                              "license": "https://opensource.org/licenses/MIT",
+                              "license": "https://www.gnu.org/licenses/gpl-3.0.html",
                               "description": brandify(page["desc"])}, ensure_ascii=False) + "\n</script>")
             html = html.replace("<link rel=\"stylesheet\"", ld + "\n<link rel=\"stylesheet\"")
 
@@ -472,7 +473,7 @@ def build(quiet: bool = False) -> dict[str, str]:
 
     out["llms.txt"] = f"""# {BRAND} · AI 软件交付工厂
 
-> {BRAND}：需求进、交付出——数字员工按 SDLC 流水线自动完成分析、开发、测试、验证与交接，人只做需求澄清与验收。平台源码 MIT（上游 CodeFlow Community），执行器 runtime 纯标准库、可独立部署。
+> {BRAND}：需求进、交付出——数字员工按 SDLC 流水线自动完成分析、开发、测试、验证与交接，人只做需求澄清与验收。开源协议 GPL-3.0（上游 CodeFlow Community），执行器 runtime 纯标准库、可独立部署。
 
 ## CodeFlow 主要页面
 """ + "\n".join(_llm_line(p) for p in cf_pages) + f"""

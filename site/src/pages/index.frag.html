@@ -5,11 +5,11 @@
       <h1>研发人最省心的 AI 软件交付工厂</h1>
       <p class="hero-sub">需求进，可验收的交付出：澄清、开发、测试、部署全自动完成，人只做测试</p>
       <p class="lede">一站式：需求澄清 · 编码开发 · 代码评审 · 自动化测试 · 部署交付 · 持续运维。干到哪一步、卡在哪、为什么卡——面板上直接看；交付物和报告回到那张工单，能下载、能验收、能退回重做。</p>
-      <p class="lede-sm">平台源码 MIT，支持私有化部署与二次开发，开箱即用。</p>
+      <p class="lede-sm">开源协议 GPL-3.0，支持私有化部署与二次开发，开箱即用。</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#start">安装并开始使用</a>
+        <a class="btn btn-primary btn-hero" href="#start">安装并开始使用</a>
         <a class="btn btn-ghost" href="/cases.html">看真实交付案例</a>
-        <a class="btn btn-ghost" href="{{REPO}}" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">开源地址</a>
+        <a class="btn btn-outline-accent" href="{{REPO}}" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">开源地址</a>
       </div>
     </div>
     <div class="hero-art">
@@ -185,7 +185,7 @@
     </div>
     <div class="cap-card">
       <h3>编码开发</h3>
-      <p>运行器驱动 AI 客户端，按 SDLC 模板逐步写代码。</p>
+      <p>运行器驱动 AI 客户端，按 流水线模板逐步写代码。</p>
       <div class="cap-tags"><span>6 种客户端</span><span>任务包校验</span><span>断点续跑</span></div>
     </div>
     <div class="cap-card">
@@ -277,7 +277,7 @@
     </div>
     <div class="step-card">
       <h3 style="margin-top:0">可私有化，可审计</h3>
-      <p>平台源码 MIT，单机 4C8G 起；执行器纯标准库独立部署，数据与代码留在你自己的环境里。</p>
+      <p>开源协议 GPL-3.0，单机 4C8G 起；执行器纯标准库独立部署，数据与代码留在你自己的环境里。</p>
     </div>
   </div>
 </section>
@@ -297,8 +297,8 @@
     <div class="step-card">
       <div class="step-num">1</div>
       <h3>起 CodeFlow 平台</h3>
-      <p>准备一台 4C8G 的机器（Docker + Docker Compose），克隆仓库并构建。</p>
-      <code class="barecode">git clone {{REPO_CLONE}} && cd CodeFlow/platform
+      <p>准备一台至少 4 核 8G 的机器（Docker + Docker Compose），克隆仓库并构建。</p>
+      <code class="barecode">git clone <span class="repo-mask" href="{{REPO}}" data-require-auth="源码与开源仓库" title="登录后查看源码仓库">{{REPO_HOST}}</span> && cd CodeFlow/platform
 bash build.sh && bash bootstrap.sh</code>
     </div>
     <div class="step-card">
@@ -310,7 +310,7 @@ bash build.sh && bash bootstrap.sh</code>
     <div class="step-card">
       <div class="step-num">3</div>
       <h3>接入执行器</h3>
-      <p>在执行器节点（2C2G 即可）注册 runtime，接上你自己的模型通道。</p>
+      <p>在你的机器上注册 runtime，接上你自己的模型通道。</p>
       <code class="barecode">python scripts/register_executor.py --agent-id 10001 \
   --workspace-id 10000 --out runtime.env --provider claude</code>
     </div>
@@ -320,7 +320,7 @@ bash build.sh && bash bootstrap.sh</code>
       <p>在工单里指派数字员工，或绑定你的工单平台让需求自动流进来——剩下的交付在平台上看。</p>
     </div>
   </div>
-  <p class="foot-note"><b>命令与开源仓库 README 逐字一致。</b>最低配置 4C8G（全栈）/ 2C2G（执行器）。<a href="{{REPO}}" target="_blank" rel="noopener">查看当前源码</a></p>
+  <p class="foot-note"><b>命令与开源仓库 README 逐字一致。</b>最低配置：4 核 8G。<a href="{{REPO}}" target="_blank" rel="noopener">查看当前源码</a></p>
 </section>
 </div>
 
@@ -380,7 +380,7 @@ bash build.sh && bash bootstrap.sh</code>
   </div>
   <div class="faq">
     <details><summary>CodeFlow 适合什么团队？</summary><p>有持续交付需求、以工单/需求驱动研发的团队：外包与项目制交付、内部平台与工具建设、需要把「需求→交付」链路管到底的研发组织。</p></details>
-    <details><summary>能私有化部署吗？</summary><p>能。平台源码 MIT，单机 4C8G 即可跑全栈；执行器节点 2C2G 即可。数据、代码、模型调用全在你自己的环境内。</p></details>
+    <details><summary>能私有化部署吗？</summary><p>能。开源协议 GPL-3.0，单机 4 核 8G 即可跑全栈。数据、代码、模型调用全在你自己的环境内。</p></details>
     <details><summary>必须绑定某家模型吗？</summary><p>不必。任意 Anthropic 兼容端点都能接（Claude / GLM / Kimi / DeepSeek / 私有模型），账单走你自己的 API key。</p></details>
     <details><summary>支持哪些 Agent 客户端？</summary><p>Claude Code、Codex CLI、Cursor CLI、Gemini CLI、Qoder CLI / Qoder CLI CN，Provider 适配层可扩展到新客户端。</p></details>
     <details><summary>怎么和我们现有的工单系统对接？</summary><p>已内置禅道 Provider：绑定产品后需求/缺陷自动拉取，交付报告幂等回写。其他平台实现一个 Provider 接口即可接入。</p></details>
@@ -393,9 +393,9 @@ bash build.sh && bash bootstrap.sh</code>
 <div class="wrap">
 <section class="final">
   <h2 style="font-size:clamp(1.5rem,3vw,2.1rem)">把下一个需求交给数字员工。</h2>
-  <p style="margin:12px 0 22px;color:var(--muted)">单机 4C8G 起全栈，执行器节点 2C2G。克隆即部署，源码可审计。</p>
+  <p style="margin:12px 0 22px;color:var(--muted)">最低需要 4 核 8G 的机器。克隆即部署，源码可审计。</p>
   <div class="hero-cta" style="justify-content:center">
-    <a class="btn btn-primary" href="#start">安装并开始使用</a>
+    <a class="btn btn-primary btn-hero" href="#start">安装并开始使用</a>
     <a class="btn btn-ghost" href="{{REPO}}" target="_blank" rel="noopener">GitHub 仓库</a>
   </div>
 </section>

@@ -2,17 +2,17 @@
 <section class="hero" style="padding:64px 0 40px">
   <span class="eyebrow">开源与合规</span>
   <h1 style="font-size:clamp(1.8rem,3.4vw,2.7rem)">全链路可审计，<br>支撑"数据不出域"的采购门槛。</h1>
-  <p class="lede">CodeFlow 面向金融与央国企等对<strong>可审计、可私有化</strong>有硬要求的场景：平台源码 MIT、克隆即全栈部署；执行器 runtime 纯标准库实现、独立进程、可独立部署。模型账单走客户自己的 API key，不锁定在任何模型的 Credits 体系里。</p>
+  <p class="lede">CodeFlow 面向金融与央国企等对<strong>可审计、可私有化</strong>有硬要求的场景：开源协议 GPL-3.0、克隆即全栈部署；执行器 runtime 纯标准库实现、独立进程、可独立部署。模型账单走客户自己的 API key，不锁定在任何模型的 Credits 体系里。</p>
 </section>
 
 <section class="tight" id="license">
   <div class="sec-head"><div class="sec-kicker">许可证</div>
-  <h2 style="font-size:1.5rem">平台 MIT，源头可溯</h2></div>
+  <h2 style="font-size:1.5rem">GPL-3.0 开源，源头可溯</h2></div>
   <div class="tbl-wrap">
     <table>
       <thead><tr><th>组件</th><th>许可与来源</th></tr></thead>
       <tbody>
-        <tr><td>平台前后端</td><td class="yes">MIT 许可（上游 CodeFlow Community，原始版权声明随分发保留）</td></tr>
+        <tr><td>平台前后端</td><td class="yes">GPL-3.0 许可（上游 CodeFlow Community，原始版权声明随分发保留）</td></tr>
         <tr><td>执行器 runtime</td><td class="yes">纯标准库 Python（≥3.11）实现，独立进程，只通过 WebSocket 协议帧与平台交互</td></tr>
         <tr><td>第三方组件</td><td class="yes">Spring Boot 2.7 · MyBatis · MySQL 8 · Redis · MinIO/S3 · React + Vite，第三方声明见仓库 THIRD-PARTY-NOTICES</td></tr>
       </tbody>
@@ -25,7 +25,7 @@
   <h2 style="font-size:1.5rem">三条工程纪律</h2></div>
   <ul class="ev-points">
     <li><span class="k">1</span><span><b>协议公开。</b>调度器与执行器之间只有 WebSocket 协议帧契约（七帧闭环），协议文档与服务端源码完全公开——执行侧行为可审计，不存在闭源黑盒。</span></li>
-    <li><span class="k">2</span><span><b>任务包可校验。</b>身份、技能、记忆、SDLC、队友快照装进任务包，sha256 校验后解压挂载；执行输入可还原、可复现。</span></li>
+    <li><span class="k">2</span><span><b>任务包可校验。</b>身份、技能、记忆、流水线、队友快照装进任务包，sha256 校验后解压挂载；执行输入可还原、可复现。</span></li>
     <li><span class="k">3</span><span><b>全程留痕。</b>派发、接棒、审批、回写全链路审计日志到人；交付备注幂等回写，防重复、防篡改。</span></li>
   </ul>
 </section>

@@ -2,18 +2,18 @@
 <section class="hero" style="padding:64px 0 40px">
   <span class="eyebrow">产品能力</span>
   <h1 style="font-size:clamp(1.8rem,3.4vw,2.7rem)">数字员工研发交付流水线，<br>每个能力都有真实运行验证。</h1>
-  <p class="lede">CodeFlow 的功能清单不是路线图许愿——每一项都在真实系统里跑通过：工单自动接入、小队按 SDLC 模板接棒、交付结论回写源头平台。以下按「需求怎么进、活怎么干、结果怎么回」展开。</p>
+  <p class="lede">CodeFlow 的功能清单不是路线图许愿——每一项都在真实系统里跑通过：工单自动接入、小队按 流水线模板接棒、交付结论回写源头平台。以下按「需求怎么进、活怎么干、结果怎么回」展开。</p>
 </section>
 
 <section class="tight" id="pipeline">
   <div class="sec-head"><div class="sec-kicker">需求 → 交付</div>
-  <h2 style="font-size:1.5rem">小队 / 数字员工 / SDLC 模板</h2></div>
+  <h2 style="font-size:1.5rem">小队 / 数字员工 / 流水线模板</h2></div>
   <div class="tbl-wrap">
     <table>
       <thead><tr><th>能力</th><th>说明</th></tr></thead>
       <tbody>
         <tr><td>小队与多角色接棒</td><td class="yes">分析与分支准备 → 编码与测试 → 验证与交付 → 交接评审；失败留痕、attempt 递增、可重新指派重启</td></tr>
-        <tr><td>SDLC 流程模板</td><td class="yes">模板画廊 + 步骤级人工审批门禁；"事实不清时询问用户"内建在流程里</td></tr>
+        <tr><td>流水线模板</td><td class="yes">模板画廊 + 步骤级人工审批门禁；"事实不清时询问用户"内建在流程里</td></tr>
         <tr><td>需求澄清对话</td><td class="yes">在工单里直接与数字员工对话；数字员工经平台 MCP 实时读取工单（标题/状态/外部来源）后作答与追问</td></tr>
         <tr><td>交付结论回写</td><td class="yes">交付报告经备注通道回写源头工单平台，幂等 marker 防重复回写</td></tr>
         <tr><td>执行控制</td><td class="yes">暂停 / 恢复 / 执行记录 / 回收站 / 定时任务，全程审计留痕</td></tr>
@@ -48,7 +48,7 @@
         <tr><td>TAPD</td><td class="yes">同一条轨道：绑定项目 → 需求/缺陷自动拉取入库 → 派发数字员工 → 交付备注回写 TAPD。已实测连接测试、拉取入库与回写（PUSHED-200）</td></tr>
         <tr><td>Provider 抽象</td><td class="yes">绑定/映射/回执全 provider 无关，新工单平台只需实现 ExternalWorkitemProvider</td></tr>
         <tr><td>IM 机器人</td><td class="yes">钉钉 / 飞书：群成员 @数字员工 即可对话</td></tr>
-        <tr><td>Chief of Staff</td><td class="yes">平台智能管家：自动接单并拆解需求、调度数字员工协作交付、沉淀团队记忆</td></tr>
+        <tr><td>AI 管家</td><td class="yes">平台智能管家：自动接单并拆解需求、调度数字员工协作交付、沉淀团队记忆</td></tr>
         <tr><td>MCP</td><td class="yes">平台 MCP 服务器（ainative）：令牌管理、技能包上传、个人记忆</td></tr>
       </tbody>
     </table>
@@ -62,7 +62,7 @@
     <table>
       <thead><tr><th>能力</th><th>说明</th></tr></thead>
       <tbody>
-        <tr><td>协议闭环</td><td class="yes">WS 七帧：心跳与能力声明、任务包下载（sha256 校验）、SDLC 逐步执行、澄清会话、交付备注上报</td></tr>
+        <tr><td>协议闭环</td><td class="yes">WS 七帧：心跳与能力声明、任务包下载（sha256 校验）、流水线逐步执行、澄清会话、交付备注上报</td></tr>
         <tr><td>离线排队</td><td class="yes">执行器离线走指数退避，上线自动唤醒；本地 SQLite 持久化运行状态，崩溃恢复</td></tr>
         <tr><td>零依赖</td><td class="yes">纯标准库实现（Python ≥3.11），只通过 WebSocket 协议帧与平台交互，不引用平台代码</td></tr>
         <tr><td>单实例约束</td><td class="yes">同一 executorId 单实例（服务端单会话，后来者顶掉先来者）</td></tr>

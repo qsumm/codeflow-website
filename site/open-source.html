@@ -6,11 +6,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>开源与合规 · CodeFlow</title>
-<meta name="description" content="平台源码 MIT（上游 CodeFlow Community），执行器 runtime 纯标准库可独立部署；全链路可审计，支撑数据不出域的私有化采购要求。">
+<meta name="description" content="开源协议 GPL-3.0（上游 CodeFlow Community），执行器 runtime 纯标准库可独立部署；全链路可审计，支撑数据不出域的私有化采购要求。">
 <link rel="icon" type="image/svg+xml" href="/assets/codeflow-logo.svg">
-<link rel="stylesheet" href="/assets/site.css?v=9165dc25">
+<link rel="stylesheet" href="/assets/site.css?v=9ec482a7">
 <meta property="og:title" content="开源与合规 · CodeFlow">
-  <meta property="og:description" content="平台源码 MIT（上游 CodeFlow Community），执行器 runtime 纯标准库可独立部署；全链路可审计，支撑数据不出域的私有化采购要求。">
+  <meta property="og:description" content="开源协议 GPL-3.0（上游 CodeFlow Community），执行器 runtime 纯标准库可独立部署；全链路可审计，支撑数据不出域的私有化采购要求。">
   <meta property="og:type" content="website">
   <meta property="og:image" content="http://103.39.64.76:63028/assets/og/og-home.jpg">
   <meta property="og:image:width" content="1200">
@@ -42,9 +42,10 @@
         <svg class="pv-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
         </svg>
+        <span class="pv-label-nav">浏览量</span>
         <span class="pv-num" id="pv-hero">…</span>
       </div>
-      <a class="gh-star" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">
+      <a class="gh-star gh-star-accent" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
         <span>GitHub</span>
       </a>
@@ -72,17 +73,17 @@
 <section class="hero" style="padding:64px 0 40px">
   <span class="eyebrow">开源与合规</span>
   <h1 style="font-size:clamp(1.8rem,3.4vw,2.7rem)">全链路可审计，<br>支撑"数据不出域"的采购门槛。</h1>
-  <p class="lede">CodeFlow 面向金融与央国企等对<strong>可审计、可私有化</strong>有硬要求的场景：平台源码 MIT、克隆即全栈部署；执行器 runtime 纯标准库实现、独立进程、可独立部署。模型账单走客户自己的 API key，不锁定在任何模型的 Credits 体系里。</p>
+  <p class="lede">CodeFlow 面向金融与央国企等对<strong>可审计、可私有化</strong>有硬要求的场景：开源协议 GPL-3.0、克隆即全栈部署；执行器 runtime 纯标准库实现、独立进程、可独立部署。模型账单走客户自己的 API key，不锁定在任何模型的 Credits 体系里。</p>
 </section>
 
 <section class="tight" id="license">
   <div class="sec-head"><div class="sec-kicker">许可证</div>
-  <h2 style="font-size:1.5rem">平台 MIT，源头可溯</h2></div>
+  <h2 style="font-size:1.5rem">GPL-3.0 开源，源头可溯</h2></div>
   <div class="tbl-wrap">
     <table>
       <thead><tr><th>组件</th><th>许可与来源</th></tr></thead>
       <tbody>
-        <tr><td>平台前后端</td><td class="yes">MIT 许可（上游 CodeFlow Community，原始版权声明随分发保留）</td></tr>
+        <tr><td>平台前后端</td><td class="yes">GPL-3.0 许可（上游 CodeFlow Community，原始版权声明随分发保留）</td></tr>
         <tr><td>执行器 runtime</td><td class="yes">纯标准库 Python（≥3.11）实现，独立进程，只通过 WebSocket 协议帧与平台交互</td></tr>
         <tr><td>第三方组件</td><td class="yes">Spring Boot 2.7 · MyBatis · MySQL 8 · Redis · MinIO/S3 · React + Vite，第三方声明见仓库 THIRD-PARTY-NOTICES</td></tr>
       </tbody>
@@ -95,7 +96,7 @@
   <h2 style="font-size:1.5rem">三条工程纪律</h2></div>
   <ul class="ev-points">
     <li><span class="k">1</span><span><b>协议公开。</b>调度器与执行器之间只有 WebSocket 协议帧契约（七帧闭环），协议文档与服务端源码完全公开——执行侧行为可审计，不存在闭源黑盒。</span></li>
-    <li><span class="k">2</span><span><b>任务包可校验。</b>身份、技能、记忆、SDLC、队友快照装进任务包，sha256 校验后解压挂载；执行输入可还原、可复现。</span></li>
+    <li><span class="k">2</span><span><b>任务包可校验。</b>身份、技能、记忆、流水线、队友快照装进任务包，sha256 校验后解压挂载；执行输入可还原、可复现。</span></li>
     <li><span class="k">3</span><span><b>全程留痕。</b>派发、接棒、审批、回写全链路审计日志到人；交付备注幂等回写，防重复、防篡改。</span></li>
   </ul>
 </section>
@@ -122,12 +123,6 @@
           <span class="brand-name"><b>CodeFlow</b> <span>AI 软件交付工厂</span></span>
         </a>
         <p>研发人最省心的 AI 交付工厂：需求进、可验收的交付出——澄清、开发、评审、测试、部署全自动完成，人只做澄清确认与验收。</p>
-        <div class="foot-badges" style="margin-top:16px">
-          <span class="badge">平台 MIT</span>
-          <span class="badge">Spring Boot 2.7</span>
-          <span class="badge">React · Vite</span>
-          <span class="badge">runtime 纯标准库</span>
-        </div>
       </div>
       <div class="foot-col">
         <h4>产品特性</h4>
@@ -135,7 +130,7 @@
       </div>
       <div class="foot-col">
         <h4>开源</h4>
-        <a href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">GitHub 仓库</a><a href="https://github.com/qsumm/CodeFlow/issues" target="_blank" rel="noopener">问题反馈</a><a href="/open-source.html">开源与合规</a><a href="/privacy.html">隐私协议</a>
+        <a class="foot-gh-btn" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">GitHub 仓库 →</a><a href="https://github.com/qsumm/CodeFlow/issues" target="_blank" rel="noopener">问题反馈</a><a href="/open-source.html">开源与合规</a><a href="/privacy.html">隐私协议</a>
       </div>
       <div class="foot-col">
         <h4>内容</h4>
@@ -143,7 +138,7 @@
       </div>
     </div>
     <div class="foot-bot">
-      <span>© 2026 CodeFlow · 平台源码 MIT · 浏览量 <b id="pv-total">…</b></span>
+      <span>© 2026 CodeFlow · 开源协议 GPL-3.0 · 浏览量 <b id="pv-total">…</b></span>
       <span>开放集成：禅道 · TAPD · 钉钉 / 飞书 · Anthropic 兼容模型协议 · MCP</span>
     </div>
   </div>
@@ -155,6 +150,6 @@
   <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
 </aside>
 
-<script src="/assets/site.js?v=9165dc25" defer></script>
+<script src="/assets/site.js?v=9ec482a7" defer></script>
 </body>
 </html>

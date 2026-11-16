@@ -979,3 +979,31 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .privacy-scroll h4{color:var(--text);font-size:.88rem;margin:12px 0 4px}
 .privacy-scroll h4:first-child{margin-top:0}
 .privacy-scroll p{margin:0 0 8px}
+
+/* ═══════ 醒目化：浏览量 / 大号 CTA / 源码马赛克 ═══════ */
+/* 1) 导航浏览量：加文字、强调色底、字号加大 */
+.pv-pill-nav{gap:7px;padding:6px 13px;border-color:var(--accent-ring);background:var(--accent-weak)}
+.pv-pill-nav .pv-icon{color:var(--accent);width:14px;height:14px}
+.pv-label-nav{font-size:.74rem;color:var(--accent);letter-spacing:.05em;font-weight:600}
+.pv-pill-nav .pv-num{font-size:.95rem;font-weight:700;color:var(--accent)}
+
+/* 2) 大号 CTA */
+.btn-hero{padding:14px 26px;font-size:1rem;font-weight:650;border-radius:10px;
+  display:inline-flex;align-items:center;gap:8px}
+.btn-outline-accent{border:1.5px solid var(--accent-ring);color:var(--accent);background:var(--accent-weak)}
+.btn-outline-accent:hover{background:var(--accent-soft);border-color:var(--accent)}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+
+/* 3) 页脚 GitHub 按钮 */
+.foot-gh-btn{display:inline-block;margin-top:6px;padding:8px 14px;border-radius:8px;
+  border:1px solid var(--accent-ring);background:var(--accent-weak);color:var(--accent)!important;
+  font-weight:600;font-size:.84rem}
+.foot-gh-btn:hover{background:var(--accent-soft)}
+
+/* 4) 源码仓库地址马赛克：默认模糊，悬浮清晰并提示登录 */
+.repo-mask{filter:blur(4.5px);cursor:pointer;transition:filter .18s ease;
+  user-select:none;display:inline-block;padding:0 2px;border-radius:3px}
+.repo-mask:hover{filter:blur(0);background:var(--accent-weak);color:var(--accent)}
+
+/* 导航 GitHub 强化 */
+.gh-star-accent{border-color:var(--accent-ring)!important;background:var(--accent-weak);color:var(--accent)!important;font-weight:600}

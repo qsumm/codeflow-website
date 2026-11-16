@@ -1,11 +1,15 @@
 <div class="wrap">
 <section class="hero" style="padding:64px 0 40px">
   <span class="eyebrow">自部署指南</span>
-  <h1 style="font-size:clamp(1.8rem,3.4vw,2.7rem)">克隆即部署：<br>两条命令起全栈，执行器节点 2C2G。</h1>
-  <p class="lede">平台前后端与执行器 runtime 全部可自部署。以下命令与开源仓库 README 逐字一致；最低配置单机 <strong>4C8G</strong>（跑全栈），纯执行器节点 <strong>2C2G</strong> 即可。</p>
-  <div class="hero-cta" style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap">
-    <button type="button" class="btn btn-primary" data-auth-download="/api/resources/deploy-bundle">下载一键部署脚本 (.sh)</button>
-    <button type="button" class="btn btn-ghost" data-auth-trial="1">申请私有化 / 商业版支持</button>
+  <h1 style="font-size:clamp(1.8rem,3.4vw,2.7rem)">克隆即部署：<br>两条命令起全栈。</h1>
+  <p class="lede">平台前后端与执行器 runtime 全部可自部署。以下命令与开源仓库 README 逐字一致；最低配置单机 <strong>4 核 8G</strong>。</p>
+  <div class="cta-row">
+    <button type="button" class="btn btn-primary btn-hero" data-auth-download="/api/resources/deploy-bundle">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M7.25 1.75a.75.75 0 0 1 1.5 0v7.19l2.22-2.22a.75.75 0 1 1 1.06 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0l-3.5-3.5a.75.75 0 1 1 1.06-1.06l2.22 2.22V1.75ZM2.5 12.5a.75.75 0 0 1 .75.75v.25h9.5v-.25a.75.75 0 0 1 1.5 0v1a.75.75 0 0 1-.75.75h-11a.75.75 0 0 1-.75-.75v-1a.75.75 0 0 1 .75-.75Z"/></svg>
+      下载一键部署脚本 (.sh)
+    </button>
+    <a class="btn btn-outline-accent btn-hero" href="{{REPO}}" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">克隆开源仓库</a>
+    <a class="btn btn-ghost btn-hero" href="/open-source.html">先看开源与合规</a>
   </div>
 </section>
 
@@ -63,7 +67,7 @@
       <thead><tr><th>项</th><th>要求</th></tr></thead>
       <tbody>
         <tr><td>平台全栈</td><td class="yes">单机 4C8G（Docker + Docker Compose；2G 内存跑不动全栈）</td></tr>
-        <tr><td>执行器节点</td><td class="yes">2C2G 纯 runtime 即可；Python ≥ 3.11</td></tr>
+        <tr><td>执行器 runtime</td><td class="yes">纯标准库实现，Python ≥ 3.11</td></tr>
         <tr><td>平台依赖</td><td class="yes">MySQL 8 · Redis · MinIO/S3（bootstrap 自动拉起）</td></tr>
         <tr><td>模型通道</td><td class="yes">任意 Anthropic 兼容端点（Claude / MiMo / GLM / Kimi / DeepSeek / 私有模型）</td></tr>
         <tr><td>工单平台</td><td class="yes">禅道 ZenTao 18.10+（闭环实测版本）；钉钉 / 飞书机器人（可选）</td></tr>
