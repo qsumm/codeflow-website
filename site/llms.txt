@@ -14,8 +14,9 @@
 
 
 ## 部署（CodeFlow）
+> 仓库地址需在官网注册登录后获取（见 /deploy.html）。拿到地址后：
 ```bash
-git clone https://github.com/qsumm/CodeFlow.git && cd CodeFlow/platform
+git clone <仓库地址> && cd CodeFlow/platform
 bash build.sh        # 构建应用镜像（源码 Maven 构建）
 bash bootstrap.sh    # 起 MySQL/Redis/MinIO + 应用 + 健康检查
 # 打开 http://localhost:7001/register 注册首个用户

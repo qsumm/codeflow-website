@@ -158,7 +158,7 @@ h2.t{font-size:1.7rem;font-weight:800;margin:8px 0 10px;letter-spacing:-.01em}
       <a class="btn btn-primary" href="#" style="flex:none">按完整指南开始 →</a>
     </div>
     <div class="steps">
-      <div class="step"><div class="num">1</div><h3>起 CodeFlow 平台</h3><p>准备一台 4C8G 的机器（Docker + Docker Compose），克隆仓库并构建。</p><code>git clone https://github.com/qsumm/CodeFlow.git && cd CodeFlow/platform
+      <div class="step"><div class="num">1</div><h3>起 CodeFlow 平台</h3><p>准备一台 4C8G 的机器（Docker + Docker Compose），克隆仓库并构建。</p><code>git clone https://github.com/<REPO>.git && cd CodeFlow/platform
 bash build.sh && bash bootstrap.sh</code></div>
       <div class="step"><div class="num">2</div><h3>注册首个用户</h3><p>打开注册页建组织，即成为管理员。</p><code>http://localhost:7001/register</code></div>
       <div class="step"><div class="num">3</div><h3>接入执行器</h3><p>在执行器节点（2C2G 即可）注册 runtime，接上你自己的模型通道。</p><code>python scripts/register_executor.py --agent-id 10001 \ 

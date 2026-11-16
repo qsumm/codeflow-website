@@ -24,8 +24,11 @@ PRODUCT = Path(os.environ.get(
 #        源文件里写 {{BRAND}}，改这里即全站生效（D21 品牌统一）。
 BRAND = "CodeFlow"
 # 主仓库：CodeFlow（从需求到交付的数字员工平台）。
-REPO = "https://github.com/qsumm/CodeFlow"
-REPO_CLONE = f"{REPO}.git"
+# 开源仓库地址不进仓库、不进产物：真实地址由部署环境（.env 的 CODEFLOW_REPO_URL）持有，
+# 访客登录后由 /api/auth/repo 下发。这里只用占位符与掩码文本。
+REPO = ""                      # 构建期不注入真实地址（本地调试可临时覆盖）
+REPO_CLONE = ""                # 同上
+REPO_MASK_TEXT = "github.com/▮▮▮/▮▮▮▮▮▮▮"   # 未登录时展示的掩码占位
 # 智能运维模块（原 TestOps 独立产品线，现归入 /ops/）：正文描述产品史时仍用 TESTOPS_BRAND。
 TESTOPS_BRAND = "TestOps"
 TESTOPS_REPO = "https://github.com/qsumm/TestOps"
@@ -354,7 +357,7 @@ def build_blog_pages() -> list[tuple]:
         (assets_md / f"{p['slug']}.md").write_text(md.read_text(encoding="utf-8"), encoding="utf-8")
         shell = DOC_SHELL.format(md=f"/assets/md/blog/{p['slug']}.md", title=p["title"],
                                  blurb=f"{p['cat']} · {p['date']} — {p['blurb']}",
-                                 back="/blog.html", back_label="博客", origin=REPO)
+                                 back="/blog.html", back_label="博客", origin="")
         jobs.append((f"blog/{p['slug']}.html", p, shell))
     return jobs
 
@@ -378,9 +381,9 @@ def build(quiet: bool = False) -> dict[str, str]:
     def brandify(t: str) -> str:
         """品牌/仓库/评测平台 token 归一：主品牌 {{BRAND}}* 与子站 {{TESTOPS_BRAND}}* 两套。"""
         return (t.replace("{{BRAND}}", BRAND)
-                 .replace("{{REPO_CLONE}}", REPO_CLONE)
-                 .replace("{{REPO}}", REPO)
-                 .replace("{{REPO_HOST}}", REPO.split("//")[-1])
+                 .replace("{{REPO_CLONE}}", REPO_CLONE or "（登录后可见仓库地址）")
+                 .replace("{{REPO}}", "")
+                 .replace("{{REPO_HOST}}", REPO_MASK_TEXT)
                  .replace("{{TESTOPS_REPO_CLONE}}", TESTOPS_REPO_CLONE)
                  .replace("{{TESTOPS_REPO}}", TESTOPS_REPO)
                  .replace("{{TESTOPS_BRAND}}", TESTOPS_BRAND)
@@ -480,8 +483,9 @@ def build(quiet: bool = False) -> dict[str, str]:
 
 
 ## 部署（CodeFlow）
+> 仓库地址需在官网注册登录后获取（见 /deploy.html）。拿到地址后：
 ```bash
-git clone {REPO_CLONE} && cd CodeFlow/platform
+git clone <仓库地址> && cd CodeFlow/platform
 bash build.sh        # 构建应用镜像（源码 Maven 构建）
 bash bootstrap.sh    # 起 MySQL/Redis/MinIO + 应用 + 健康检查
 # 打开 http://localhost:7001/register 注册首个用户

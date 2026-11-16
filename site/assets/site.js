@@ -1010,3 +1010,47 @@
     if (e.key === "Escape" && box.classList.contains("open")) set(false);
   });
 })();
+
+// 开源仓库地址门禁：页面只有掩码占位，登录后由 /api/auth/repo 下发真实地址
+(function () {
+  var MASK = "github.com/▮▮▮/▮▮▮▮▮▮▮";
+  function fill(info) {
+    document.querySelectorAll("[data-repo-link]").forEach(function (a) {
+      a.setAttribute("href", a.getAttribute("data-repo-link") === "issues" ? info.repo_url + "/issues" : info.repo_url);
+      a.setAttribute("data-repo-filled", "1");
+      a.removeAttribute("data-require-auth");
+      a.setAttribute("title", info.repo_url);
+    });
+    document.querySelectorAll("[data-repo-text]").forEach(function (el) {
+      el.textContent = info.host;
+      el.setAttribute("data-repo-filled", "1");
+      el.classList.add("repo-mask--open");
+      var gate = el.closest("[data-require-auth]");
+      if (gate) gate.removeAttribute("data-require-auth");
+    });
+  }
+  function reset() {
+    document.querySelectorAll("[data-repo-link]").forEach(function (a) {
+      a.setAttribute("href", "#repo");
+      a.removeAttribute("data-repo-filled");
+      a.removeAttribute("title");
+      a.setAttribute("data-require-auth", "源码与开源仓库");
+    });
+    document.querySelectorAll("[data-repo-text]").forEach(function (el) {
+      el.textContent = MASK;
+      el.removeAttribute("data-repo-filled");
+      el.classList.remove("repo-mask--open");
+    });
+  }
+  function load() {
+    fetch("/api/auth/repo", { credentials: "same-origin" })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) { if (res.ok && res.d && res.d.ok && res.d.repo_url) fill(res.d); else reset(); })
+      .catch(function () { reset(); });
+  }
+  var zone = document.getElementById("navAuthZone");
+  if (zone && window.MutationObserver) {
+    new MutationObserver(function () { load(); }).observe(zone, { childList: true });
+  }
+  load();
+})();

@@ -61,9 +61,17 @@ def g04() -> None:
     for p in html_pages():
         s = p.read_text(encoding="utf-8")
         ids = set(re.findall(r'id="([^"]+)"', s))
+        # 门禁占位：data-repo-link 的链接其 href 在登录后由 /api/auth/repo 填充，
+        # 这里的 #repo 只是占位，不是站内锚点，跳过校验
+        gated = set()
+        for tag in re.findall(r"<a\b[^>]*>", s):
+            if "data-repo-link" in tag:
+                m = re.search(r'href="#([^"]*)"', tag)
+                if m:
+                    gated.add(m.group(1))
         for a in re.findall(r'href="#([^"]+)"', s):
             # 跳过 JS 模板串里的动态锚点（壳页 TOC 生成器写入 href="#${h.id}"）
-            if a and "$" not in a and a not in ids:
+            if a and "$" not in a and a not in ids and a not in gated:
                 bad.append(f"{p.name}#{a}")
     g("G04", not bad, ", ".join(bad[:5]))
 
@@ -292,7 +300,7 @@ def g20() -> None:
         for m in re.finditer(r"<a[^>]*>\s*</a>", s):
             bad.append(f"{p.name} 空链接 {m.group(0)[:44]}")
         # 裸 # 死链：站内导航不允许占位
-        n = s.count('href="#"')
+        n = len(re.findall(r'href="#"(?![^<>]*data-repo-link)', s))
         if n:
             bad.append(f"{p.name} 裸#死链×{n}")
     g("G20", not bad, "; ".join(bad[:3]))
@@ -300,7 +308,6 @@ def g20() -> None:
 
 # ── G21 品牌一致性（家族站）：旧品牌名零残留 + 双品牌各就各位 ──
 BRAND = "CodeFlow"
-REPO = "https://github.com/qsumm/CodeFlow"
 TESTOPS_BRAND = "TestOps"
 TESTOPS_REPO = "https://github.com/qsumm/TestOps"
 
@@ -320,8 +327,8 @@ def g21() -> None:
     idx = (SITE / "index.html").read_text(encoding="utf-8")
     if BRAND not in idx:
         bad.append("首页缺主品牌名 CodeFlow")
-    if REPO not in idx:
-        bad.append("首页缺 CodeFlow 仓库地址")
+    if 'data-repo-link="repo"' not in idx:
+        bad.append("首页缺仓库地址门禁钩子（data-repo-link）")
     # 5) 旧仓库地址零残留（qsumm/AIOps 已改名，靠 GitHub 重定向，站内不应再依赖）
     for p in list(SITE.rglob("*.html")):
         if "qsumm/AIOps" in p.read_text(encoding="utf-8"):
@@ -465,8 +472,39 @@ def g26() -> None:
     g("G26", not bad, "; ".join(sorted(set(bad))[:5]))
 
 
+# ── G27 开源仓库地址零明文：仓库与产物里都不得出现仓库地址 ──
+def g27() -> None:
+    """开源仓库地址只允许存在于部署环境（服务器 .env）。
+    公开仓库（源码、产物、说明文档）与线上未登录响应里都不得出现明文。"""
+    bad = []
+    # 1) 已知地址指纹（仓库名 + 组织名组合）
+    fingerprints = ["qsumm/CodeFlow", "qsumm/codeflow"]
+    # 2) 扫公开仓库里的源码与说明（不含 .git 历史）
+    for path in list(ROOT.rglob("*")):
+        if not path.is_file() or ".git" in path.parts:
+            continue
+        if path.suffix.lower() not in (".py", ".js", ".css", ".html", ".md", ".txt", ".json", ".sh", ".yml", ".yaml"):
+            continue
+        if path == Path(__file__).resolve():
+            continue  # 本文件含指纹本身（守卫用），跳过
+        try:
+            text = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        for fp in fingerprints:
+            if fp in text:
+                bad.append(f"{path.relative_to(ROOT)} 含仓库地址明文")
+    # 3) 产物里必须有门禁钩子（链接 + 掩码占位）
+    idx = (SITE / "index.html").read_text(encoding="utf-8")
+    if 'data-repo-link="repo"' not in idx:
+        bad.append("首页缺仓库地址门禁钩子")
+    if "data-repo-text" not in idx:
+        bad.append("首页缺仓库地址掩码占位")
+    g("G27", not bad, "; ".join(sorted(set(bad))[:5]))
+
+
 def main() -> int:
-    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25, g26):
+    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25, g26, g27):
         try:
             fn()
         except Exception as e:  # noqa: BLE001

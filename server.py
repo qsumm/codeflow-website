@@ -478,6 +478,23 @@ def get_current_user(request: Request) -> dict | None:
 app = FastAPI(title="CodeFlow 官网（含 TestOps 子站）", docs_url=None, redoc_url=None)
 
 
+def repo_url() -> str:
+    """开源仓库地址只存在于部署环境（.env），不写进代码、不出现在任何静态产物里。
+    未登录的访客拿不到本值——需登录后由 /api/auth/repo 下发。"""
+    return os.environ.get("CODEFLOW_REPO_URL", "").strip().rstrip("/")
+
+
+def repo_info() -> dict:
+    url = repo_url()
+    if not url:
+        return {}
+    return {
+        "repo_url": url,
+        "clone_url": url + ".git",
+        "host": url.split("//")[-1],
+    }
+
+
 @app.get("/api/health")
 async def health() -> JSONResponse:
     """部署探活：站点产物是否就位。"""
@@ -917,6 +934,24 @@ async def auth_logout(request: Request) -> JSONResponse:
     return resp
 
 
+@app.get("/api/auth/repo")
+async def auth_repo(request: Request):
+    """登录后返回开源仓库地址（未登录一律 401，不泄露任何片段）。"""
+    user = get_current_user(request)
+    if not user:
+        return JSONResponse(
+            {"ok": False, "code": "AUTH_REQUIRED", "message": "请先登录官网账号后再查看开源仓库地址"},
+            status_code=401,
+        )
+    info = repo_info()
+    if not info:
+        return JSONResponse(
+            {"ok": False, "code": "REPO_NOT_OPEN", "message": "开源仓库地址尚未开放，请稍后再试"},
+            status_code=503,
+        )
+    return JSONResponse({"ok": True, **info})
+
+
 @app.get("/api/resources/deploy-bundle")
 async def resource_deploy_bundle(request: Request):
     user = get_current_user(request)
@@ -925,14 +960,15 @@ async def resource_deploy_bundle(request: Request):
             {"ok": False, "code": "AUTH_REQUIRED", "message": "请先登录官网账号后再下载部署脚本包"},
             status_code=401,
         )
-    script = """#!/usr/bin/env bash
+    clone_url = repo_info().get("clone_url", "")
+    script = f"""#!/usr/bin/env bash
 # CodeFlow 全栈自部署与执行器接入快速启动脚本
 # 适用：Linux / macOS (4C8G 全栈 / 2C2G 执行器)
 set -euo pipefail
 
 echo "==> [1/3] 克隆 CodeFlow 开源仓库"
 if [ ! -d "CodeFlow" ]; then
-  git clone https://github.com/qsumm/CodeFlow.git
+  git clone {clone_url}
 fi
 cd CodeFlow/platform
 
