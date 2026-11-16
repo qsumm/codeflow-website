@@ -271,6 +271,8 @@ td:first-child{font-weight:560}
 .final{text-align:center;padding:88px 0}
 .final h2{font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:15px;letter-spacing:-.02em}
 .final p{color:var(--muted);max-width:38em;margin:0 auto 28px;font-size:1rem}
+.final-note{display:flex;flex-direction:column;gap:4px;align-items:center;margin:12px 0 22px!important}
+.final-note span{display:block}
 .final .hero-cta{justify-content:center}
 /* ── 页脚 ── */
 footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--chrome-bg)}
@@ -473,7 +475,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 }
 .wx-contact-label{font-size:.8rem;color:var(--text);line-height:1.5;margin-bottom:10px}
 .wx-contact-label code{font-family:var(--font-mono);font-size:.78rem;font-weight:650;color:var(--accent-ink)}
-.wx-contact img{display:block;width:132px;height:132px;margin:0 auto;
+.wx-contact img{display:block;width:130px;height:130px;margin:0 auto;
   border-radius:var(--radius-sm);background:#fff;padding:5px;border:1px solid var(--border)}
 .wx-contact{transition:opacity .2s var(--ease),transform .2s var(--ease)}
 .wx-contact--away{opacity:0;transform:translateY(8px);pointer-events:none}
@@ -925,7 +927,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 #product-demo{position:relative}
 
 /* 页脚微信列：二维码 + 微信号，替代原右下角悬浮卡片（桌面端） */
-.foot-wechat img{display:block;width:120px;height:120px;border-radius:8px;background:#fff;
+.foot-wechat img{display:block;width:130px;height:130px;border-radius:8px;background:#fff;
   padding:5px;border:1px solid var(--border)}
 .foot-wechat p{font-size:.78rem;color:var(--muted);margin-top:8px}
 .foot-wechat code{font-family:var(--font-mono);font-weight:650;color:var(--accent-text)}
