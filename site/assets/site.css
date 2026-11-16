@@ -274,7 +274,7 @@ td:first-child{font-weight:560}
 .final .hero-cta{justify-content:center}
 /* ── 页脚 ── */
 footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--chrome-bg)}
-.foot-grid{display:grid;grid-template-columns:2.8fr repeat(5,1fr);gap:20px;margin-bottom:38px}
+.foot-grid{display:grid;grid-template-columns:2.6fr repeat(5,1fr) auto;gap:20px;margin-bottom:38px}
 .foot-brand p{font-size:.78rem;color:var(--muted);margin-top:13px;max-width:none;line-height:1.72}
 .foot-col h4{font-size:.79rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);
   font-weight:620;margin-bottom:13px}
@@ -923,3 +923,11 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   box-shadow:var(--shadow-pop);transition:border-color .15s var(--ease),color .15s var(--ease)}
 .demo-share-btn:hover{border-color:var(--accent);color:var(--accent-text)}
 #product-demo{position:relative}
+
+/* 页脚微信列：二维码 + 微信号，替代原右下角悬浮卡片（桌面端） */
+.foot-wechat img{display:block;width:96px;height:96px;border-radius:8px;background:#fff;
+  padding:4px;border:1px solid var(--border)}
+.foot-wechat p{font-size:.78rem;color:var(--muted);margin-top:8px}
+.foot-wechat code{font-family:var(--font-mono);font-weight:650;color:var(--accent-text)}
+/* 桌面端右下角不再重复显示悬浮卡片；手机端气泡保留 */
+@media (min-width:621px){.wx-contact{display:none}}
