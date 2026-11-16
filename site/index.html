@@ -11,7 +11,7 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "CodeFlow · AI 软件交付工厂", "applicationCategory": "DeveloperApplication", "operatingSystem": "Linux, macOS", "softwareVersion": "1.2.0", "license": "https://www.gnu.org/licenses/gpl-3.0.html", "description": "研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水线自动推进，人只做澄清确认与验收。开源协议 GPL-3.0，支持私有化部署与二次开发。"}
 </script>
-<link rel="stylesheet" href="/assets/site.css?v=eb9d7ec5">
+<link rel="stylesheet" href="/assets/site.css?v=c7d467fb">
 <meta property="og:title" content="CodeFlow · AI 软件交付工厂 — 需求进，可验收的交付出">
   <meta property="og:description" content="研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水线自动推进，人只做澄清确认与验收。开源协议 GPL-3.0，支持私有化部署与二次开发。">
   <meta property="og:type" content="website">
@@ -42,11 +42,11 @@
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3.5h14v1.7H1V3.5Zm0 3.9h14v1.7H1V7.4Zm0 3.9h14v1.7H1v-1.7Z"/></svg>
     </button>
     <div class="nav-act">
-      <div class="pv-pill pv-pill-nav" role="status" aria-label="本站浏览量统计">
+      <div class="pv-pill pv-pill-nav" role="status" aria-label="本站累计访问量统计">
         <svg class="pv-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
         </svg>
-        <span class="pv-label-nav">浏览量</span>
+        <span class="pv-label-nav">累计访问量</span>
         <span class="pv-num" id="pv-hero">…</span>
       </div>
       <a class="gh-star gh-star-accent" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">
@@ -68,6 +68,7 @@
   <a href="/blog.html" data-nav="blog">博客</a>
   <a href="/deploy.html" data-nav="deploy">部署</a>
   <a href="/open-source.html" data-nav="open-source">开源</a>
+  <a href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">GitHub 仓库</a>
   <button type="button" class="nav-mobile-auth" id="navMobileAuthBtn">手机号登录 / 注册</button>
 </div>
 </header>
@@ -82,7 +83,10 @@
       <p class="lede">一站式：需求澄清 · 编码开发 · 代码评审 · 自动化测试 · 部署交付 · 持续运维。干到哪一步、卡在哪、为什么卡——面板上直接看；交付物和报告回到那张工单，能下载、能验收、能退回重做。</p>
       <p class="lede-sm">开源协议 GPL-3.0，支持私有化部署与二次开发，开箱即用。</p>
       <div class="hero-cta">
-        <a class="btn btn-primary btn-hero" href="#start">安装并开始使用</a>
+        <a class="cta-primary" href="#start">
+          <span>安装并开始使用</span>
+          <svg class="cta-arrow" width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h10M8.5 4l4 4-4 4"/></svg>
+        </a>
         <a class="btn btn-ghost" href="/cases.html">看真实交付案例</a>
         <a class="btn btn-outline-accent" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">开源地址</a>
       </div>
@@ -489,7 +493,10 @@ bash build.sh && bash bootstrap.sh</code>
   <h2 style="font-size:clamp(1.5rem,3vw,2.1rem)">把下一个需求交给数字员工。</h2>
   <p style="margin:12px 0 22px;color:var(--muted)">最低需要 4 核 4G 的机器。克隆即部署，源码可审计。</p>
   <div class="hero-cta" style="justify-content:center">
-    <a class="btn btn-primary btn-hero" href="#start">安装并开始使用</a>
+    <a class="cta-primary" href="#start">
+      <span>安装并开始使用</span>
+      <svg class="cta-arrow" width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8h10M8.5 4l4 4-4 4"/></svg>
+    </a>
     <a class="btn btn-ghost" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener">GitHub 仓库</a>
   </div>
 </section>
@@ -522,7 +529,7 @@ bash build.sh && bash bootstrap.sh</code>
       </div>
     </div>
     <div class="foot-bot">
-      <span>© 2026 CodeFlow · 开源协议 GPL-3.0 · 浏览量 <b id="pv-total">…</b></span>
+      <span>© 2026 CodeFlow · 开源协议 GPL-3.0 · 累计访问量 <b id="pv-total">…</b></span>
       <span>开放集成：禅道 · TAPD · 钉钉 / 飞书 · Anthropic 兼容模型协议 · MCP</span>
     </div>
   </div>
@@ -534,6 +541,6 @@ bash build.sh && bash bootstrap.sh</code>
   <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
 </aside>
 
-<script src="/assets/site.js?v=eb9d7ec5" defer></script>
+<script src="/assets/site.js?v=c7d467fb" defer></script>
 </body>
 </html>
