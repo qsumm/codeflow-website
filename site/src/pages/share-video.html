@@ -1,0 +1,48 @@
+<div class="wrap">
+<section class="hero hero-center" style="padding:48px 0 24px">
+  <span class="eyebrow">产品演示</span>
+  <h1 style="font-size:clamp(1.6rem,3vw,2.2rem)">CodeFlow 3 分钟产品演示</h1>
+  <p class="hero-sub">需求进，可验收的交付出：澄清、开发、测试、部署全自动完成，人只做测试</p>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" style="padding-top:8px">
+  <div class="product-demo" id="product-demo" style="max-width:960px;margin:0 auto">
+    <button type="button" class="demo-share-btn" id="demoShareBtn" aria-label="复制视频分享链接">🔗 复制分享链接</button>
+    <div class="product-demo-preview" style="cursor:default">
+      <img src="/assets/media/codeflow-demo-v2-cover.jpg" alt="" width="960" height="540" decoding="async">
+      <video class="share-player" controls playsinline preload="metadata"
+             controlslist="nodownload noremoteplayback" disablepictureinpicture
+             oncontextmenu="return false"></video>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:.86rem;margin-top:14px">
+      视频不提供文件下载。想在自己的工单里跑一遍？<a href="/deploy.html" data-require-auth="自部署指南与安装脚本" style="color:var(--accent-text)">按指南部署体验 →</a>
+    </p>
+  </div>
+</section>
+</div>
+
+<script>
+(function () {
+  function feed() {
+    fetch("/api/media/token", { credentials: "same-origin" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.ok && d.t) {
+          var v = document.querySelector(".share-player");
+          if (v && !v.getAttribute("src")) v.src = "/api/media/v/demo?t=" + encodeURIComponent(d.t);
+        }
+      })
+      .catch(function () {});
+  }
+  document.addEventListener("DOMContentLoaded", feed);
+  var btn = document.getElementById("demoShareBtn");
+  if (btn) btn.addEventListener("click", function () {
+    var url = location.origin + "/share-video.html";
+    var done = function () { var t = btn.textContent; btn.textContent = "✓ 已复制"; setTimeout(function () { btn.textContent = t; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { prompt("复制以下链接：", url); });
+    else prompt("复制以下链接：", url);
+  });
+})();
+</script>

@@ -1054,3 +1054,61 @@
   }
   load();
 })();
+
+// 视频门禁：直链已 404，取流需短时效令牌（/api/media/token → /api/media/v/<name>?t=...）。
+// mediaTokenUrl(name, cb)：cb 收到可用的流地址；失败 cb(null)。
+// 首页大播放器与案例录屏共用；视频元素已禁右键/nodownload。
+(function () {
+  var cache = { t: null, exp: 0 };
+  function getToken(cb) {
+    var now = Date.now();
+    if (cache.t && cache.exp > now) return cb(cache.t);
+    fetch("/api/media/token", { credentials: "same-origin" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.ok && d.t) { cache = { t: d.t, exp: now + (d.ttl - 60) * 1000 }; cb(d.t); }
+        else cb(null);
+      })
+      .catch(function () { cb(null); });
+  }
+  window.mediaTokenUrl = function (name, cb) {
+    getToken(function (t) { cb(t ? "/api/media/v/" + encodeURIComponent(name) + "?t=" + encodeURIComponent(t) : null); });
+  };
+
+  // 首页演示视频：预览点击弹窗播放 + 内联自动播，均改走令牌流
+  document.addEventListener("DOMContentLoaded", function () {
+    var preview = document.querySelector(".product-demo-preview");
+    var dialog = document.getElementById("product-demo-player");
+    if (preview && dialog) {
+      var big = dialog.querySelector("video");
+      var inline = preview.querySelector("video.product-demo-inline");
+      var feed = function (el) { mediaTokenUrl("demo", function (u) { if (u && !el.getAttribute("src")) el.src = u; }); };
+      preview.addEventListener("click", function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        feed(big);
+        if (dialog.showModal) { dialog.showModal(); big.play().catch(function () {}); }
+      });
+      if (inline && matchMedia("(min-width: 861px)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { feed(inline); inline.play().catch(function () {}); }
+            else if (!inline.paused) inline.pause();
+          });
+        }, { threshold: 0.5 }).observe(preview);
+      }
+      dialog.addEventListener("close", function () { big.pause(); });
+    }
+    // 分享按钮：复制分享页链接
+    var btn = document.getElementById("demoShareBtn");
+    if (btn) btn.addEventListener("click", function () {
+      var url = location.origin + "/share-video.html";
+      var done = function () {
+        var t = btn.textContent; btn.textContent = "✓ 已复制";
+        setTimeout(function () { btn.textContent = t; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { prompt("复制以下链接：", url); });
+      else prompt("复制以下链接：", url);
+    });
+  });
+})();

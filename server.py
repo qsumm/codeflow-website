@@ -34,7 +34,7 @@ import urllib.parse
 import urllib.request
 import uuid
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -950,6 +950,56 @@ async def auth_repo(request: Request):
             status_code=503,
         )
     return JSONResponse({"ok": True, **info})
+
+
+# ── 媒体门禁：视频文件在站点目录之外，仅凭短时效令牌经 nginx internal 转发 ──
+MEDIA_SECRET = os.environ.get("MEDIA_TOKEN_SECRET", "").strip() or secrets.token_hex(32)
+MEDIA_DIR = Path(os.environ.get("MEDIA_DIR", "/opt/codeflow-app/media"))
+# 名称 → 文件白名单（路径不可拼接，只允许枚举键）
+MEDIA_FILES = {"demo": "demo.mp4", "ecom": "ecom.mp4", "perf": "perf.mp4"}
+MEDIA_TTL_SEC = 30 * 60
+
+
+def _media_token(now: int) -> str:
+    # 通配令牌：一个窗口内对所有白名单媒体有效（30 分钟换一次）
+    msg = f"media:*:{now // MEDIA_TTL_SEC * MEDIA_TTL_SEC}".encode()
+    return hmac.new(MEDIA_SECRET.encode(), msg, hashlib.sha256).hexdigest()
+
+
+def _media_check(name: str, token: str) -> bool:
+    if name not in MEDIA_FILES or not token:
+        return False
+    now = int(time.time())
+    return hmac.compare_digest(token, _media_token(now)) or \
+        hmac.compare_digest(token, _media_token(now - MEDIA_TTL_SEC))
+
+
+@app.get("/api/media/token")
+async def media_token(request: Request):
+    """发短时效视频令牌（浏览器 <video> 取流用；直链文件已在站点目录外，404）。"""
+    return JSONResponse({"ok": True, "t": _media_token(int(time.time())), "ttl": MEDIA_TTL_SEC})
+
+
+@app.get("/api/media/v/{name}")
+async def media_stream(name: str, request: Request):
+    token = request.query_params.get("t", "")
+    if not _media_check(name, token):
+        return JSONResponse(
+            {"ok": False, "code": "MEDIA_FORBIDDEN", "message": "视频链接已过期，请刷新页面后重试"},
+            status_code=403,
+        )
+    path = MEDIA_DIR / MEDIA_FILES[name]
+    if not path.exists():
+        return JSONResponse({"ok": False, "message": "媒体文件缺失"}, status_code=404)
+    # nginx internal：由 X-Accel-Redirect 转发，自动支持 Range 拖动进度条
+    return Response(
+        status_code=200,
+        headers={"X-Accel-Redirect": f"/_media/{MEDIA_FILES[name]}",
+                 "Content-Type": "video/mp4", "Accept-Ranges": "bytes",
+                 "Cache-Control": "no-store"},
+    )
+
+
 
 
 @app.get("/api/resources/deploy-bundle")

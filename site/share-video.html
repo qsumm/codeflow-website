@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<!-- 由 tools/build_pages.py 生成，禁止手改：改 site/src/ 后重建 -->
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CodeFlow 产品演示视频 · 需求进，可验收的交付出</title>
+<meta name="description" content="CodeFlow 3 分钟产品演示：需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维如何由数字员工自动完成。视频仅供在线观看。">
+<link rel="icon" type="image/svg+xml" href="/assets/codeflow-logo.svg">
+<link rel="stylesheet" href="/assets/site.css?v=1b3bbd4f">
+<meta property="og:title" content="CodeFlow 产品演示视频 · 需求进，可验收的交付出">
+  <meta property="og:description" content="CodeFlow 3 分钟产品演示：需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维如何由数字员工自动完成。视频仅供在线观看。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="http://103.39.64.76:63028/assets/og/og-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+<link rel="canonical" href="http://103.39.64.76:63028/share-video.html"></head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/">
+      <span class="brand-mark">
+        <img src="/assets/codeflow-logo.svg" width="20" height="20" alt="" aria-hidden="true" style="display:block;border-radius:5px">
+      </span>
+      <span class="brand-name"><b>CodeFlow</b> <span>AI 软件交付工厂</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="/" data-nav="index">首页</a>
+      <a href="/features.html" data-nav="features">产品特性</a>
+  <a href="/cases.html" data-nav="cases">案例集</a>
+      <a href="/blog.html" data-nav="blog">博客</a>
+      <a href="/deploy.html" data-nav="deploy">部署</a>
+      <a href="/open-source.html" data-nav="open-source">开源</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <button class="nav-burger" id="navBurger" aria-label="打开导航菜单" aria-expanded="false" aria-controls="navMobile">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3.5h14v1.7H1V3.5Zm0 3.9h14v1.7H1V7.4Zm0 3.9h14v1.7H1v-1.7Z"/></svg>
+    </button>
+    <div class="nav-act">
+      <div class="pv-pill pv-pill-nav" role="status" aria-label="本站累计访问量统计">
+        <svg class="pv-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span class="pv-label-nav">累计访问量</span>
+        <span class="pv-num" id="pv-hero">…</span>
+      </div>
+      <a class="gh-star gh-star-accent" href="#repo" data-repo-link="repo" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <span>GitHub</span>
+      </a>
+      <button class="icon-btn" id="themeBtn" aria-label="切换明暗主题">
+        <svg id="themeIcon" width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm0 1.5a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 12.5Zm0-11a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 1.5ZM3.05 3.05a.75.75 0 0 1 1.06 0l.7.7a.75.75 0 1 1-1.06 1.06l-.7-.7a.75.75 0 0 1 0-1.06Zm9.14 1.76a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Zm.31 4.69a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1a.75.75 0 0 1 .75.75Zm-10 0a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 2.5 11Zm1.19 4.44a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 0 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0ZM12.95 3.05a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Z"/></svg>
+      </button>
+      <div class="nav-auth-zone" id="navAuthZone">
+        <button type="button" class="btn btn-ghost btn-sm nav-auth-btn" id="navAuthBtn" aria-label="账号登录或注册">登录 / 注册</button>
+      </div>
+      <a class="btn btn-primary btn-sm" href="/deploy.html" data-require-auth="自部署指南与安装脚本">开始部署</a>
+    </div>
+  </div>
+<div id="navMobile" class="nav-mobile" hidden>
+  <a href="/" data-nav="index">首页</a>
+  <a href="/features.html" data-nav="features">产品特性</a>
+  <a href="/cases.html" data-nav="cases">案例集</a>
+  <a href="/blog.html" data-nav="blog">博客</a>
+  <a href="/deploy.html" data-nav="deploy">部署</a>
+  <a href="/open-source.html" data-nav="open-source">开源</a>
+  <a href="#repo" data-repo-link="repo" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">GitHub 仓库</a>
+  <button type="button" class="nav-mobile-auth" id="navMobileAuthBtn">手机号登录 / 注册</button>
+</div>
+</header>
+
+<main>
+<div class="wrap">
+<section class="hero hero-center" style="padding:48px 0 24px">
+  <span class="eyebrow">产品演示</span>
+  <h1 style="font-size:clamp(1.6rem,3vw,2.2rem)">CodeFlow 3 分钟产品演示</h1>
+  <p class="hero-sub">需求进，可验收的交付出：澄清、开发、测试、部署全自动完成，人只做测试</p>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" style="padding-top:8px">
+  <div class="product-demo" id="product-demo" style="max-width:960px;margin:0 auto">
+    <button type="button" class="demo-share-btn" id="demoShareBtn" aria-label="复制视频分享链接">🔗 复制分享链接</button>
+    <div class="product-demo-preview" style="cursor:default">
+      <img src="/assets/media/codeflow-demo-v2-cover.jpg" alt="" width="960" height="540" decoding="async">
+      <video class="share-player" controls playsinline preload="metadata"
+             controlslist="nodownload noremoteplayback" disablepictureinpicture
+             oncontextmenu="return false"></video>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:.86rem;margin-top:14px">
+      视频不提供文件下载。想在自己的工单里跑一遍？<a href="/deploy.html" data-require-auth="自部署指南与安装脚本" style="color:var(--accent-text)">按指南部署体验 →</a>
+    </p>
+  </div>
+</section>
+</div>
+
+<script>
+(function () {
+  function feed() {
+    fetch("/api/media/token", { credentials: "same-origin" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.ok && d.t) {
+          var v = document.querySelector(".share-player");
+          if (v && !v.getAttribute("src")) v.src = "/api/media/v/demo?t=" + encodeURIComponent(d.t);
+        }
+      })
+      .catch(function () {});
+  }
+  document.addEventListener("DOMContentLoaded", feed);
+  var btn = document.getElementById("demoShareBtn");
+  if (btn) btn.addEventListener("click", function () {
+    var url = location.origin + "/share-video.html";
+    var done = function () { var t = btn.textContent; btn.textContent = "✓ 已复制"; setTimeout(function () { btn.textContent = t; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { prompt("复制以下链接：", url); });
+    else prompt("复制以下链接：", url);
+  });
+})();
+</script>
+
+</main>
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="/">
+          <span class="brand-mark">
+            <img src="/assets/codeflow-logo.svg" width="20" height="20" alt="" aria-hidden="true" style="display:block;border-radius:5px">
+          </span>
+          <span class="brand-name"><b>CodeFlow</b> <span>AI 软件交付工厂</span></span>
+        </a>
+        <p>研发人最省心的 AI 交付工厂：需求进、可验收的交付出——澄清、开发、评审、测试、部署全自动完成，人只做澄清确认与验收。</p>
+      </div>
+      <div class="foot-col">
+        <h4>产品特性</h4>
+        <a href="/features.html">产品能力</a><a href="/cases.html">交付案例</a><a href="/delivery.html">真实交付</a><a href="/deploy.html">自部署</a>
+      </div>
+      <div class="foot-col">
+        <h4>开源</h4>
+        <a class="foot-gh-btn" href="#repo" data-repo-link="repo" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">GitHub 仓库 →</a><a href="#repo" data-repo-link="issues" target="_blank" rel="noopener" data-require-auth="源码与开源仓库">问题反馈</a><a href="/open-source.html">开源与合规</a><a href="/privacy.html">隐私协议</a>
+      </div>
+      <div class="foot-col">
+        <h4>内容</h4>
+        <a href="/blog.html">工程博客</a><a href="/index.html#capabilities">能力矩阵</a><a href="/index.html#faq">常见问题</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 CodeFlow · 开源协议 GPL-3.0 · 累计访问量 <b id="pv-total">…</b></span>
+      <span>开放集成：禅道 · TAPD · 钉钉 / 飞书 · Anthropic 兼容模型协议 · MCP</span>
+    </div>
+  </div>
+</footer>
+
+<!-- 右下角常驻联系挂件（FR-33）：桌面常显卡片；手机端收成一枚气泡，点开才展开二维码 -->
+<aside class="wx-contact" aria-label="联系方式">
+  <button type="button" class="wx-toggle" aria-expanded="false" aria-label="展开微信联系方式">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M9.4 3.6c-3.7 0-6.7 2.5-6.7 5.6 0 1.8 1 3.4 2.6 4.4l-.7 2.2 2.5-1.3c.7.2 1.5.4 2.3.4h.4a5.6 5.6 0 0 1-.2-1.5c0-3.1 3-5.7 6.7-5.7h.6c-.7-2.4-3.4-4.1-6.5-4.1Z"/>
+      <path d="M21.3 13.4c0-2.6-2.5-4.7-5.6-4.7s-5.6 2.1-5.6 4.7 2.5 4.7 5.6 4.7c.7 0 1.3-.1 1.9-.3l2.1 1.1-.6-1.8c1.3-.9 2.2-2.2 2.2-3.7Z"/>
+    </svg>
+  </button>
+  <div class="wx-body">
+    <p class="wx-contact-label">扫码或添加微信号：<code>cloud288</code></p>
+    <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
+  </div>
+</aside>
+
+<script src="/assets/site.js?v=1b3bbd4f" defer></script>
+</body>
+</html>

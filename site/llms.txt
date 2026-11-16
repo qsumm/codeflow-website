@@ -11,6 +11,7 @@
 - [自部署指南](http://103.39.64.76:63028/deploy.html): 平台前后端与执行器 runtime 的自部署命令：单机 4 核 4G 起步，build.sh / bootstrap.s
 - [开源与合规](http://103.39.64.76:63028/open-source.html): 开源协议 GPL-3.0（上游 CodeFlow Community），执行器 runtime 纯标准库可独立部署；全链
 - [用户服务与隐私协议](http://103.39.64.76:63028/privacy.html): CodeFlow 官网用户服务与隐私保护协议：说明账号手机号与个人资料收集范围、加密存储机制、数据境内存储原则及用户权利
+- [CodeFlow 产品演示视频](http://103.39.64.76:63028/share-video.html): CodeFlow 3 分钟产品演示：需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维如何由数字员工自动完成。
 
 
 ## 部署（CodeFlow）

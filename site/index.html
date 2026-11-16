@@ -11,7 +11,7 @@
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "CodeFlow · AI 软件交付工厂", "applicationCategory": "DeveloperApplication", "operatingSystem": "Linux, macOS", "softwareVersion": "1.2.0", "license": "https://www.gnu.org/licenses/gpl-3.0.html", "description": "研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水线自动推进，人只做澄清确认与验收。开源协议 GPL-3.0，支持私有化部署与二次开发。"}
 </script>
-<link rel="stylesheet" href="/assets/site.css?v=cc0da2c2">
+<link rel="stylesheet" href="/assets/site.css?v=1b3bbd4f">
 <meta property="og:title" content="CodeFlow · AI 软件交付工厂 — 需求进，可验收的交付出">
   <meta property="og:description" content="研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水线自动推进，人只做澄清确认与验收。开源协议 GPL-3.0，支持私有化部署与二次开发。">
   <meta property="og:type" content="website">
@@ -227,10 +227,11 @@
 </section>
 </div>
 
-<link href="/assets/product-demo.css?v=20261115" rel="stylesheet">
+<link href="/assets/product-demo.css?v=20261116" rel="stylesheet">
 <div class="wrap">
   <div id="product-demo" class="product-demo">
-    <a class="product-demo-preview" href="/assets/media/codeflow-demo-v2.mp4"
+    <button type="button" class="demo-share-btn" id="demoShareBtn" aria-label="复制视频分享链接">🔗 分享视频</button>
+    <a class="product-demo-preview" href="#product-demo-player"
        aria-label="播放视频">
       <img src="/assets/media/codeflow-demo-v2-cover.jpg" alt="" width="960" height="540" loading="lazy" decoding="async">
       <video class="product-demo-inline" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>
@@ -243,10 +244,11 @@
     <form method="dialog" class="product-demo-player-bar">
       <button type="submit" class="product-demo-close" aria-label="关闭播放器" autofocus>×</button>
     </form>
-    <video controls playsinline preload="none" poster="/assets/media/codeflow-demo-v2-cover.jpg"></video>
+    <video controls playsinline preload="none" controlslist="nodownload noremoteplayback" disablepictureinpicture
+           poster="/assets/media/codeflow-demo-v2-cover.jpg" oncontextmenu="return false"></video>
   </dialog>
 </div>
-<script src="/assets/product-demo.js?v=20261115" defer></script>
+<script src="/assets/product-demo.js?v=20261116" defer></script>
 
 <!-- ═══════ 能力矩阵：一个平台，覆盖研发交付全流程 ═══════ -->
 <div class="wrap">
@@ -554,6 +556,6 @@ bash build.sh && bash bootstrap.sh</code>
   </div>
 </aside>
 
-<script src="/assets/site.js?v=cc0da2c2" defer></script>
+<script src="/assets/site.js?v=1b3bbd4f" defer></script>
 </body>
 </html>

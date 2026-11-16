@@ -913,3 +913,13 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 
 /* 登录后由前端解锁真实仓库地址（此前一直是掩码） */
 .repo-mask--open{filter:none;color:inherit}
+
+/* 「分享视频」按钮：预览图上方右上角悬浮，点按复制分享链接 */
+.demo-share-btn{position:absolute;top:14px;right:14px;z-index:3;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--border-strong);background:var(--chrome-bg);
+  color:var(--text);font-size:.84rem;font-weight:600;
+  box-shadow:var(--shadow-pop);transition:border-color .15s var(--ease),color .15s var(--ease)}
+.demo-share-btn:hover{border-color:var(--accent);color:var(--accent-text)}
+#product-demo{position:relative}

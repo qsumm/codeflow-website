@@ -503,8 +503,28 @@ def g27() -> None:
     g("G27", not bad, "; ".join(sorted(set(bad))[:5]))
 
 
+# ── G28 视频零直链：产物不得含 .mp4，视频必须走令牌流端点 ──
+def g28() -> None:
+    """视频禁止下载：站点目录不得有 .mp4（nginx 侧 /assets/media/ 同时 404），
+    页面引用必须走 /api/media 门禁端点；不得出现媒体直链。"""
+    bad = []
+    for p_ in SITE.rglob("*"):
+        if p_.is_file() and p_.suffix.lower() in (".mp4", ".webm", ".mov", ".avi", ".mkv"):
+            bad.append(f"{p_.relative_to(SITE)} 视频文件进了站点目录")
+    for p_ in html_pages():
+        s = p_.read_text(encoding="utf-8")
+        for m in re.finditer(r'(?:src|href|data-video)="([^"]*\.mp4[^"]*)"', s):
+            bad.append(f"{p_.name} 媒体直链 {m.group(1)[:50]}")
+    idx = (SITE / "index.html").read_text(encoding="utf-8")
+    if 'data-video="demo"' not in idx and "mediaTokenUrl" not in (SITE / "assets" / "site.js").read_text(encoding="utf-8"):
+        bad.append("首页视频未接令牌流模块")
+    if not (SITE / "share-video.html").exists():
+        bad.append("缺分享页 share-video.html")
+    g("G28", not bad, "; ".join(sorted(set(bad))[:5]))
+
+
 def main() -> int:
-    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25, g26, g27):
+    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25, g26, g27, g28):
         try:
             fn()
         except Exception as e:  # noqa: BLE001

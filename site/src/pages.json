@@ -1,73 +1,80 @@
 {
- "base_url": "http://103.39.64.76:63028",
- "pages": [
-  {
-   "slug": "index",
-   "file": "index",
-   "title": "CodeFlow · AI 软件交付工厂 — 需求进，可验收的交付出",
-   "desc": "研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水线自动推进，人只做澄清确认与验收。开源协议 GPL-3.0，支持私有化部署与二次开发。",
-   "nav": "none"
-  },
-  {
-   "slug": "features",
-   "file": "features",
-   "title": "产品特性 · CodeFlow — 数字员工研发交付流水线",
-   "desc": "小队与 流水线模板、需求澄清对话、6 种 Agent 客户端、任意 Anthropic 兼容模型、禅道/钉钉/飞书集成与执行器 runtime——每个能力都对应真实运行验证。",
-   "nav": "main",
-   "nav_active": "features"
-  },
-  {
-   "slug": "delivery",
-   "file": "delivery",
-   "title": "真实交付 · 闭环实录 · CodeFlow",
-   "desc": "一条缺陷工单 52 分钟变成修复分支的完整记录：需求拉取、派发执行、自建分支交付真实代码、交付备注幂等回写源头，失败如实留痕。",
-   "nav": "none"
-  },
-  {
-   "slug": "cases",
-   "file": "cases",
-   "title": "交付案例 · 一个工作项进来，一个可验收的产品出去 · CodeFlow",
-   "desc": "CodeFlow 真实交付案例：50 分钟交付 Web 压测平台（QPS 15,127、错误率 0%）、20 分钟交付可下单可发货的商城、开工前 AI 反问 19 个问题、交付进度可观测可重试——每例都有截图、验收数据与产物清单。",
-   "nav": "main",
-   "nav_active": "cases"
-  },
-  {
-   "slug": "blog",
-   "file": "blog",
-   "title": "博客 · 工程实践与交付实录 · CodeFlow",
-   "desc": "关于数字员工交付、执行器设计与工程实践的记录：禅道闭环实录、开源 runtime 立项决策、真实模型测试复盘——只写真实发生过的事。",
-   "nav": "main",
-   "nav_active": "blog"
-  },
-  {
-   "slug": "deploy",
-   "file": "deploy",
-   "title": "自部署指南 · CodeFlow",
-   "desc": "平台前后端与执行器 runtime 的自部署命令：单机 4 核 4G 起步，build.sh / bootstrap.sh 一条命令起全栈。",
-   "nav": "main",
-   "nav_active": "deploy"
-  },
-  {
-   "slug": "open-source",
-   "file": "open-source",
-   "title": "开源与合规 · CodeFlow",
-   "desc": "开源协议 GPL-3.0（上游 CodeFlow Community），执行器 runtime 纯标准库可独立部署；全链路可审计，支撑数据不出域的私有化采购要求。",
-   "nav": "main",
-   "nav_active": "open-source"
-  },
-  {
-   "slug": "privacy",
-   "file": "privacy",
-   "title": "用户服务与隐私协议 · CodeFlow",
-   "desc": "CodeFlow 官网用户服务与隐私保护协议：说明账号手机号与个人资料收集范围、加密存储机制、数据境内存储原则及用户权利。",
-   "nav": "none"
-  },
-  {
-   "slug": "404",
-   "file": "404",
-   "title": "页面不存在 · {{BRAND}}",
-   "desc": "你访问的页面不存在。",
-   "nav": "none"
-  }
- ]
+  "base_url": "http://103.39.64.76:63028",
+  "pages": [
+    {
+      "slug": "index",
+      "file": "index",
+      "title": "CodeFlow · AI 软件交付工厂 — 需求进，可验收的交付出",
+      "desc": "研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水线自动推进，人只做澄清确认与验收。开源协议 GPL-3.0，支持私有化部署与二次开发。",
+      "nav": "none"
+    },
+    {
+      "slug": "features",
+      "file": "features",
+      "title": "产品特性 · CodeFlow — 数字员工研发交付流水线",
+      "desc": "小队与 流水线模板、需求澄清对话、6 种 Agent 客户端、任意 Anthropic 兼容模型、禅道/钉钉/飞书集成与执行器 runtime——每个能力都对应真实运行验证。",
+      "nav": "main",
+      "nav_active": "features"
+    },
+    {
+      "slug": "delivery",
+      "file": "delivery",
+      "title": "真实交付 · 闭环实录 · CodeFlow",
+      "desc": "一条缺陷工单 52 分钟变成修复分支的完整记录：需求拉取、派发执行、自建分支交付真实代码、交付备注幂等回写源头，失败如实留痕。",
+      "nav": "none"
+    },
+    {
+      "slug": "cases",
+      "file": "cases",
+      "title": "交付案例 · 一个工作项进来，一个可验收的产品出去 · CodeFlow",
+      "desc": "CodeFlow 真实交付案例：50 分钟交付 Web 压测平台（QPS 15,127、错误率 0%）、20 分钟交付可下单可发货的商城、开工前 AI 反问 19 个问题、交付进度可观测可重试——每例都有截图、验收数据与产物清单。",
+      "nav": "main",
+      "nav_active": "cases"
+    },
+    {
+      "slug": "blog",
+      "file": "blog",
+      "title": "博客 · 工程实践与交付实录 · CodeFlow",
+      "desc": "关于数字员工交付、执行器设计与工程实践的记录：禅道闭环实录、开源 runtime 立项决策、真实模型测试复盘——只写真实发生过的事。",
+      "nav": "main",
+      "nav_active": "blog"
+    },
+    {
+      "slug": "deploy",
+      "file": "deploy",
+      "title": "自部署指南 · CodeFlow",
+      "desc": "平台前后端与执行器 runtime 的自部署命令：单机 4 核 4G 起步，build.sh / bootstrap.sh 一条命令起全栈。",
+      "nav": "main",
+      "nav_active": "deploy"
+    },
+    {
+      "slug": "open-source",
+      "file": "open-source",
+      "title": "开源与合规 · CodeFlow",
+      "desc": "开源协议 GPL-3.0（上游 CodeFlow Community），执行器 runtime 纯标准库可独立部署；全链路可审计，支撑数据不出域的私有化采购要求。",
+      "nav": "main",
+      "nav_active": "open-source"
+    },
+    {
+      "slug": "privacy",
+      "file": "privacy",
+      "title": "用户服务与隐私协议 · CodeFlow",
+      "desc": "CodeFlow 官网用户服务与隐私保护协议：说明账号手机号与个人资料收集范围、加密存储机制、数据境内存储原则及用户权利。",
+      "nav": "none"
+    },
+    {
+      "slug": "404",
+      "file": "404",
+      "title": "页面不存在 · {{BRAND}}",
+      "desc": "你访问的页面不存在。",
+      "nav": "none"
+    },
+    {
+      "slug": "share-video",
+      "file": "share-video",
+      "title": "CodeFlow 产品演示视频 · 需求进，可验收的交付出",
+      "desc": "CodeFlow 3 分钟产品演示：需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维如何由数字员工自动完成。视频仅供在线观看。",
+      "nav": "none"
+    }
+  ]
 }

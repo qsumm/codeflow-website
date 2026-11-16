@@ -19,7 +19,7 @@
         <div><dt>验收链路</dt><dd>浏览 → 加购 → 下单（NO202611120555218625）→ 发货 → 已发货</dd></div>
         <div><dt>数据一致性</dt><dd>下单在单事务内完成校验→扣库存→建单，失败整体回滚；取消订单回滚库存</dd></div>
         <div><dt>交付清单</dt><dd>商店前台 + 管理端 · 内置 SQLite/JSON 降级存储 · 启动脚本 · 交付报告</dd></div>
-        <div><dt>实操录屏</dt><dd><a class="video-link" data-video="/assets/media/case-ecom-flow.mp4" href="/assets/media/case-ecom-flow.mp4">▶ 看下单到发货全链路（42 秒）</a></dd></div>
+        <div><dt>实操录屏</dt><dd><a class="video-link" data-video="ecom" href="#videoDialog">▶ 看下单到发货全链路（42 秒）</a></dd></div>
       </dl>
     </div>
   </div>
@@ -39,7 +39,7 @@
         <div><dt>验收标准</dt><dd>并发 20 · 持续 10 秒 · 产出含 QPS/P95 的报告</dd></div>
         <div><dt>实测结果</dt><dd>151,277 请求 · QPS 15,127 · P95 1.43 ms · 错误率 0%</dd></div>
         <div><dt>交付清单</dt><dd>可运行代码 · 启动/停止/状态脚本 · 自测脚本 · 交付报告</dd></div>
-        <div><dt>实操录屏</dt><dd><a class="video-link" data-video="/assets/media/case-perf-walkthrough.mp4" href="/assets/media/case-perf-walkthrough.mp4">▶ 看发布验收走查（30 秒）</a></dd></div>
+        <div><dt>实操录屏</dt><dd><a class="video-link" data-video="perf" href="#videoDialog">▶ 看发布验收走查（30 秒）</a></dd></div>
       </dl>
     </div>
   </div>
@@ -156,9 +156,9 @@
   <form method="dialog" class="product-demo-player-bar">
     <button type="submit" class="product-demo-close" aria-label="关闭播放器" autofocus>×</button>
   </form>
-  <video controls playsinline preload="none"></video>
+  <video controls playsinline preload="none" controlslist="nodownload noremoteplayback" disablepictureinpicture oncontextmenu="return false"></video>
 </dialog>
-<link href="/assets/product-demo.css?v=20261115" rel="stylesheet">
+<link href="/assets/product-demo.css?v=20261116" rel="stylesheet">
 <script>
 (function () {
   var dlg = document.getElementById("videoDialog");
@@ -167,8 +167,10 @@
   document.querySelectorAll(".video-link").forEach(function (a) {
     a.addEventListener("click", function (e) {
       e.preventDefault();
-      var src = a.getAttribute("data-video");
-      if (v.getAttribute("src") !== src) v.setAttribute("src", src);
+      var name = a.getAttribute("data-video");
+      mediaTokenUrl(name, function (url) {
+        if (url && v.getAttribute("src") !== url) v.setAttribute("src", url);
+      });
       dlg.showModal();
       v.play().catch(function () {});
     });
