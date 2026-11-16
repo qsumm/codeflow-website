@@ -746,7 +746,10 @@
     var mBtn = document.getElementById("navMobileAuthBtn");
 
     if (zone) {
-      if (!state.user) {
+      if (!state.serverUp && !state.user) {
+        // 认证后端未部署：隐藏登录入口，避免点了发不出验证码
+        zone.innerHTML = "";
+      } else if (!state.user) {
         zone.innerHTML = '<button type="button" class="btn btn-ghost btn-sm nav-auth-btn" id="navAuthBtn" aria-label="账号登录或注册">登录 / 注册</button>';
         var btn = document.getElementById("navAuthBtn");
         if (btn) btn.addEventListener("click", function () { openLoginModal(""); });
@@ -966,7 +969,7 @@
       return;
     }
     var req = e.target.closest ? e.target.closest("[data-require-auth]") : null;
-    if (req && !state.user) {
+    if (req && !state.user && state.serverUp) {
       e.preventDefault();
       var href = req.getAttribute("href");
       var label = req.getAttribute("data-require-auth") || "受限资源";
@@ -976,14 +979,19 @@
     }
   });
 
+  // 探测认证后端是否在线：离线时整站不做登录门禁（避免把主 CTA 卡死）
   fetch("/api/auth/me", { credentials: "same-origin" })
-    .then(function (r) { return r.json(); })
+    .then(function (r) {
+      state.serverUp = r.ok;           // 后端未部署时通常 404/405，不当作可用
+      return r.ok ? r.json() : null;
+    })
     .then(function (d) {
       state.user = d && d.authenticated ? d.user : null;
       state.ready = true;
       renderAuthState();
     })
     .catch(function () {
+      state.serverUp = false;          // 网络错误同样视为不可用
       state.ready = true;
       renderAuthState();
     });
