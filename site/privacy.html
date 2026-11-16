@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<!-- 由 tools/build_pages.py 生成，禁止手改：改 site/src/ 后重建 -->
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>用户服务与隐私协议 · CodeFlow</title>
+<meta name="description" content="CodeFlow 官网用户服务与隐私保护协议：说明账号手机号与个人资料收集范围、加密存储机制、数据境内存储原则及用户权利。">
+<link rel="icon" type="image/svg+xml" href="/assets/codeflow-logo.svg">
+<link rel="stylesheet" href="/assets/site.css?v=9165dc25">
+<meta property="og:title" content="用户服务与隐私协议 · CodeFlow">
+  <meta property="og:description" content="CodeFlow 官网用户服务与隐私保护协议：说明账号手机号与个人资料收集范围、加密存储机制、数据境内存储原则及用户权利。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="http://103.39.64.76:63028/assets/og/og-home.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+<link rel="canonical" href="http://103.39.64.76:63028/privacy.html"></head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/">
+      <span class="brand-mark">
+        <img src="/assets/codeflow-logo.svg" width="20" height="20" alt="" aria-hidden="true" style="display:block;border-radius:5px">
+      </span>
+      <span class="brand-name"><b>CodeFlow</b> <span>AI 交付工厂</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="/features.html" data-nav="features">产品特性</a>
+      <a href="/cases.html" data-nav="cases">案例集</a>
+      <a href="/blog.html" data-nav="blog">博客</a>
+      <a href="/deploy.html" data-nav="deploy">部署</a>
+      <a href="/open-source.html" data-nav="open-source">开源</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <button class="nav-burger" id="navBurger" aria-label="打开导航菜单" aria-expanded="false" aria-controls="navMobile">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1 3.5h14v1.7H1V3.5Zm0 3.9h14v1.7H1V7.4Zm0 3.9h14v1.7H1v-1.7Z"/></svg>
+    </button>
+    <div class="nav-act">
+      <div class="pv-pill pv-pill-nav" role="status" aria-label="本站浏览量统计">
+        <svg class="pv-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span class="pv-num" id="pv-hero">…</span>
+      </div>
+      <a class="gh-star" href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <span>GitHub</span>
+      </a>
+      <button class="icon-btn" id="themeBtn" aria-label="切换明暗主题">
+        <svg id="themeIcon" width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm0 1.5a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 12.5Zm0-11a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 8 1.5ZM3.05 3.05a.75.75 0 0 1 1.06 0l.7.7a.75.75 0 1 1-1.06 1.06l-.7-.7a.75.75 0 0 1 0-1.06Zm9.14 1.76a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Zm.31 4.69a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1a.75.75 0 0 1 .75.75Zm-10 0a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 2.5 11Zm1.19 4.44a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 0 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0ZM12.95 3.05a.75.75 0 0 1 0 1.06l-.7.7a.75.75 0 1 1-1.06-1.06l.7-.7a.75.75 0 0 1 1.06 0Z"/></svg>
+      </button>
+      <div class="nav-auth-zone" id="navAuthZone">
+        <button type="button" class="btn btn-ghost btn-sm nav-auth-btn" id="navAuthBtn" aria-label="账号登录或注册">登录 / 注册</button>
+      </div>
+      <a class="btn btn-primary btn-sm" href="/deploy.html" data-require-auth="自部署指南与安装脚本">开始部署</a>
+    </div>
+  </div>
+<div id="navMobile" class="nav-mobile" hidden>
+  <a href="/features.html" data-nav="features">产品特性</a>
+      <a href="/cases.html" data-nav="cases">案例集</a>
+  <a href="/blog.html" data-nav="blog">博客</a>
+  <a href="/deploy.html" data-nav="deploy">部署</a>
+  <a href="/open-source.html" data-nav="open-source">开源</a>
+  <button type="button" class="nav-mobile-auth" id="navMobileAuthBtn">手机号登录 / 注册</button>
+</div>
+</header>
+
+<main>
+<div class="wrap">
+<section class="hero" style="padding:64px 0 36px">
+  <span class="eyebrow">合规与隐私保护</span>
+  <h1 style="font-size:clamp(1.8rem,3.4vw,2.6rem)">CodeFlow 用户服务与隐私协议</h1>
+  <p class="lede">更新日期：2026 年 11 月 16 日 · 生效日期：2026 年 11 月 16 日</p>
+</section>
+
+<section class="tight">
+  <div class="doc-body" style="max-width:56em">
+    <p>欢迎使用 CodeFlow 官方网站及相关服务。我们深知个人信息对您的重要性，并将按照法律法规要求，采取严格的安全保护措施保护您的个人信息安全可控。请在注册或登录前仔细阅读本协议。</p>
+
+    <h2>一、我们收集的信息范围</h2>
+    <ul>
+      <li><strong>账号基础信息</strong>：当您注册或登录官网账号时，我们会收集您的<strong>手机号码</strong>（用于唯一定位账号与接收短信验证码）、您设置的<strong>登录密码</strong>（采用 PBKDF2-HMAC-SHA256 加盐单向哈希存储，系统绝不保存明文密码）及<strong>昵称</strong>。</li>
+      <li><strong>验证码信息</strong>：图形验证码与短信验证码仅用于当次身份核验，验证完成后立即失效或销毁。</li>
+      <li><strong>个人资料信息（选填）</strong>：您在注册或个人中心主动填写的<strong>所属部门、职业/岗位、公司/团队名称、联系邮箱</strong>，仅用于完善个人资料展示及为您提供针对性的私有化部署与技术支持服务。</li>
+      <li><strong>安全审计日志</strong>：为保障服务安全、防范恶意刷取短信接口与异常登录，系统会记录必要的登录时间戳与客户端网络地址（浏览量统计仅保留单向哈希摘要，不落盘原始地址）。</li>
+    </ul>
+
+    <h2>二、信息的使用目的</h2>
+    <ul>
+      <li>为您提供官网账号注册、登录认证、会话维持及个人资料管理功能；</li>
+      <li>在您完成身份认证后，向您开放自部署脚本包下载、安装配置指南及私有化/商业版技术支持申请服务；</li>
+      <li>用于安全风控、防范针对短信网关或账号接口的自动化攻击与欺诈行为；</li>
+      <li>履行国家法律法规规定的网络与数据安全义务。</li>
+    </ul>
+
+    <h2>三、信息共享、转让与公开披露</h2>
+    <ul>
+      <li>我们<strong>不会向任何无关第三方出售、出租或非法提供</strong>您的手机号码及个人资料。</li>
+      <li><strong>授权短信合作方</strong>：短信验证码通过阿里云号码认证服务发送，仅用于完成当次身份核验，不作任何营销或其他用途。</li>
+      <li><strong>合规披露</strong>：仅在法律法规明确规定，或司法机关、行政主管部门依法要求时，我们才会在必要范围内配合提供相关信息。</li>
+    </ul>
+
+    <h2>四、数据存储与安全保护</h2>
+    <ul>
+      <li><strong>境内存储</strong>：本网站收集和产生的全部用户数据均存储在中华人民共和国境内服务器，<strong>不进行任何跨境数据传输</strong>。</li>
+      <li><strong>加密与隔离</strong>：密码采用高强度加盐哈希存储；短信验证码与图形验证码均以哈希摘要形式保存并设置严格有效期与尝试次数上限；登录会话采用 <code>HttpOnly</code> 安全令牌。</li>
+      <li><strong>保留期限</strong>：我们仅在为您提供服务所必需的期间内保留您的信息。如您申请注销账户，我们将删除或匿名化处理您的个人信息。</li>
+    </ul>
+
+    <h2>五、Cookie 与本地存储说明</h2>
+    <ul>
+      <li>本网站仅使用维持登录态所必需的会话 Cookie（<code>cf_site_session</code>，启用 <code>HttpOnly</code> 保护）以及记录明暗主题偏好的本地存储项（<code>aiops_site_theme</code>）。</li>
+      <li>本网站<strong>不植入任何第三方广告追踪脚本或跨站追踪型 Cookie</strong>。</li>
+    </ul>
+
+    <h2>六、您的权利</h2>
+    <ul>
+      <li><strong>查询与更正</strong>：登录后，您可随时点击页面右上角个人昵称胶囊展开个人信息面板，查看并在线修改您的昵称、所属部门、职业/岗位、公司/团队及联系邮箱。</li>
+      <li><strong>退出与撤回同意</strong>：您可随时点击顶栏退出按钮终止当前登录会话；如需注销账号或删除个人资料，可通过页面右下角官方联系方式与我们联系。</li>
+    </ul>
+
+    <h2>七、未成年人保护</h2>
+    <p>CodeFlow 面向软件研发、测试、运维及技术管理人员。若您为未满 18 周岁的未成年人，请在监护人陪同与指导下阅读本协议并使用本服务。</p>
+
+    <h2>八、协议更新与联系方式</h2>
+    <p>如本协议发生变更，我们将在官网显著位置更新生效日期。若您对本隐私协议或个人信息保护有任何疑问、意见或注销申请，可通过官网右下角微信号（<code>cloud288</code>）或开源仓库 Issues 与我们联系，我们将在收到请求后 15 个工作日内予以回复。</p>
+  </div>
+</section>
+</div>
+
+</main>
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="/">
+          <span class="brand-mark">
+            <img src="/assets/codeflow-logo.svg" width="20" height="20" alt="" aria-hidden="true" style="display:block;border-radius:5px">
+          </span>
+          <span class="brand-name"><b>CodeFlow</b> <span>AI 交付工厂</span></span>
+        </a>
+        <p>研发人最省心的 AI 交付工厂：需求进、可验收的交付出——澄清、开发、评审、测试、部署全自动完成，人只做澄清确认与验收。</p>
+        <div class="foot-badges" style="margin-top:16px">
+          <span class="badge">平台 MIT</span>
+          <span class="badge">Spring Boot 2.7</span>
+          <span class="badge">React · Vite</span>
+          <span class="badge">runtime 纯标准库</span>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>产品特性</h4>
+        <a href="/features.html">产品能力</a><a href="/cases.html">交付案例</a><a href="/delivery.html">真实交付</a><a href="/deploy.html">自部署</a>
+      </div>
+      <div class="foot-col">
+        <h4>开源</h4>
+        <a href="https://github.com/qsumm/CodeFlow" target="_blank" rel="noopener">GitHub 仓库</a><a href="https://github.com/qsumm/CodeFlow/issues" target="_blank" rel="noopener">问题反馈</a><a href="/open-source.html">开源与合规</a><a href="/privacy.html">隐私协议</a>
+      </div>
+      <div class="foot-col">
+        <h4>内容</h4>
+        <a href="/blog.html">工程博客</a><a href="/index.html#capabilities">能力矩阵</a><a href="/index.html#faq">常见问题</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 CodeFlow · 平台源码 MIT · 浏览量 <b id="pv-total">…</b></span>
+      <span>开放集成：禅道 · TAPD · 钉钉 / 飞书 · Anthropic 兼容模型协议 · MCP</span>
+    </div>
+  </div>
+</footer>
+
+<!-- 右下角常驻联系挂件（FR-33）：文案在上、二维码在下；fixed 定位不占文档流 -->
+<aside class="wx-contact" aria-label="联系方式">
+  <p class="wx-contact-label">扫码或添加微信号：<code>cloud288</code></p>
+  <img src="/assets/wechat-qr.jpg" alt="微信二维码，扫码添加微信号 cloud288" width="132" height="132" loading="lazy">
+</aside>
+
+<script src="/assets/site.js?v=9165dc25" defer></script>
+</body>
+</html>

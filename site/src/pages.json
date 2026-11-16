@@ -56,6 +56,13 @@
    "nav_active": "open-source"
   },
   {
+   "slug": "privacy",
+   "file": "privacy",
+   "title": "用户服务与隐私协议 · CodeFlow",
+   "desc": "CodeFlow 官网用户服务与隐私保护协议：说明账号手机号与个人资料收集范围、加密存储机制、数据境内存储原则及用户权利。",
+   "nav": "none"
+  },
+  {
    "slug": "404",
    "file": "404",
    "title": "页面不存在 · {{BRAND}}",

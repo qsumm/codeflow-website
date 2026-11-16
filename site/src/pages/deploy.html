@@ -3,8 +3,13 @@
   <span class="eyebrow">自部署指南</span>
   <h1 style="font-size:clamp(1.8rem,3.4vw,2.7rem)">克隆即部署：<br>两条命令起全栈，执行器节点 2C2G。</h1>
   <p class="lede">平台前后端与执行器 runtime 全部可自部署。以下命令与开源仓库 README 逐字一致；最低配置单机 <strong>4C8G</strong>（跑全栈），纯执行器节点 <strong>2C2G</strong> 即可。</p>
+  <div class="hero-cta" style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap">
+    <button type="button" class="btn btn-primary" data-auth-download="/api/resources/deploy-bundle">下载一键部署脚本 (.sh)</button>
+    <button type="button" class="btn btn-ghost" data-auth-trial="1">申请私有化 / 商业版支持</button>
+  </div>
 </section>
 
+<div id="deployProtectedArea" data-auth-protected="自部署脚本与执行器接入指南">
 <section class="tight" id="platform">
   <div class="sec-head"><div class="sec-kicker">A · 平台前后端</div>
   <h2 style="font-size:1.5rem">构建镜像 + 起依赖与应用</h2></div>
@@ -48,6 +53,7 @@
   </div>
   <p style="margin-top:12px;font-size:.8rem;color:var(--muted)">约束：同一个 executorId + token 同时只允许一个 daemon 实例（服务端单会话，后来者顶掉先来者）。</p>
 </section>
+</div>
 
 <section class="tight" id="requirements">
   <div class="sec-head"><div class="sec-kicker">前置条件</div>
