@@ -355,8 +355,30 @@ def g23() -> None:
     g("G23", not bad, "; ".join(bad))
 
 
+# ── G24 hidden 语义：带 hidden 属性的元素必须能被 CSS 真正隐藏 ──
+def g24() -> None:
+    """作者样式里的 display 会盖过 UA 的 [hidden]{display:none}。
+    凡是带 hidden 属性的元素，只要它的 id/class 有 display 规则，就必须同时存在
+    `<选择器>[hidden]{display:none}`，否则移动端抽屉这类面板会常驻展开。"""
+    css = (SITE / "assets" / "site.css").read_text(encoding="utf-8")
+    bad = []
+    for p in html_pages():
+        text = p.read_text(encoding="utf-8")
+        for m in re.finditer(r"<(\w+)([^>]*\bhidden\b[^>]*)>", text):
+            attrs = m.group(2)
+            ident = re.search(r'id="([^"]+)"', attrs)
+            cls = re.search(r'class="([^"]+)"', attrs)
+            tokens = ([ident.group(1)] if ident else []) + (cls.group(1).split() if cls else [])
+            for tok in tokens:
+                has_display = re.search(rf"[.#]{re.escape(tok)}\s*\{{[^}}]*display\s*:", css)
+                has_fix = re.search(rf"[.#]{re.escape(tok)}\[hidden\]\s*\{{[^}}]*display\s*:\s*none", css)
+                if has_display and not has_fix:
+                    bad.append(f"{p.name}: {tok} 有 display 规则但缺 [hidden] 兜底")
+    g("G24", not bad, "; ".join(sorted(set(bad))[:6]))
+
+
 def main() -> int:
-    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23):
+    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24):
         try:
             fn()
         except Exception as e:  # noqa: BLE001

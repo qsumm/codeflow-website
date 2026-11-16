@@ -5,6 +5,14 @@ APP=/opt/codeflow-app
 cd "$APP"
 
 echo "===== 1. 虚拟环境 + 依赖 ====="
+# 国内线路 pypi.org 往往不可达，走阿里云 PyPI 镜像
+mkdir -p /root/.config/pip
+cat > /root/.config/pip/pip.conf <<'EOF'
+[global]
+index-url = https://mirrors.aliyun.com/pypi/simple/
+trusted-host = mirrors.aliyun.com
+timeout = 30
+EOF
 python3 -m venv .venv 2>/dev/null || true
 ./.venv/bin/pip install -q --upgrade pip
 ./.venv/bin/pip install -q fastapi uvicorn
@@ -54,14 +62,17 @@ sleep 3
 systemctl is-active codeflow-site
 
 echo "===== 5. nginx 反代 API（保留原 /api/counter/）====="
-if ! grep -q "codeflow-api.conf" /etc/nginx/conf.d/codeflow.conf 2>/dev/null; then
-cat > /etc/nginx/conf.d/codeflow-api.conf <<'EOF'
+# 主站配置里已经写了 /api/auth/ 等 location 时不要重复建文件（重复 location 会让 nginx -t 失败）
+if grep -q "/api/auth/" /etc/nginx/conf.d/codeflow.conf 2>/dev/null; then
+  echo "codeflow.conf 已含 API 反代，跳过"
+else
+  cat > /etc/nginx/conf.d/codeflow-api.conf <<'EOF'
 # 认证与资源接口 → FastAPI(8906)；计数器仍走 8905
 location /api/auth/      { proxy_pass http://127.0.0.1:8906; proxy_set_header X-Real-IP $remote_addr; }
 location /api/resources/ { proxy_pass http://127.0.0.1:8906; proxy_set_header X-Real-IP $remote_addr; }
 location = /api/health   { proxy_pass http://127.0.0.1:8906; }
 EOF
-sed -i 's#include /etc/nginx/conf.d/\*\.conf;#include /etc/nginx/conf.d/*.conf;#' /etc/nginx/nginx.conf || true
+  sed -i 's#include /etc/nginx/conf.d/\*\.conf;#include /etc/nginx/conf.d/*.conf;#' /etc/nginx/nginx.conf || true
 fi
 nginx -t 2>&1 | tail -1
 systemctl reload nginx

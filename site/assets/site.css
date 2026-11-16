@@ -651,16 +651,19 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 
 /* ═══════ 移动端导航（H5）：≤1100px 汉堡 + 下拉面板 ═══════ */
 .nav-burger{display:none;width:32px;height:32px;border:1px solid var(--border);border-radius:8px;
-  background:var(--surface);color:var(--text);align-items:center;justify-content:center;cursor:pointer;padding:0}
+  background:var(--surface);color:var(--text);align-items:center;justify-content:center;cursor:pointer;padding:0;
+  flex:0 0 auto}
 .nav-mobile{display:none}
 @media (max-width:1100px){
   .nav-burger{display:inline-flex}
   .nav-mobile{display:block;position:absolute;top:100%;left:0;right:0;z-index:50;
-    background:var(--chrome-bg);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);
+    background:var(--bg);border-bottom:1px solid var(--border);
     padding:8px 0;box-shadow:var(--shadow-pop)}
   .nav-mobile a{display:block;padding:13px 24px;color:var(--text);font-size:.95rem;
     border-top:1px solid var(--border-soft);text-decoration:none}
   .nav-mobile a[aria-current="page"]{color:var(--accent)}
+  /* hidden 属性必须压过上面的 display:block，否则抽屉在手机上常驻展开 */
+  .nav-mobile[hidden]{display:none}
 }
 .nav{position:relative}
 

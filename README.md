@@ -8,12 +8,27 @@
 
 **家族站改造已交付**（2026-11-07）：站点主品牌升级为 CodeFlow——新首页（双产品叙事 + 禅道闭环联合故事）+ 4 个 CodeFlow 页（产品能力 / 真实交付 / 自部署 / 开源合规）；TestOps 39 页（17 主页面 + 21 正文壳页 + 技能集市 + EvalDeck 评测嵌入）整体迁至 `/testops/`，旧 URL 走 nginx 301 保外链。
 
+**已迁至新机并完成重装恢复**（2026-11-16）：主机重装后从零恢复 nginx + 站点产物 + 计数服务（含 355 条历史 PV）+ 认证后端；修复 dnf 源不可达导致的安装卡死，补齐移动端抽屉 `[hidden]` 失效问题并新增 G24 守卫。
+
 | 验证 | 结果 |
 |---|---|
-| 机械守卫 | **21 / 21** 全绿（`python3 tools/check_all.py`，44 页全量递归扫描） |
-| 线上对账 | 44 页 sha256 与本地逐字节一致（http://1.15.66.59/） |
-| 旧链迁移 | 13 条旧 URL 301 → /testops/；/features、/deploy、/open-source 由 CodeFlow 新页接管 |
+| 机械守卫 | **18 / 18** 全绿（`python3 tools/check_all.py`，全量递归扫描产物页） |
+| 线上对账 | 产物页与本地逐字节一致，28 项静态资源引用全部 200 |
+| 旧链迁移 | 旧 URL 301 → /ops/；/features、/deploy、/open-source 由 CodeFlow 新页接管 |
 | 性能 | 单页 ≤150KB（HTML+CSS+JS），零 CDN / 零第三方脚本 |
+
+### 线上部署（新机）
+
+| 项 | 值 |
+|---|---|
+| 主机 / SSH | `103.39.64.76`，SSH 端口 `63026`（NAT 转发到 22） |
+| 站点访问 | `http://103.39.64.76:63028/`（NAT→80）、`https://103.39.64.76:63029/`（NAT→443） |
+| 域名 | `codeflow.com.cn` / `www.codeflow.com.cn` → 同一主机；**备案通过前**被服务商接入网关按 Host/SNI 拦截，备案通过后即可用标准 80/443 访问 |
+| 站点目录 | `/var/www/testops-site`（rsync `--delete` 同步 `site/`） |
+| 计数服务 | `site-counter.service`（纯标准库 + SQLite，`127.0.0.1:8905`，DB `/opt/site-counter/hits.db`） |
+| 认证后端 | `codeflow-site.service`（FastAPI/uvicorn，`127.0.0.1:8906`，应用 `/opt/codeflow-app`） |
+| 证书 | DigiCert DV → `/etc/nginx/ssl/codeflow.com.cn.{pem,key}` |
+| 重装后一键恢复 | `tools/deploy-newserver.sh`（服务器侧：dnf 源 → nginx → 配置 → 计数 → 后端 → 自检） |
 
 打开预览：
 
@@ -39,7 +54,7 @@ python3 server.py            # → http://127.0.0.1:8899
 ```bash
 python3 tools/build_pages.py         # 改 site/src/ 后重建全部产物
 python3 tools/build_pages.py --check # 校验产物与源一致（CI gate）
-python3 tools/check_all.py           # 22 项机械守卫
+python3 tools/check_all.py           # 18 项机械守卫（G01…G24，含新增 G24 hidden 语义）
 
 ## 目录
 
