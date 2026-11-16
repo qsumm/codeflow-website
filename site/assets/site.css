@@ -1093,6 +1093,27 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   /* 次行两枚按钮等分，避免一宽一窄失衡 */
   .hero-cta .btn-ghost,.cta-source{flex:1 1 0;min-width:0}
 }
+/* ═══════ H5 全站排版：正文类段落统一放开行距，避免整块发闷 ═══════ */
+@media (max-width:620px){
+  .lede,.hero .lede{font-size:.95rem;line-height:1.95;margin-bottom:16px}
+  .lede-sm,.hero .lede-sm{font-size:.85rem;line-height:1.8}
+  .sec-head p{font-size:.95rem;line-height:1.85}
+  .cap p,.dcard .d-sub,.ev-points li,.vip-note{line-height:1.8}
+  .post-blurb{line-height:1.75}
+}
+
+/* ═══════ H5 首屏排版：手机上文字块之间要留白，行距放开 ═══════ */
+.h5-block,.h5-hide{display:inline}
+@media (max-width:620px){
+  .hero-center h1{font-size:1.6rem;line-height:1.34;margin:14px auto 10px}
+  .hero-center .hero-sub{font-size:.95rem;line-height:1.82;margin-bottom:12px}
+  .hero-center .lede{font-size:.96rem;line-height:2;margin:0 auto 4px}
+  .h5-block{display:block;margin-top:11px}
+  .h5-hide{display:none}
+  .hero-center .lede-sm{font-size:.85rem;line-height:1.8;margin-top:16px}
+  .hero-center .hero-cta{margin-top:30px}
+}
+
 @media (prefers-reduced-motion:reduce){
   .cta-primary::after{animation:none;display:none}
   .cta-primary{animation:none;background-position:0 50%}
