@@ -429,7 +429,7 @@ def build(quiet: bool = False) -> dict[str, str]:
         if slug == "index":
             ld = ('<script type="application/ld+json">\n' +
                   json.dumps({"@context": "https://schema.org", "@type": "SoftwareApplication",
-                              "name": f"{BRAND} · AI 交付工厂", "applicationCategory": "DeveloperApplication",
+                              "name": f"{BRAND} · AI 软件交付工厂", "applicationCategory": "DeveloperApplication",
                               "operatingSystem": "Linux, macOS", "softwareVersion": hook_cf_version(),
                               "license": "https://opensource.org/licenses/MIT",
                               "description": brandify(page["desc"])}, ensure_ascii=False) + "\n</script>")
@@ -470,7 +470,7 @@ def build(quiet: bool = False) -> dict[str, str]:
         rel = "" if p["slug"] == "index" else p["slug"] + ".html"
         return f"- [{p['title'].split(' · ')[0]}]({base or ''}/{rel}): {brandify(p['desc'])[:60]}"
 
-    out["llms.txt"] = f"""# {BRAND} · AI 交付工厂（含智能运维模块）
+    out["llms.txt"] = f"""# {BRAND} · AI 软件交付工厂
 
 > {BRAND}：需求进、交付出——数字员工按 SDLC 流水线自动完成分析、开发、测试、验证与交接，人只做需求澄清与验收。平台源码 MIT（上游 CodeFlow Community），执行器 runtime 纯标准库、可独立部署。
 
