@@ -395,9 +395,11 @@ def build(quiet: bool = False) -> dict[str, str]:
         html = layout.replace("{{BUILD}}", build_id)
         html = html.replace("{{PRE_CONTENT}}", brandify(announce) if nav_active == "index" else "")
         n = nav
-        for key in re.findall(r'data-nav="([^"]+)"', n):
-            n = n.replace(f'data-nav="{key}"',
-                          f'data-nav="{key}" aria-current="page"' if key == nav_active else f'data-nav="{key}"')
+        # 同一 data-nav 可能在桌面导航与移动抽屉里各出现一次，
+        # 用去重 + 负向断言避免重复插入 aria-current
+        for key in dict.fromkeys(re.findall(r'data-nav="([^"]+)"', n)):
+            mark = ' aria-current="page"' if key == nav_active else ""
+            n = re.sub(rf'data-nav="{key}"(?! aria-current)', f'data-nav="{key}"{mark}', n)
         html = html.replace("{{NAV}}", brandify(n)).replace("{{FOOTER}}", brandify(footer))
         html = html.replace("{{TITLE}}", title).replace("{{DESC}}", desc)
         og = (f'<meta property="og:title" content="{title}">\n'
