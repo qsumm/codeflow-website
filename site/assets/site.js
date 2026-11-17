@@ -202,36 +202,51 @@
     var isReset = !isReg && state.loginMode === "reset";
     var isSms = !isPwd;
 
-    document.querySelectorAll("[data-auth-tab]").forEach(function (b) {
-      b.classList.toggle("active", b.getAttribute("data-auth-tab") === state.tab);
-    });
-    var subBar = document.getElementById("authSubtabs");
-    if (subBar) subBar.hidden = isReg;
+    var tabsBar = document.getElementById("authTabs");
+    if (tabsBar) tabsBar.hidden = isReg || isReset;
     document.querySelectorAll("[data-login-mode]").forEach(function (b) {
       var mode = b.getAttribute("data-login-mode");
-      b.classList.toggle("active", mode === state.loginMode || (isReset && mode === "password"));
+      b.classList.toggle("active", !isReg && mode === state.loginMode);
     });
 
     var titleEl = document.getElementById("authModalTitle");
+    var modalSub = document.getElementById("authModalSub");
     var subBtn = document.getElementById("authSubmitBtn");
+    var swPrompt = document.getElementById("authSwitchPrompt");
+    var swBtn = document.getElementById("authSwitchBtn");
     var pwdLbl = document.getElementById("lblRegPwd");
     var pwd2Lbl = document.getElementById("lblRegPwd2");
     if (isReg) {
       titleEl.textContent = "注册账号";
+      if (modalSub) modalSub.hidden = true;
       subBtn.textContent = "完成注册并登录";
+      if (swPrompt) swPrompt.textContent = "已有账号？";
+      if (swBtn) swBtn.textContent = "立即登录";
       if (pwdLbl) pwdLbl.textContent = "设置登录密码（至少 6 位）";
       if (pwd2Lbl) pwd2Lbl.textContent = "确认登录密码";
     } else if (isReset) {
       titleEl.textContent = "设置 / 重置登录密码";
+      if (modalSub) modalSub.hidden = true;
       subBtn.textContent = "确认设置并登录";
+      if (swPrompt) swPrompt.textContent = "想起密码了？";
+      if (swBtn) swBtn.textContent = "立即登录";
       if (pwdLbl) pwdLbl.textContent = "设置新密码（至少 6 位）";
       if (pwd2Lbl) pwd2Lbl.textContent = "确认新密码";
     } else if (isPwd) {
       titleEl.textContent = "账号密码登录";
+      if (modalSub) modalSub.hidden = true;
       subBtn.textContent = "立即登录";
+      if (swPrompt) swPrompt.textContent = "没有账号？";
+      if (swBtn) swBtn.textContent = "立即注册";
     } else {
       titleEl.textContent = "手机号验证码登录";
-      subBtn.textContent = "立即登录 / 解锁";
+      if (modalSub) {
+        modalSub.textContent = "未注册手机号验证通过后将自动注册并登录";
+        modalSub.hidden = false;
+      }
+      subBtn.textContent = "立即登录";
+      if (swPrompt) swPrompt.textContent = "没有账号？";
+      if (swBtn) swBtn.textContent = "立即注册";
     }
 
     document.getElementById("fieldPhone").hidden = isPwd;
@@ -296,14 +311,11 @@
           '<div class="auth-title" id="authModalTitle">手机号验证码登录</div>' +
           '<button type="button" class="auth-close" id="authCloseBtn" aria-label="关闭登录弹窗">×</button>' +
         '</div>' +
-        '<div class="auth-tabs" role="tablist">' +
-          '<button type="button" class="auth-tab active" data-auth-tab="login">登录</button>' +
-          '<button type="button" class="auth-tab" data-auth-tab="register">注册账号</button>' +
+        '<div class="auth-tabs" id="authTabs" role="tablist">' +
+          '<button type="button" class="auth-tab active" data-login-mode="sms">验证码登录</button>' +
+          '<button type="button" class="auth-tab" data-login-mode="password">密码登录</button>' +
         '</div>' +
-        '<div class="auth-subtabs" id="authSubtabs">' +
-          '<button type="button" class="auth-subtab active" data-login-mode="sms">短信验证码登录</button>' +
-          '<button type="button" class="auth-subtab" data-login-mode="password">密码登录</button>' +
-        '</div>' +
+        '<p class="auth-sub" id="authModalSub">未注册手机号验证通过后将自动注册并登录</p>' +
         '<form id="authForm" autocomplete="off" novalidate>' +
           '<div class="auth-field" id="fieldPhone">' +
             '<label for="authPhone">手机号码</label>' +
@@ -344,11 +356,15 @@
               '<input class="auth-input" id="authRegPwd2" type="password" maxlength="64" placeholder="请再次输入登录密码">' +
             '</div>' +
           '</div>' +
-          '<button type="submit" class="auth-submit" id="authSubmitBtn">立即登录 / 解锁</button>' +
           '<div class="auth-agree">' +
             '<input type="checkbox" id="authAgreeCheck">' +
             '<label for="authAgreeCheck">我已阅读并同意</label>' +
             '<button type="button" class="auth-link-btn" id="authPrivacyLink">《用户服务与隐私协议》</button>' +
+          '</div>' +
+          '<button type="submit" class="auth-submit" id="authSubmitBtn">立即登录</button>' +
+          '<div class="auth-switch" id="authSwitchRow">' +
+            '<span id="authSwitchPrompt">没有账号？</span>' +
+            '<button type="button" class="auth-link-btn" id="authSwitchBtn">立即注册</button>' +
           '</div>' +
           '<div class="auth-msg" id="authMsg" role="status"></div>' +
         '</form>' +
@@ -388,24 +404,33 @@
       }, 1000);
     }
 
-    modalMask.querySelectorAll("[data-auth-tab]").forEach(function (b) {
-      b.addEventListener("click", function () {
-        state.tab = b.getAttribute("data-auth-tab");
-        if (state.tab === "login" && state.loginMode === "reset") state.loginMode = "sms";
-        syncModalMode();
-        if (!state.captchaId) refreshCaptcha();
-      });
-    });
     modalMask.querySelectorAll("[data-login-mode]").forEach(function (b) {
       b.addEventListener("click", function () {
+        state.tab = "login";
         state.loginMode = b.getAttribute("data-login-mode");
         syncModalMode();
         if (!state.captchaId) refreshCaptcha();
       });
     });
+    var switchBtn = document.getElementById("authSwitchBtn");
+    if (switchBtn) {
+      switchBtn.addEventListener("click", function () {
+        if (state.tab === "register" || state.loginMode === "reset") {
+          state.tab = "login";
+          state.loginMode = "sms";
+        } else {
+          state.tab = "register";
+          state.loginMode = "sms";
+        }
+        syncModalMode();
+        if (!state.captchaId) refreshCaptcha();
+        if (phoneIn && !phoneIn.hidden) phoneIn.focus();
+      });
+    }
     var forgotBtn = document.getElementById("authForgotBtn");
     if (forgotBtn) {
       forgotBtn.addEventListener("click", function () {
+        state.tab = "login";
         state.loginMode = "reset";
         syncModalMode();
         if (!state.captchaId) refreshCaptcha();
