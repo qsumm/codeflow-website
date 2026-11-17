@@ -6,7 +6,7 @@
   · /api/auth/captcha 图形验证码生成（SVG，防刷短信与防暴力破解）
   · /api/auth/send-code 发送阿里云号码认证短信验证码（需先过图形验证码 + 区分 login/register 场景）
   · /api/auth/register 手机号 + 短信验证码 + 密码 + 个人资料注册
-  · /api/auth/login 手机号 + 短信验证码登录（仅限已注册用户）
+  · /api/auth/login 手机号 + 短信验证码登录（未注册手机号验证通过后自动注册并登录）
   · /api/auth/login-password 手机号/昵称 + 密码 + 图形验证码登录
   · /api/auth/me & PUT /api/auth/profile 获取与编辑个人资料（昵称、部门、职业、公司、邮箱）
   · /api/resources/* 登录受限资源接口
@@ -569,11 +569,6 @@ async def auth_send_code(request: Request) -> JSONResponse:
     ip = _client_ip(request)
     with _db_lock:
         existing_user = _auth_conn.execute("SELECT id FROM users WHERE phone=?", (phone,)).fetchone()
-        if scene in ("login", "reset") and not existing_user:
-            return JSONResponse(
-                {"ok": False, "code": "USER_NOT_FOUND", "message": "该手机号尚未注册，请先切换到「注册账号」"},
-                status_code=404,
-            )
         if scene == "register" and existing_user:
             return JSONResponse(
                 {"ok": False, "code": "USER_EXISTS", "message": "该手机号已注册，请直接切换到「登录」"},
@@ -687,24 +682,47 @@ async def auth_register(request: Request) -> JSONResponse:
         if not ok:
             return JSONResponse({"ok": False, "message": err_msg}, status_code=400)
 
-        final_nick = nickname or default_nickname(phone)
         pwd_hash = hash_password(password)
-        cur = _auth_conn.execute(
-            "INSERT INTO users(phone, password_hash, nickname, department, profession, company, email, "
-            "vip_type, vip_expire_at, created_at, last_login_at, login_count) "
-            "VALUES(?,?,?,?,?,?,?,'普通用户','--',?,?,1)",
-            (phone, pwd_hash, final_nick, department, profession, company, email, now_iso, now_iso),
+        user_row = _insert_user(
+            phone,
+            pwd_hash,
+            now_iso,
+            nickname=nickname,
+            department=department,
+            profession=profession,
+            company=company,
+            email=email,
         )
-        user_id = int(cur.lastrowid)
-        _auth_conn.commit()
-        user_row = _auth_conn.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
 
     return _create_session_response(user_row, ip, ua, message="注册成功，已自动登录")
 
 
+def _insert_user(
+    phone: str,
+    pwd_hash: str,
+    now_iso: str,
+    nickname: str = "",
+    department: str = "",
+    profession: str = "",
+    company: str = "",
+    email: str = "",
+):
+    """在 _db_lock 保护下写入新用户记录并返回最新行。"""
+    final_nick = nickname or default_nickname(phone)
+    cur = _auth_conn.execute(
+        "INSERT INTO users(phone, password_hash, nickname, department, profession, company, email, "
+        "vip_type, vip_expire_at, created_at, last_login_at, login_count) "
+        "VALUES(?,?,?,?,?,?,?,'普通用户','--',?,?,1)",
+        (phone, pwd_hash, final_nick, department, profession, company, email, now_iso, now_iso),
+    )
+    user_id = int(cur.lastrowid)
+    _auth_conn.commit()
+    return _auth_conn.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
+
+
 @app.post("/api/auth/login")
 async def auth_login(request: Request) -> JSONResponse:
-    """手机号 + 短信验证码登录（要求手机号已完成注册）。"""
+    """手机号 + 短信验证码登录（未注册手机号验证通过后自动注册并登录）。"""
     try:
         body = await request.json()
     except Exception:  # noqa: BLE001
@@ -721,25 +739,25 @@ async def auth_login(request: Request) -> JSONResponse:
     ua = (request.headers.get("user-agent") or "")[:250]
 
     with _db_lock:
-        user_row = _auth_conn.execute("SELECT * FROM users WHERE phone=?", (phone,)).fetchone()
-        if not user_row:
-            return JSONResponse(
-                {"ok": False, "code": "USER_NOT_FOUND", "message": "该手机号尚未注册，请先切换到「注册账号」"},
-                status_code=404,
-            )
         ok, err_msg = _verify_sms_code(phone, code)
         if not ok:
             return JSONResponse({"ok": False, "message": err_msg}, status_code=400)
 
-        user_id = int(user_row["id"])
-        _auth_conn.execute(
-            "UPDATE users SET last_login_at=?, login_count=login_count+1 WHERE id=?",
-            (now_iso, user_id),
-        )
-        _auth_conn.commit()
-        user_row = _auth_conn.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
+        user_row = _auth_conn.execute("SELECT * FROM users WHERE phone=?", (phone,)).fetchone()
+        is_new = user_row is None
+        if is_new:
+            user_row = _insert_user(phone, "", now_iso)
+        else:
+            user_id = int(user_row["id"])
+            _auth_conn.execute(
+                "UPDATE users SET last_login_at=?, login_count=login_count+1 WHERE id=?",
+                (now_iso, user_id),
+            )
+            _auth_conn.commit()
+            user_row = _auth_conn.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
 
-    return _create_session_response(user_row, ip, ua, message="登录成功")
+    msg = "登录成功，已为您自动创建账号" if is_new else "登录成功"
+    return _create_session_response(user_row, ip, ua, message=msg)
 
 
 @app.post("/api/auth/login-password")
@@ -773,7 +791,7 @@ async def auth_login_password(request: Request) -> JSONResponse:
         ).fetchone()
         if not user_row:
             return JSONResponse(
-                {"ok": False, "code": "USER_NOT_FOUND", "message": "账号不存在，请先注册"},
+                {"ok": False, "code": "USER_NOT_FOUND", "message": "账号不存在，请先注册或使用短信验证码登录"},
                 status_code=404,
             )
         if not verify_password(password, str(user_row["password_hash"] or "")):
@@ -901,25 +919,26 @@ async def auth_reset_password(request: Request) -> JSONResponse:
     ua = (request.headers.get("user-agent") or "")[:250]
 
     with _db_lock:
-        urow = _auth_conn.execute("SELECT * FROM users WHERE phone=?", (phone,)).fetchone()
-        if not urow:
-            return JSONResponse(
-                {"ok": False, "code": "USER_NOT_FOUND", "message": "该手机号尚未注册，请先切换到「注册账号」"},
-                status_code=404,
-            )
         ok, err_msg = _verify_sms_code(phone, code)
         if not ok:
             return JSONResponse({"ok": False, "message": err_msg}, status_code=400)
 
-        user_id = int(urow["id"])
-        _auth_conn.execute(
-            "UPDATE users SET password_hash=?, last_login_at=?, login_count=login_count+1 WHERE id=?",
-            (hash_password(new_password), now_iso, user_id),
-        )
-        _auth_conn.commit()
-        urow = _auth_conn.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
+        urow = _auth_conn.execute("SELECT * FROM users WHERE phone=?", (phone,)).fetchone()
+        is_new = urow is None
+        pwd_hash = hash_password(new_password)
+        if is_new:
+            urow = _insert_user(phone, pwd_hash, now_iso)
+        else:
+            user_id = int(urow["id"])
+            _auth_conn.execute(
+                "UPDATE users SET password_hash=?, last_login_at=?, login_count=login_count+1 WHERE id=?",
+                (pwd_hash, now_iso, user_id),
+            )
+            _auth_conn.commit()
+            urow = _auth_conn.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
 
-    return _create_session_response(urow, ip, ua, message="密码已设置并自动登录")
+    msg = "账号已创建并设置密码，已自动登录" if is_new else "密码已设置并自动登录"
+    return _create_session_response(urow, ip, ua, message=msg)
 
 
 @app.post("/api/auth/logout")
