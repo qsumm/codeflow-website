@@ -1126,11 +1126,46 @@
     }
     // 使用手册：登录后凭令牌下载 PDF（未登录弹登录门禁）
     function downloadManual() {
+      var btn = document.getElementById("demoManualBtn");
+      var label = "📘 使用手册";
+      function setState(txt, disabled) {
+        if (btn) { btn.textContent = txt; btn.disabled = disabled; }
+      }
+      setState("⏳ 准备中…", true);
+      var fail = function (msg) { setState(label, false); alert(msg || "手册下载暂不可用，请稍后再试"); };
       mediaTokenUrl("manual", function (u) {
-        if (!u) { alert("手册下载暂不可用，请稍后再试"); return; }
-        var a = document.createElement("a");
-        a.href = u; a.download = "CodeFlow-用户操作手册-v2.0.3.pdf";
-        document.body.appendChild(a); a.click(); a.remove();
+        if (!u) return fail();
+        // 流式读取以显示真实进度（8.4MB，NAT 线路可能要几秒）
+        fetch(u, { credentials: "same-origin" }).then(function (resp) {
+          if (!resp.ok) return fail();
+          var total = parseInt(resp.headers.get("Content-Length") || "0", 10);
+          if (!resp.body || !total) { // 退化路径：无流式能力则直接保存
+            return resp.blob().then(function (b) { save(b); });
+          }
+          var reader = resp.body.getReader();
+          var chunks = [], received = 0;
+          function pump() {
+            return reader.read().then(function (r) {
+              if (r.done) return Promise.resolve();
+              chunks.push(r.value); received += r.value.length;
+              setState("⬇ 下载中 " + Math.round(received / total * 100) + "%", true);
+              return pump();
+            });
+          }
+          return pump().then(function () {
+            save(new Blob(chunks, { type: "application/pdf" }));
+          });
+        }).catch(function () { fail(); });
+
+        function save(blob) {
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = url; a.download = "CodeFlow-用户操作手册-v2.0.3.pdf";
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+          setState("✓ 已开始保存", false);
+          setTimeout(function () { setState(label, false); }, 1800);
+        }
       });
     }
     var manualBtn = document.getElementById("demoManualBtn");
