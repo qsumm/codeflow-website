@@ -1129,7 +1129,7 @@
       mediaTokenUrl("manual", function (u) {
         if (!u) { alert("手册下载暂不可用，请稍后再试"); return; }
         var a = document.createElement("a");
-        a.href = u; a.download = "CodeFlow-User-Manual-v2.0.1.pdf";
+        a.href = u; a.download = "CodeFlow-用户操作手册-v2.0.3.pdf";
         document.body.appendChild(a); a.click(); a.remove();
       });
     }
