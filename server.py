@@ -995,14 +995,25 @@ def _media_check(name: str, token: str) -> bool:
 
 @app.get("/api/media/token")
 async def media_token(request: Request, name: str = "demo"):
-    """发短时效媒体令牌（视频取流 / 手册下载用；直链文件已在站点目录外，404）。"""
+    """发短时效媒体令牌（视频取流 / 手册下载用；直链文件已在站点目录外，404）。
+    手册是登录 gated 资源：令牌签发本身就要求已登录。"""
     if name not in MEDIA_FILES:
         return JSONResponse({"ok": False, "message": "未知媒体"}, status_code=404)
+    if name == "manual" and not get_current_user(request):
+        return JSONResponse(
+            {"ok": False, "code": "AUTH_REQUIRED", "message": "请先登录官网账号后再下载用户操作手册"},
+            status_code=401,
+        )
     return JSONResponse({"ok": True, "t": _media_token(int(time.time())), "ttl": MEDIA_TTL_SEC})
 
 
 @app.get("/api/media/v/{name}")
 async def media_stream(name: str, request: Request):
+    if name == "manual" and not get_current_user(request):
+        return JSONResponse(
+            {"ok": False, "code": "AUTH_REQUIRED", "message": "请先登录官网账号后再下载用户操作手册"},
+            status_code=401,
+        )
     token = request.query_params.get("t", "")
     if not _media_check(name, token):
         return JSONResponse(

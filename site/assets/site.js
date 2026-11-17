@@ -1170,10 +1170,21 @@
     }
     var manualBtn = document.getElementById("demoManualBtn");
     if (manualBtn) manualBtn.addEventListener("click", function () {
-      // 登录模块渲染用户卡（navUserPill）即视为已登录；未登录转点登录按钮（同源门禁）
-      if (document.getElementById("navUserPill")) downloadManual();
-      else { var b = document.getElementById("navAuthBtn"); if (b) b.click(); }
+      // 已登录直接下载；未登录置挂起标记后转点登录按钮，登录成功自动续做下载
+      if (document.getElementById("navUserPill")) { downloadManual(); return; }
+      window.__pendingManualDownload = true;
+      var b = document.getElementById("navAuthBtn"); if (b) b.click();
     });
+    // 登录成功（导航区重建出用户卡）后自动续做挂起的手册下载
+    var zone = document.getElementById("navAuthZone");
+    if (zone && window.MutationObserver) {
+      new MutationObserver(function () {
+        if (window.__pendingManualDownload && document.getElementById("navUserPill")) {
+          window.__pendingManualDownload = false;
+          downloadManual();
+        }
+      }).observe(zone, { childList: true });
+    }
 
     // 分享按钮：复制分享页链接
     var btn = document.getElementById("demoShareBtn");
