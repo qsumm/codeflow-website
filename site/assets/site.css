@@ -415,7 +415,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   .cta-primary:hover{transform:none}
 }
 /* ── 文档正文页（P3）── */
-.doc-layout{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:44px;align-items:start;padding-bottom:80px}
+.doc-layout{display:grid;gap:44px;align-items:start;padding-bottom:80px}
 .doc-body{min-width:0;font-size:.95rem;line-height:1.8;color:var(--text)}
 .doc-body h1{font-size:1.7rem;margin:0 0 18px;letter-spacing:-.02em}
 .doc-body h2{font-size:1.22rem;margin:34px 0 12px;padding-top:14px;border-top:1px solid var(--border-soft)}
@@ -536,7 +536,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 
 .nav{position:relative}
 /* ═══════ 案例页：图 + 大数字 + 验收数据 ═══════ */
-.case-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:start;
+.case-hero{display:grid;gap:32px;align-items:start;
   background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px}
 .case-shot img{width:100%;height:auto;display:block;border-radius:var(--radius);border:1px solid var(--border)}
 .case-big{font-size:clamp(2.4rem,5vw,3.4rem);font-weight:800;line-height:1;color:var(--accent-text);
@@ -548,7 +548,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .case-spec dt{font-size:.75rem;color:var(--muted);letter-spacing:.05em}
 .case-spec dd{margin:0;font-size:.88rem;line-height:1.6}
 .case-rows{display:grid;gap:0;border-top:1px solid var(--border)}
-.case-row{display:grid;grid-template-columns:100px 1fr auto;gap:18px;align-items:center;
+.case-row{display:grid;gap:18px;align-items:center;
   padding:16px 4px;border-bottom:1px solid var(--border);font-size:.92rem}
 .case-row b{font-family:var(--font-mono);color:var(--accent-text);font-size:.95rem}
 .case-row span:nth-child(2){color:var(--muted)}
@@ -570,7 +570,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .lede-sm{font-size:.86rem;color:var(--text-soft);margin-top:10px}
 
 /* ═══════ 首页能力矩阵（TestHub 式 3 列卡） ═══════ */
-.cap-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.cap-grid{display:grid;gap:14px}
 .cap-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
   padding:20px 20px 18px;display:flex;flex-direction:column}
 .cap-card h3{font-size:.98rem;margin-bottom:6px}
@@ -935,3 +935,27 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .foot-wechat p{font-size:.78rem;color:var(--muted);margin-top:8px}
 .foot-wechat code{font-family:var(--font-mono);font-weight:650;color:var(--accent-text)}
 
+
+/* ═══════════════════════════════════════════════════════════════
+   响应式收口（放在文件末尾，优先级高于所有基础规则）
+   背景：cap-grid / case-hero / case-row / doc-layout 的基础列数规则
+   曾写在 @media 之后，同权重下基础规则胜出 → 手机端多列挤压、中文竖排。
+   现统一在此按断点声明列数，基础规则不再声明列数，避免再次被覆盖。
+   ═══════════════════════════════════════════════════════════════ */
+.cap-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.case-hero{grid-template-columns:1.15fr .85fr}
+.case-row{grid-template-columns:100px 1fr auto}
+.doc-layout{grid-template-columns:minmax(0,1fr) 240px}
+
+@media (max-width:1000px){
+  .cap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .doc-layout{grid-template-columns:minmax(0,1fr);gap:24px}
+}
+@media (max-width:860px){
+  .case-hero{grid-template-columns:1fr;gap:22px;padding:16px}
+  .case-row{grid-template-columns:1fr;gap:6px;padding:14px 4px}
+}
+@media (max-width:620px){
+  .cap-grid{grid-template-columns:1fr}
+  .doc-layout{grid-template-columns:minmax(0,1fr);gap:18px}
+}
