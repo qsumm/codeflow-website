@@ -1123,8 +1123,11 @@
         new IntersectionObserver(function (entries) {
           entries.forEach(function (en) {
             if (en.isIntersecting) {
-              // 进视口：预加载前 3 秒（Range 请求），不自动全量播放
+              // 进视口：预加载前 3 秒起播数据，并静音循环自动播放（和原行为一致）
               preloadHead(inline);
+              var start = function () { inline.play().catch(function () {}); };
+              if (inline.readyState >= 3 || inline.getAttribute("src")) start();
+              else inline.addEventListener("loadeddata", start, { once: true });
             } else if (!inline.paused) inline.pause();
           });
         }, { threshold: 0.5 }).observe(preview);
