@@ -3,15 +3,15 @@
 > CodeFlow：需求进、交付出——数字员工按 SDLC 流水线自动完成分析、开发、测试、验证与交接，人只做需求澄清与验收。开源协议 GPL-3.0（上游 CodeFlow Community），执行器 runtime 纯标准库、可独立部署。
 
 ## CodeFlow 主要页面
-- [CodeFlow](http://103.39.64.76:63028/): 研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水
-- [产品特性](http://103.39.64.76:63028/features.html): 小队与 流水线模板、需求澄清对话、6 种 Agent 客户端、任意 Anthropic 兼容模型、禅道/钉钉/飞书集成与
-- [真实交付](http://103.39.64.76:63028/delivery.html): 一条缺陷工单 52 分钟变成修复分支的完整记录：需求拉取、派发执行、自建分支交付真实代码、交付备注幂等回写源头，失败如实
-- [交付案例](http://103.39.64.76:63028/cases.html): CodeFlow 真实交付案例：50 分钟交付 Web 压测平台（QPS 15,127、错误率 0%）、20 分钟交付可
-- [博客](http://103.39.64.76:63028/blog.html): 关于数字员工交付、执行器设计与工程实践的记录：禅道闭环实录、开源 runtime 立项决策、真实模型测试复盘——只写真实
-- [自部署指南](http://103.39.64.76:63028/deploy.html): 平台前后端与执行器 runtime 的自部署命令：单机 4 核 4G 起步，build.sh / bootstrap.s
-- [开源与合规](http://103.39.64.76:63028/open-source.html): 开源协议 GPL-3.0（上游 CodeFlow Community），执行器 runtime 纯标准库可独立部署；全链
-- [用户服务与隐私协议](http://103.39.64.76:63028/privacy.html): CodeFlow 官网用户服务与隐私保护协议：说明账号手机号与个人资料收集范围、加密存储机制、数据境内存储原则及用户权利
-- [CodeFlow 产品演示视频](http://103.39.64.76:63028/share-video.html): CodeFlow 3 分钟产品演示：需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维如何由数字员工自动完成。
+- [CodeFlow](https://codeflow.com.cn/): 研发人最省心的 AI 交付工厂：一站式完成需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维。AI 小队按流水
+- [产品特性](https://codeflow.com.cn/features.html): 小队与 流水线模板、需求澄清对话、6 种 Agent 客户端、任意 Anthropic 兼容模型、禅道/钉钉/飞书集成与
+- [真实交付](https://codeflow.com.cn/delivery.html): 一条缺陷工单 52 分钟变成修复分支的完整记录：需求拉取、派发执行、自建分支交付真实代码、交付备注幂等回写源头，失败如实
+- [交付案例](https://codeflow.com.cn/cases.html): CodeFlow 真实交付案例：50 分钟交付 Web 压测平台（QPS 15,127、错误率 0%）、20 分钟交付可
+- [博客](https://codeflow.com.cn/blog.html): 关于数字员工交付、执行器设计与工程实践的记录：禅道闭环实录、开源 runtime 立项决策、真实模型测试复盘——只写真实
+- [自部署指南](https://codeflow.com.cn/deploy.html): 平台前后端与执行器 runtime 的自部署命令：单机 4 核 4G 起步，build.sh / bootstrap.s
+- [开源与合规](https://codeflow.com.cn/open-source.html): 开源协议 GPL-3.0（上游 CodeFlow Community），执行器 runtime 纯标准库可独立部署；全链
+- [用户服务与隐私协议](https://codeflow.com.cn/privacy.html): CodeFlow 官网用户服务与隐私保护协议：说明账号手机号与个人资料收集范围、加密存储机制、数据境内存储原则及用户权利
+- [CodeFlow 产品演示视频](https://codeflow.com.cn/share-video.html): CodeFlow 3 分钟产品演示：需求澄清、编码开发、代码评审、自动化测试、部署交付与持续运维如何由数字员工自动完成。
 
 
 ## 部署（CodeFlow）

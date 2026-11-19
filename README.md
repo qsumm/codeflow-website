@@ -19,18 +19,14 @@
 | 旧链迁移 | 旧 URL 301 → /ops/；/features、/deploy、/open-source 由 CodeFlow 新页接管 |
 | 性能 | 单页 ≤150KB（HTML+CSS+JS），零 CDN / 零第三方脚本 |
 
-### 线上部署（新机）
+### 线上部署
 
 | 项 | 值 |
 |---|---|
-| 主机 / SSH | `103.39.64.76`，SSH 端口 `63026`（NAT 转发到 22） |
-| 站点访问 | `http://103.39.64.76:63028/`（NAT→80）、`https://103.39.64.76:63029/`（NAT→443） |
-| 域名 | `codeflow.com.cn` / `www.codeflow.com.cn` → 同一主机；**备案通过前**被服务商接入网关按 Host/SNI 拦截，备案通过后即可用标准 80/443 访问 |
-| 站点目录 | `/var/www/testops-site`（rsync `--delete` 同步 `site/`） |
-| 计数服务 | `site-counter.service`（纯标准库 + SQLite，`127.0.0.1:8905`，DB `/opt/site-counter/hits.db`） |
-| 认证后端 | `codeflow-site.service`（FastAPI/uvicorn，`127.0.0.1:8906`，应用 `/opt/codeflow-app`） |
-| 证书 | DigiCert DV → `/etc/nginx/ssl/codeflow.com.cn.{pem,key}` |
-| 重装后一键恢复 | `tools/deploy-newserver.sh`（服务器侧：dnf 源 → nginx → 配置 → 计数 → 后端 → 自检） |
+| 站点访问 | `https://codeflow.com.cn` / `https://www.codeflow.com.cn`（域名备案已通过，ICP + 公安双备案号在页脚展示） |
+| 架构 | 云服务器宿主：nginx（静态 + `/api` 反代 + 媒体门禁 internal 转发）+ FastAPI 认证后端 + 纯标准库 PV 计数服务 |
+| 部署方式 | 本地 `rsync site/` → 服务器站点目录（`--delete` 同步，守卫全绿后才发） |
+| 服务器拓扑 / 备份恢复 / 安全加固档案 | 内部文档不入公开仓（2026-11-20 审计决议），仅本机留存 |
 
 打开预览：
 

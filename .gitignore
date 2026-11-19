@@ -7,3 +7,6 @@ __pycache__/
 *.db
 *.db-shm
 *.db-wal
+# 内部资料不入公开仓（2026-11-20 审计决议）：仅本机留存
+docs/备份恢复机制.md
+media-src/
