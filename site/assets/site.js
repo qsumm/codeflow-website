@@ -1063,17 +1063,6 @@
       el.classList.remove("repo-mask--open");
     });
   }
-  // 进视口预热：提前领令牌并建立到媒体服务器的连接（TCP+TLS 握手预完成），
-  // 自动播放的完整流因此跳过握手等待；预载 300KB 视频头加速首帧解码。
-  function preloadHead(video) {
-    if (video.__headPreloaded) return;
-    video.__headPreloaded = true;
-    mediaTokenUrl("demo", function (u) {
-      if (!u) return;
-      video.__mediaUrl = u;
-      fetch(u, { headers: { Range: "bytes=0-307200" } }).catch(function () {});
-    });
-  }
   function load() {
     fetch("/api/auth/repo", { credentials: "same-origin" })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
@@ -1104,6 +1093,17 @@
   window.mediaTokenUrl = function (name, cb) {
     getToken(function (t) { cb(t ? "/api/media/v/" + encodeURIComponent(name) + "?t=" + encodeURIComponent(t) : null); });
   };
+  // 进视口预热：提前领令牌并建立到媒体服务器的连接（TCP+TLS 握手预完成），
+  // 自动播放的完整流因此跳过握手等待；预载 300KB 视频头加速首帧解码。
+  function preloadHead(video) {
+    if (video.__headPreloaded) return;
+    video.__headPreloaded = true;
+    mediaTokenUrl("demo", function (u) {
+      if (!u) return;
+      video.__mediaUrl = u;
+      fetch(u, { headers: { Range: "bytes=0-307200" } }).catch(function () {});
+    });
+  }
 
   function initVideoDemo() {
 

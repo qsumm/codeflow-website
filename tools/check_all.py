@@ -546,8 +546,33 @@ def g29() -> None:
     g("G29", not bad, "; ".join(bad))
 
 
+# ── G30 视频模块作用域守卫：preloadHead 必须与调用点同 IIFE ──
+def g30() -> None:
+    """2026-11-19 教训：preloadHead 定义在仓库门禁 IIFE，调用却在视频门禁 IIFE，
+    IntersectionObserver 触发即抛 ReferenceError（静默无 media 请求），自动播放全挂。
+    JS 语法检查与 G29 文本共存检查都拦不住跨作用域引用，故锁定同模块性。"""
+    js = (SITE / "assets" / "site.js").read_text(encoding="utf-8")
+    bad = []
+    gate = js.find("// 视频门禁")
+    if gate == -1:
+        bad.append("找不到视频门禁 IIFE 起点")
+    else:
+        i_def = js.find("function preloadHead(")
+        i_call = js.find("preloadHead(inline)")
+        i_init = js.find("function initVideoDemo(")
+        if i_def == -1:
+            bad.append("缺 preloadHead 定义")
+        elif i_def < gate:
+            bad.append("preloadHead 定义在视频门禁 IIFE 之外（跨作用域引用）")
+        if i_call != -1 and i_call < gate:
+            bad.append("preloadHead 调用不在视频门禁 IIFE 内")
+        if i_def != -1 and i_init != -1 and i_def > i_init:
+            bad.append("preloadHead 定义晚于 initVideoDemo（同 IIFE 但顺序异常）")
+    g("G30", not bad, "; ".join(bad))
+
+
 def main() -> int:
-    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25, g26, g27, g28, g29):
+    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25, g26, g27, g28, g29, g30):
         try:
             fn()
         except Exception as e:  # noqa: BLE001
