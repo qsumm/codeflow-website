@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- base_url 未配置时 loc 为占位，上线前在 pages.json 设置 base_url -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>http://103.39.64.76:63028/index.html</loc><lastmod>2026-11-17</lastmod></url>
+  <url><loc>http://103.39.64.76:63028/index.html</loc><lastmod>2026-11-19</lastmod></url>
   <url><loc>http://103.39.64.76:63028/features.html</loc><lastmod>2026-11-16</lastmod></url>
   <url><loc>http://103.39.64.76:63028/delivery.html</loc><lastmod>2026-11-16</lastmod></url>
   <url><loc>http://103.39.64.76:63028/cases.html</loc><lastmod>2026-11-16</lastmod></url>
@@ -9,5 +9,5 @@
   <url><loc>http://103.39.64.76:63028/deploy.html</loc><lastmod>2026-11-16</lastmod></url>
   <url><loc>http://103.39.64.76:63028/open-source.html</loc><lastmod>2026-11-16</lastmod></url>
   <url><loc>http://103.39.64.76:63028/privacy.html</loc><lastmod>2026-11-18</lastmod></url>
-  <url><loc>http://103.39.64.76:63028/share-video.html</loc><lastmod>2026-11-16</lastmod></url>
+  <url><loc>http://103.39.64.76:63028/share-video.html</loc><lastmod>2026-11-19</lastmod></url>
 </urlset>
