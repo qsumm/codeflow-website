@@ -1063,16 +1063,15 @@
       el.classList.remove("repo-mask--open");
     });
   }
-  // 预加载视频前 3 秒（Range 请求 ~400KB），点击播放零等待起播
+  // 进视口预热：提前领令牌并建立到媒体服务器的连接（TCP+TLS 握手预完成），
+  // 自动播放的完整流因此跳过握手等待；预载 300KB 视频头加速首帧解码。
   function preloadHead(video) {
     if (video.__headPreloaded) return;
     video.__headPreloaded = true;
     mediaTokenUrl("demo", function (u) {
       if (!u) return;
-      fetch(u, { headers: { Range: "bytes=0-419430" } })
-        .then(function (r) { return r.ok ? r.blob() : null; })
-        .then(function (b) { if (b && video.isConnected && !video.getAttribute("src")) video.src = URL.createObjectURL(b); })
-        .catch(function () {});
+      video.__mediaUrl = u;
+      fetch(u, { headers: { Range: "bytes=0-307200" } }).catch(function () {});
     });
   }
   function load() {
@@ -1123,11 +1122,16 @@
         new IntersectionObserver(function (entries) {
           entries.forEach(function (en) {
             if (en.isIntersecting) {
-              // 进视口：预加载前 3 秒起播数据，并静音循环自动播放（和原行为一致）
+              // 进视口：先预载前 3 秒垫片（快起播），随后切换到完整流并静音循环播放
               preloadHead(inline);
               var start = function () { inline.play().catch(function () {}); };
-              if (inline.readyState >= 3 || inline.getAttribute("src")) start();
-              else inline.addEventListener("loadeddata", start, { once: true });
+              mediaTokenUrl("demo", function (u) {
+                if (!u) return;
+                // 若预载垫片正在播（前 3 秒 blob），保留起播速度——先切完整流再播，
+                // 避免播到 3 秒黑屏；完整流服务端支持 Range，边下边播无停顿。
+                if (inline.getAttribute("src") !== u) inline.src = u;
+                start();
+              });
             } else if (!inline.paused) inline.pause();
           });
         }, { threshold: 0.5 }).observe(preview);

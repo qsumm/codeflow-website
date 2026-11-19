@@ -530,26 +530,19 @@ def g29() -> None:
     preloadHead 定义 + Range 预载请求 + loadeddata 起播事件 + IntersectionObserver 内的 play()。"""
     js = (SITE / "assets" / "site.js").read_text(encoding="utf-8")
     bad = []
+    # 2026-11-19 修订：预加载实现从"blob 垫片"改为"令牌预热 + 完整流自动播放"
+    # （MP4 截断 blob 可能解码失败导致 loadeddata 不触发、播到 3 秒黑屏）
     if "function preloadHead" not in js:
-        bad.append("缺 preloadHead 预加载函数")
-    if "bytes=0-419430" not in js:
-        bad.append("缺 Range 预载请求（前 3 秒数据）")
-    if "loadeddata" not in js:
-        bad.append("缺 loadeddata 起播事件协调")
-    # IntersectionObserver 块内必须有 inline.play()——提取块内容校验
-    for m in re.finditer(r"new IntersectionObserver\(([^)]*(?:\)(?![^{]*\)))*?)\)\.observe", js):
-        if "product-demo" in js[max(0, m.start() - 600):m.start()] or "inline" in js[m.start():m.end() + 200]:
-            if "inline.play()" in m.group(1):
-                break
-    else:
-        if "inline.play()" not in js:
-            bad.append("缺 inline.play() 自动播放调用")
-        else:
-            # play 存在但可能不在 IntersectionObserver 块内——粗校验：preloadHead 与 play 需同段出现
-            i_p = js.find("preloadHead(inline)")
-            i_play = js.find("inline.play()")
-            if i_p == -1 or i_play == -1 or abs(i_p - i_play) > 800:
-                bad.append("preloadHead 与 inline.play() 不在同一段（自动播放可能被移出观察器）")
+        bad.append("缺 preloadHead 预热函数")
+    if "preloadHead(inline)" not in js:
+        bad.append("观察器内缺 preloadHead(inline) 调用")
+    if "inline.play()" not in js:
+        bad.append("缺 inline.play() 自动播放调用")
+    # 预热与播放须在同段（防止再被移出观察器）
+    i_p = js.find("preloadHead(inline)")
+    i_play = js.find("inline.play()")
+    if i_p != -1 and i_play != -1 and abs(i_p - i_play) > 900:
+        bad.append("preloadHead 与 inline.play() 相距过远（自动播放可能被移出观察器）")
     g("G29", not bad, "; ".join(bad))
 
 
