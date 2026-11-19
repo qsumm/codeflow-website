@@ -538,6 +538,10 @@ def g29() -> None:
         bad.append("观察器内缺 preloadHead(inline) 调用")
     if "inline.play()" not in js:
         bad.append("缺 inline.play() 自动播放调用")
+    # 2026-11-20：手机端也自动播放（muted+playsinline 已满足移动端静音自动播条件），
+    # 锁定不可回退到「≤860px 点击播放」的旧策略（用户拍板）
+    if "min-width: 861" in js:
+        bad.append("site.js 仍含 861px 门槛（手机端自动播放被关闭）")
     # 预热与播放须在同段（防止再被移出观察器）
     i_p = js.find("preloadHead(inline)")
     i_play = js.find("inline.play()")

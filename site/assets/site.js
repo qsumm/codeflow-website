@@ -1119,7 +1119,9 @@
         feed(big);
         if (dialog.showModal) { dialog.showModal(); big.play().catch(function () {}); }
       });
-      if (inline && matchMedia("(min-width: 861px)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+      // 手机端同样自动播放（2026-11-20 拍板）：muted+playsinline 已满足 iOS/安卓
+      // 静音自动播条件；仅保留 reduced-motion 豁免（系统减弱动态时保持封面）。
+      if (inline && !matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
         new IntersectionObserver(function (entries) {
           entries.forEach(function (en) {
             if (en.isIntersecting) {
