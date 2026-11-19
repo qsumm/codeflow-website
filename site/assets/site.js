@@ -1,4 +1,3 @@
-  // 主题切换（无 CDN、无外部依赖；持久化到 localStorage）
   (function () {
     var KEY = "aiops_site_theme";
     var root = document.documentElement;
@@ -25,7 +24,6 @@
     });
   })();
 
-  // Agent 社区：三轨 tab 切换
   (function () {
     var tabs = document.querySelectorAll(".com-tab");
     if (!tabs.length) return;
@@ -44,7 +42,6 @@
       });
     });
   })();
-// FR-P4-7 补：页脚进入视口时淡出联系挂件，避免遮挡页脚链接（WEB-12）
 (function () {
   var w = document.querySelector(".wx-contact");
   var f = document.querySelector("footer");
@@ -54,7 +51,6 @@
   }, { rootMargin: "0px 0px -40px 0px" }).observe(f);
 })();
 
-// 浏览量统计：自建计数服务（同源 /api/counter/，nginx 反代），失败静默不影响页面
 (function () {
   try {
     fetch("/api/counter/hit?path=" + encodeURIComponent(location.pathname))
@@ -70,7 +66,6 @@
   } catch (e) {}
 })();
 
-// 移动端导航：汉堡开合，选中后自动收起（≤1100px 生效，样式控制可见性）
 (function () {
   var btn = document.getElementById("navBurger");
   var panel = document.getElementById("navMobile");
@@ -89,7 +84,6 @@
   });
 })();
 
-// 首页主视觉：便签归位（散乱需求 → 穿过四道工序 → 结构化交付清单）
 (function () {
   var svg = document.getElementById("hnSvg");
   if (!svg) return;
@@ -104,7 +98,6 @@
     chips.forEach(function (c) { c.classList.toggle("on", on); });
   }
 
-  // 四道工序依次点亮（澄清 → 开发 → 测试 → 交付）
   function cascade() {
     chipsAll(false);
     chips.forEach(function (c, i) {
@@ -138,7 +131,6 @@
     });
   }
 
-  // 记录初始位置用于复位
   notes.forEach(function (n) { n.setAttribute("data-start", n.style.transform); });
 
   if (reduce) {
@@ -1020,7 +1012,6 @@
     });
 })();
 
-// 移动端联系挂件：气泡点开显示二维码，点空白处收起（桌面端 toggle 不显示，不影响）
 (function () {
   var box = document.querySelector(".wx-contact");
   var btn = box && box.querySelector(".wx-toggle");
@@ -1042,7 +1033,6 @@
   });
 })();
 
-// 开源仓库地址门禁：页面只有掩码占位，登录后由 /api/auth/repo 下发真实地址
 (function () {
   var MASK = "github.com/▮▮▮/▮▮▮▮▮▮▮";
   function fill(info) {
@@ -1087,8 +1077,6 @@
 })();
 
 // 视频门禁：直链已 404，取流需短时效令牌（/api/media/token → /api/media/v/<name>?t=...）。
-// mediaTokenUrl(name, cb)：cb 收到可用的流地址；失败 cb(null)。
-// 首页大播放器与案例录屏共用；视频元素已禁右键/nodownload。
 (function () {
   var cache = { t: null, exp: 0 };
   function getToken(cb) {
@@ -1106,7 +1094,6 @@
     getToken(function (t) { cb(t ? "/api/media/v/" + encodeURIComponent(name) + "?t=" + encodeURIComponent(t) : null); });
   };
 
-  // 首页演示视频：预览点击弹窗播放 + 内联自动播，均改走令牌流
   document.addEventListener("DOMContentLoaded", function () {
     var preview = document.querySelector(".product-demo-preview");
     var dialog = document.getElementById("product-demo-player");
@@ -1130,7 +1117,6 @@
       }
       dialog.addEventListener("close", function () { big.pause(); });
     }
-    // 使用手册：登录后凭令牌下载 PDF（未登录弹登录门禁）
     function downloadManual() {
       var btn = document.getElementById("demoManualBtn");
       var label = "📘 使用手册";
@@ -1141,7 +1127,6 @@
       var fail = function (msg) { setState(label, false); alert(msg || "手册下载暂不可用，请稍后再试"); };
       mediaTokenUrl("manual", function (u) {
         if (!u) return fail();
-        // 流式读取以显示真实进度（8.4MB，NAT 线路可能要几秒）
         fetch(u, { credentials: "same-origin" }).then(function (resp) {
           if (!resp.ok) return fail();
           var total = parseInt(resp.headers.get("Content-Length") || "0", 10);
@@ -1176,12 +1161,10 @@
     }
     var manualBtn = document.getElementById("demoManualBtn");
     if (manualBtn) manualBtn.addEventListener("click", function () {
-      // 已登录直接下载；未登录置挂起标记后转点登录按钮，登录成功自动续做下载
       if (document.getElementById("navUserPill")) { downloadManual(); return; }
       window.__pendingManualDownload = true;
       var b = document.getElementById("navAuthBtn"); if (b) b.click();
     });
-    // 登录成功（导航区重建出用户卡）后自动续做挂起的手册下载
     var zone = document.getElementById("navAuthZone");
     if (zone && window.MutationObserver) {
       new MutationObserver(function () {
@@ -1192,7 +1175,6 @@
       }).observe(zone, { childList: true });
     }
 
-    // 分享按钮：复制分享页链接
     var btn = document.getElementById("demoShareBtn");
     if (btn) btn.addEventListener("click", function () {
       var url = location.origin + "/share-video.html";
@@ -1206,7 +1188,6 @@
   });
 })();
 
-// 锚点兜底：smooth 滚动在部分内嵌/无头浏览器里不生效，700ms 后未到位则直接跳
 document.addEventListener("click", function (e) {
   var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
   if (!a) return;

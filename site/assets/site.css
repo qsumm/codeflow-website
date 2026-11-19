@@ -569,6 +569,11 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .hero-sub{font-size:1.02rem;font-weight:600;color:var(--text);margin-bottom:12px;letter-spacing:.01em}
 .lede-sm{font-size:.86rem;color:var(--text-soft);margin-top:10px}
 
+/* ═══════ 首页 FAQ 居中版式 ═══════ */
+#faq .sec-head{margin-left:auto;margin-right:auto;text-align:center;max-width:44em}
+#faq .faq{margin-left:auto;margin-right:auto}
+#faq details{text-align:left}
+
 /* ═══════ 首页能力矩阵（TestHub 式 3 列卡） ═══════ */
 .cap-grid{display:grid;gap:14px}
 .cap-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
