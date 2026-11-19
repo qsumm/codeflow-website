@@ -1105,7 +1105,8 @@
     getToken(function (t) { cb(t ? "/api/media/v/" + encodeURIComponent(name) + "?t=" + encodeURIComponent(t) : null); });
   };
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function initVideoDemo() {
+
     var preview = document.querySelector(".product-demo-preview");
     var dialog = document.getElementById("product-demo-player");
     if (preview && dialog) {
@@ -1206,7 +1207,14 @@
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { prompt("复制以下链接：", url); });
       else prompt("复制以下链接：", url);
     });
-  });
+  
+  }
+  // defer 脚本执行时 DOM 已就绪；双态覆盖（loading 时等事件，否则直接执行）
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initVideoDemo);
+  } else {
+    initVideoDemo();
+  }
 })();
 
 document.addEventListener("click", function (e) {
