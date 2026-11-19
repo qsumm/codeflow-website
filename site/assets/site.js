@@ -1063,6 +1063,18 @@
       el.classList.remove("repo-mask--open");
     });
   }
+  // 预加载视频前 3 秒（Range 请求 ~400KB），点击播放零等待起播
+  function preloadHead(video) {
+    if (video.__headPreloaded) return;
+    video.__headPreloaded = true;
+    mediaTokenUrl("demo", function (u) {
+      if (!u) return;
+      fetch(u, { headers: { Range: "bytes=0-419430" } })
+        .then(function (r) { return r.ok ? r.blob() : null; })
+        .then(function (b) { if (b && video.isConnected && !video.getAttribute("src")) video.src = URL.createObjectURL(b); })
+        .catch(function () {});
+    });
+  }
   function load() {
     fetch("/api/auth/repo", { credentials: "same-origin" })
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
@@ -1110,8 +1122,10 @@
       if (inline && matchMedia("(min-width: 861px)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
         new IntersectionObserver(function (entries) {
           entries.forEach(function (en) {
-            if (en.isIntersecting) { feed(inline); inline.play().catch(function () {}); }
-            else if (!inline.paused) inline.pause();
+            if (en.isIntersecting) {
+              // 进视口：预加载前 3 秒（Range 请求），不自动全量播放
+              preloadHead(inline);
+            } else if (!inline.paused) inline.pause();
           });
         }, { threshold: 0.5 }).observe(preview);
       }
