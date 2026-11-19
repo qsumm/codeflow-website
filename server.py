@@ -975,7 +975,7 @@ async def auth_repo(request: Request):
 MEDIA_SECRET = os.environ.get("MEDIA_TOKEN_SECRET", "").strip() or secrets.token_hex(32)
 MEDIA_DIR = Path(os.environ.get("MEDIA_DIR", "/opt/codeflow-app/media"))
 # 名称 → 文件白名单（路径不可拼接，只允许枚举键）
-MEDIA_FILES = {"demo": "demo.mp4", "ecom": "ecom.mp4", "perf": "perf.mp4", "manual": "manual-v2.0.3.pdf"}
+MEDIA_FILES = {"demo": "demo.mp4", "ecom": "ecom.mp4", "perf": "perf.mp4", "manual": "manual-v2.1.0.pdf"}
 MEDIA_TTL_SEC = 30 * 60
 
 
@@ -1026,12 +1026,12 @@ async def media_stream(name: str, request: Request):
     # nginx internal：由 X-Accel-Redirect 转发；视频支持 Range 拖动进度条，PDF 以附件下发
     if name == "manual":
         from urllib.parse import quote
-        utf8_name = quote("CodeFlow-用户操作手册-v2.0.3.pdf")
+        utf8_name = quote("CodeFlow-用户操作手册-v2.1.0.pdf")
         return Response(
             status_code=200,
             headers={"X-Accel-Redirect": f"/_media/{MEDIA_FILES[name]}",
                      "Content-Type": "application/pdf",
-                     "Content-Disposition": f"attachment; filename=\"CodeFlow-User-Manual-v2.0.3.pdf\"; filename*=UTF-8''{utf8_name}",
+                     "Content-Disposition": f"attachment; filename=\"CodeFlow-User-Manual-v2.1.0.pdf\"; filename*=UTF-8''{utf8_name}",
                      "Cache-Control": "no-store"},
         )
     return Response(

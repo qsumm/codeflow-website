@@ -959,3 +959,13 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   .cap-grid{grid-template-columns:1fr}
   .doc-layout{grid-template-columns:minmax(0,1fr);gap:18px}
 }
+
+/* 页脚举报入口：备案与安全评估要求公开可查 */
+.foot-report{font-size:.78rem;color:var(--muted)}
+.foot-report a{color:var(--accent-text);border-bottom:1px solid var(--accent-ring);white-space:nowrap}
+
+/* 页脚备案区：ICP + 公安双号，公安号按规范前置图标 */
+.foot-beian{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:.78rem;color:var(--muted)}
+.foot-beian a{color:var(--muted);text-decoration:none}
+.foot-beian a:hover{color:var(--accent-text)}
+.foot-beian .beian-mps{display:inline-flex;align-items:center;gap:4px}
