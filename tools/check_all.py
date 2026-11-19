@@ -523,8 +523,38 @@ def g28() -> None:
     g("G28", not bad, "; ".join(sorted(set(bad))[:5]))
 
 
+# ── G29 视频自动播放回归守卫：预加载与自动播放必须共存 ──
+def g29() -> None:
+    """2026-11-19 教训：加预加载功能时把 IntersectionObserver 里的 inline.play() 误删，
+    滚动到视频区不再自动播放，且机械守卫没拦住。本守卫锁定四要素共存：
+    preloadHead 定义 + Range 预载请求 + loadeddata 起播事件 + IntersectionObserver 内的 play()。"""
+    js = (SITE / "assets" / "site.js").read_text(encoding="utf-8")
+    bad = []
+    if "function preloadHead" not in js:
+        bad.append("缺 preloadHead 预加载函数")
+    if "bytes=0-419430" not in js:
+        bad.append("缺 Range 预载请求（前 3 秒数据）")
+    if "loadeddata" not in js:
+        bad.append("缺 loadeddata 起播事件协调")
+    # IntersectionObserver 块内必须有 inline.play()——提取块内容校验
+    for m in re.finditer(r"new IntersectionObserver\(([^)]*(?:\)(?![^{]*\)))*?)\)\.observe", js):
+        if "product-demo" in js[max(0, m.start() - 600):m.start()] or "inline" in js[m.start():m.end() + 200]:
+            if "inline.play()" in m.group(1):
+                break
+    else:
+        if "inline.play()" not in js:
+            bad.append("缺 inline.play() 自动播放调用")
+        else:
+            # play 存在但可能不在 IntersectionObserver 块内——粗校验：preloadHead 与 play 需同段出现
+            i_p = js.find("preloadHead(inline)")
+            i_play = js.find("inline.play()")
+            if i_p == -1 or i_play == -1 or abs(i_p - i_play) > 800:
+                bad.append("preloadHead 与 inline.play() 不在同一段（自动播放可能被移出观察器）")
+    g("G29", not bad, "; ".join(bad))
+
+
 def main() -> int:
-    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25, g26, g27, g28):
+    for fn in (g01, g03, g04, g05, g06, g07, g08, g09, g11, g12, g13, g14, g15, g19, g20, g21, g23, g24, g25, g26, g27, g28, g29):
         try:
             fn()
         except Exception as e:  # noqa: BLE001
