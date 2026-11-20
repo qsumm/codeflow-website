@@ -190,7 +190,9 @@ EOF
   if [ ! -f /opt/codeflow-app/.env ]; then
     cat > /opt/codeflow-app/.env <<'EOF'
 # 站点后端运行配置（不含真实密钥）
-# 短信：填入阿里云号码认证服务(DYPNS)凭据后才可真正发码
+# ⚠️ 下面两个 AccessKey 是空模板——恢复后必须手工填入真实值（从旧机 .env 或密码管理器），
+#    否则发码报「短信服务未完成配置」；MEDIA_TOKEN_SECRET 必须非空，否则媒体令牌可伪造
+#    （2026-11-18 恢复时空值上线，11-20 才发现：103 原机 .env 找回前两键，媒体密钥重新生成）
 DYPNS_ACCESS_KEY_ID=
 DYPNS_ACCESS_KEY_SECRET=
 DYPNS_SIGN_NAME=恒创联众
