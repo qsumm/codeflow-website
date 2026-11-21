@@ -1,7 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   设计令牌 — 直接沿用平台 static/ops.css 的 D50 收敛后口径
-   （语义色 4 色相 + 中性灰；透明度只引用 rgb 三元组；每主题各一档）
-   ═══════════════════════════════════════════════════════════ */
+
 :root, [data-theme="dark"]{
   color-scheme: dark;
   --bg:#0e0f11;
@@ -36,8 +33,7 @@
   --shadow-pop:0 12px 32px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.35);
   --overlay-2:rgba(0,0,0,.45);
   --on-fill:#fff;
-  /* 可读性两支（P4 对比度实测：主按钮 3.88:1 / 浅色小节标 3.47:1 不达标）：
-     品牌主色 --accent --2383e2 保持不变，小字与按钮填充另立更深一档 */
+  
   --accent-ink:#2383e2; --btn-fill:#1e6fcc; --btn-fill-hover:#1a5fb0;
 }
 [data-theme="light"]{
@@ -73,7 +69,7 @@
   --shadow-pop:0 12px 32px rgba(16,24,40,.13), 0 2px 8px rgba(16,24,40,.06);
   --overlay-2:rgba(16,24,40,.16);
   --on-fill:#fff;
-  /* 浅色下文字强调蓝下沉到 #1b6fc9 → 小字 4.50:1；按钮填充两主题统一 → 白字 5.00:1 */
+  
   --accent-ink:#1b6fc9;
   --accent-text:#145aa8; --btn-fill:#1e6fcc; --btn-fill-hover:#1a5fb0;
 }
@@ -304,7 +300,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .cap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .cap-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-/* 1100px：导航与六栏页脚在此宽度已过挤（1024 实测逐字折行），提前收拢 */
+
 @media (max-width:1100px){
 .nav-links{display:none}
   .foot-grid{grid-template-columns:1fr 1fr 1fr}
@@ -316,15 +312,15 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   .nav-mobile a{display:block;padding:13px 24px;color:var(--text);font-size:.95rem;
     border-top:1px solid var(--border-soft);text-decoration:none}
   .nav-mobile a[aria-current="page"]{color:var(--accent-text)}
-  /* hidden 属性必须压过上面的 display:block，否则抽屉在手机上常驻展开 */
+  
   .nav-mobile[hidden]{display:none}
 }
 @media (max-width:620px){
-/* 390 实测导航内容 449px 溢出视口 59px：收间距 + 品牌只留主名 */
+
   .nav-in{gap:10px}
   .nav-links{display:none}
   .brand-name span{display:none}
-  /* 440 实测：GitHub 与「开始部署」把登录按钮挤出屏幕 → 收进汉堡抽屉，头部只留必要项 */
+  
   .nav-act .gh-star-accent,
   .nav-act > a.btn-primary{display:none}
   .nav-act{gap:8px}
@@ -402,7 +398,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   /* 目录锚点与「返回博客」：手机上点按区不小于 34px */
   .doc-toc a{padding:7px 0;min-height:34px;display:flex;align-items:center}
   .l-more{display:inline-flex;align-items:center;min-height:34px}
-  /* 卡片里的文字链接（看案例/看全部/录屏/仓库地址）同样抬到 34px */
+  
   .post-more,.head-row>a,.video-link{display:inline-flex;align-items:center;min-height:34px}
   .m-p,.m-p a{min-height:34px;display:inline-flex;align-items:center}
 }
@@ -442,8 +438,6 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .doc-toc a:hover{color:var(--text)}
 .doc-toc a.lv3{padding-left:12px;font-size:.78rem}
 
-/* ── 窄屏收敛（P4 响应式回归实测修：390 档两处溢出）── */
-
 @media (max-width:420px){
   .stats{grid-template-columns:1fr}
   .vip-grid{grid-template-columns:1fr}
@@ -458,12 +452,11 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .cap-list li code,.doc-body code{word-break:break-word;overflow-wrap:anywhere}
 .doc-body pre{max-width:100%;overflow-x:auto}
 .tbl-wrap{max-width:100%;overflow-x:auto}
-/* 表格滚动容器（md 渲染后包裹）：table 的匿名 table 盒按 max-content 撑开，
-   外层必须真正可滚动，否则窄屏整页被表格撑破 */
+
 .table-scroll{max-width:100%;overflow-x:auto;margin:0 0 18px;border:1px solid var(--border-soft);border-radius:var(--radius-sm)}
 .table-scroll table{margin:0;width:max-content;min-width:100%}
 .doc-body table{display:table;width:100%}
-/* ── 可读性组件覆盖（令牌在主题块内，此处仅改用，压过上方同权规则）── */
+
 .sec-kicker{color:var(--accent-ink)}
 .btn-primary{background:var(--btn-fill)}
 .btn-primary:hover{background:var(--btn-fill-hover)}
@@ -514,7 +507,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   .case-row{grid-template-columns:1fr;gap:6px;padding:14px 2px}
   .case-row span:nth-child(2){margin-top:2px}
 }
-/* 流水线 SVG 轨道流动动画（prefers-reduced-motion 用户自动停用） */
+
 .flow{animation:dash 1.1s linear infinite}
 @keyframes dash{to{stroke-dashoffset:-22}}
 @media (prefers-reduced-motion: reduce){
@@ -527,7 +520,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .pv-label{font-size:.75rem;color:var(--muted);letter-spacing:.06em}
 .pv-num{font-family:var(--font-mono);font-size:.88rem;font-weight:620;color:var(--text);
   font-variant-numeric:tabular-nums;line-height:1}
-/* hero 元信息行：浏览量徽章 + 定位眉标同行，消除双胶囊堆叠 */
+
 .nav-burger{display:none;width:32px;height:32px;border:1px solid var(--border);border-radius:8px;
   background:var(--surface);color:var(--text);align-items:center;justify-content:center;cursor:pointer;padding:0;
   flex:0 0 auto}
@@ -620,7 +613,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 /* 导航右上角累计访问量胶囊 */
 .pv-pill-nav{padding:5px 11px;gap:6px;border-color:var(--border);background:transparent;flex:none}
 .pv-pill-nav .pv-num{font-size:.8rem;color:var(--muted)}
-/* 标签变长（累计访问量）后在 1280 档会把导航链接挤到逐字折行：先收胶囊与导航间距 */
+
 @media (max-width:1400px){
   .pv-pill-nav{padding:4px 9px;gap:5px}
   .pv-label-nav{font-size:.7rem;letter-spacing:.01em}
@@ -630,7 +623,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 }
 @media (max-width:760px){
   .pv-pill-nav{display:none}
-  /* GitHub 入口收进汉堡抽屉（抽屉内已有），避免 640 档把「开始部署」挤出屏幕 */
+  
   .nav-act .gh-star-accent{display:none}
 }
 /* 案例图：悬浮放大 + 点击灯箱 */
@@ -832,8 +825,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .cta-primary:hover .cta-arrow{transform:translateX(3px)}
 .cta-primary:active{transform:translateY(0);box-shadow:0 6px 18px rgba(var(--accent-rgb),.45),inset 0 1px 0 rgba(255,255,255,.2)}
 .cta-primary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-/* 次级强 CTA：「获取源码」（登录后可见仓库地址）—— 蓝底描边 + 代码图标，
-   明显高于普通次级按钮，但仍低于主 CTA（不抢「安装并开始使用」的重心） */
+
 .cta-source{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   padding:15px 26px;border-radius:12px;
@@ -854,7 +846,6 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .cta-source:active{transform:translateY(0)}
 .cta-source:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
-/* 主 CTA 旁边的次级按钮：留白与字号略收，让主按钮独占视觉重心 */
 .hero-cta{align-items:center}
 .hero-cta .btn-ghost,.hero-cta .btn-outline-accent{padding:12px 20px;font-size:.93rem}
 
@@ -865,10 +856,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   border:1px solid var(--accent-ring);background:var(--accent-weak);color:var(--accent-text)!important;
   font-weight:600;font-size:.84rem}
 .foot-gh-btn:hover{background:var(--accent-soft)}
-/* 4) 源码仓库地址马赛克：默认模糊，悬浮清晰并提示登录 */
-/* 源码仓库地址：永久打码。
-   外层 .repo-lock 负责悬浮提示与登录门禁，内层 .repo-mask 只负责模糊——
-   blur 会连带作用到伪元素，所以提示不能挂在被模糊的元素上。 */
+
 .repo-lock{position:relative;cursor:pointer;display:inline-block;
   user-select:none;-webkit-user-select:none}
 .repo-mask{filter:blur(5px);display:inline-block;padding:0 3px;border-radius:4px;
@@ -893,7 +881,6 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 /* 登录后由前端解锁真实仓库地址（此前一直是掩码） */
 .repo-mask--open{filter:none;color:inherit}
 
-/* 「分享视频」按钮：预览图上方右上角悬浮，点按复制分享链接 */
 .demo-actions{position:absolute;top:14px;right:14px;z-index:3;display:flex;gap:8px}
 .demo-actions .demo-share-btn{position:static}
 .demo-share-btn{position:absolute;top:14px;right:14px;z-index:3;
@@ -905,7 +892,6 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .demo-share-btn:hover{border-color:var(--accent);color:var(--accent-text)}
 #product-demo{position:relative}
 
-/* 页脚微信列：二维码 + 微信号，替代原右下角悬浮卡片（桌面端） */
 .foot-wechat img{display:block;width:130px;height:130px;border-radius:8px;background:#fff;
   padding:5px;border:1px solid var(--border)}
 .foot-wechat p{font-size:.78rem;color:var(--muted);margin-top:8px}
@@ -925,7 +911,28 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   .case-row{grid-template-columns:1fr;gap:6px;padding:14px 4px}
   .case-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .case-tri{grid-template-columns:1fr}
+  .chain-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chain-steps li:nth-child(2n)::after{content:none}
+  .verify-line{padding:0 4px}
 }
+
+.chain-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;list-style:none;margin:16px 0 20px;padding:0}
+.chain-steps li{position:relative;padding:11px 13px;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);min-width:0}
+.chain-steps li:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:38%;color:var(--skip);font-size:.8rem;font-family:var(--font-mono);pointer-events:none}
+.chain-steps .cs-k{display:flex;gap:7px;align-items:baseline;font-size:.72rem;color:var(--muted);letter-spacing:.04em}
+.chain-steps .cs-k em{font-style:normal;font-family:var(--font-mono);color:var(--accent-text);font-weight:700}
+.chain-steps .cs-v{display:block;margin-top:5px;font-size:.86rem;font-weight:620;line-height:1.5;overflow-wrap:anywhere}
+
+/* 名片正面可复核声明条 */
+.verify-line{margin-top:16px;font-size:.86rem;color:var(--muted)}
+.verify-line b{color:var(--text);font-weight:620}
+.verify-line a{color:var(--accent-text);border-bottom:1px solid var(--accent-ring)}
+
+/* 页尾复核指南 */
+.verify-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.verify-list li{padding:13px 16px;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);font-size:.88rem;line-height:1.65;color:var(--muted)}
+.verify-list li b{color:var(--text)}
+.verify-list code{font-family:var(--font-mono);font-size:.8rem;color:var(--accent-text)}
 
 /* 案例三图陈列：主卡下的交付产物缩略行 */
 .case-tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
@@ -941,7 +948,6 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .foot-report{font-size:.78rem;color:var(--muted)}
 .foot-report a{color:var(--accent-text);border-bottom:1px solid var(--accent-ring);white-space:nowrap}
 
-/* 页脚备案区：ICP + 公安双号，公安号按规范前置图标 */
 .foot-beian{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:.78rem;color:var(--muted)}
 .foot-beian a{color:var(--muted);text-decoration:none}
 .foot-beian a:hover{color:var(--accent-text)}
@@ -977,4 +983,10 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 }
 @media (max-width:620px){
   .case-stats{grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+}
+
+/* 案例证据链移动端：2×2 折行、隐藏跨卡箭头（置于文件尾以覆盖同名基础规则） */
+@media (max-width:860px){
+  ol.chain-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  ol.chain-steps li:nth-child(2n)::after{content:none}
 }
