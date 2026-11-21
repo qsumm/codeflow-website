@@ -25,7 +25,7 @@
 <section class="tight" id="clients">
   <div class="sec-head"><div class="sec-kicker">开放接入</div>
   <h2 style="font-size:1.5rem">6 种 Agent 客户端 · 任意 Anthropic 兼容模型</h2></div>
-  <div class="hub-grid" style="grid-template-columns:repeat(2,1fr)">
+  <div class="hub-grid two">
     <div class="hub-item">
       <div class="h-t">Agent 客户端（开箱即用）</div>
       <p class="h-d">Claude Code · Codex CLI · Cursor CLI · Gemini CLI · Qoder CLI · Qoder CLI CN。Provider 适配层可插拔，新客户端按同一适配层扩展。</p>
@@ -49,9 +49,41 @@
         <tr><td>Provider 抽象</td><td class="yes">绑定/映射/回执全 provider 无关，新工单平台只需实现 ExternalWorkitemProvider</td></tr>
         <tr><td>IM 机器人</td><td class="yes">钉钉 / 飞书：群成员 @数字员工 即可对话</td></tr>
         <tr><td>AI 管家</td><td class="yes">平台智能管家：自动接单并拆解需求、调度数字员工协作交付、沉淀团队记忆</td></tr>
-        <tr><td>MCP</td><td class="yes">平台 MCP 服务器（ainative）：令牌管理、技能包上传、个人记忆</td></tr>
+        <tr><td>MCP</td><td class="yes">平台 MCP 服务器（ainative）：工单令牌 · 记忆读写 · 技能包全链路 · 执行轨迹回放（<a href="#mcp">下方展开</a>）</td></tr>
       </tbody>
     </table>
+  </div>
+</section>
+
+<section class="tight" id="mcp">
+  <div class="sec-head"><div class="sec-kicker">MCP · Model Context Protocol</div>
+  <h2 style="font-size:1.5rem">一套 MCP 服务器，外部 AI 客户端直接接上平台</h2></div>
+  <div class="hub-grid two">
+    <div class="hub-item">
+      <div class="h-t">工单与令牌<small>分级授权</small></div>
+      <p class="h-d">个人令牌与工单级上传 / 下载令牌分级授权；数字员工经平台 MCP 实时读取工单（标题、状态、外部来源）后作答与追问。</p>
+      <div class="h-c"><span class="tag">awmcp_ 个人令牌</span><span class="tag">工单上下文实时读取</span><span class="tag">上传 / 下载令牌</span></div>
+    </div>
+    <div class="hub-item">
+      <div class="h-t">记忆读写<small>8 个工具</small></div>
+      <p class="h-d">外部客户端与人共用同一记忆库：搜索、读取、创建、编辑、删除全套；乐观版本锁防止互相覆盖，空间级权限逐调用校验。</p>
+      <div class="h-c"><span class="tag">search_memories</span><span class="tag">get / create / update / delete_memory</span></div>
+    </div>
+    <div class="hub-item">
+      <div class="h-t">技能包全链路<small>6 个工具</small></div>
+      <p class="h-d">zip / tar.gz / 目录内容直传；先检视再入库，从包一键创建或更新技能，平台技能目录可浏览、可复用。</p>
+      <div class="h-c"><span class="tag">inspect_skill_package</span><span class="tag">upload / update_skill_package</span><span class="tag">create_skill_from_package</span><span class="tag">list_platform_skills</span></div>
+    </div>
+    <div class="hub-item">
+      <div class="h-t">执行器接入<small>3 个工具</small></div>
+      <p class="h-d">列出项目、读取与更新执行器启动配置——自部署接线即查即改，无需登台操作。</p>
+      <div class="h-c"><span class="tag">list_projects</span><span class="tag">get / update_executor_launch_config</span></div>
+    </div>
+    <div class="hub-item" style="grid-column:1/-1;border-left:3px solid var(--accent-ring)">
+      <div class="h-t">执行轨迹回放<small>4 个工具 · 可审计</small></div>
+      <p class="h-d">在自己惯用的 MCP 客户端里回放任意一次历史执行：轨迹大纲、每轮 prompt 与输出、逐次工具调用的输入输出与错误——交付过程全程可审计，不依赖平台界面。优先读取 OSS 归档，无归档时回退实时事件流。</p>
+      <div class="h-c"><span class="tag">get_dispatch_runtime_trace</span><span class="tag">get_dispatch_turn</span><span class="tag">get_dispatch_activities</span><span class="tag">get_dispatch_observation</span></div>
+    </div>
   </div>
 </section>
 

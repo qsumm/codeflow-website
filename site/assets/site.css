@@ -205,6 +205,7 @@ td:first-child{font-weight:560}
 .learn-card .l-more:hover{text-decoration:underline}
 /* ── 开源专区（赛道地图）── */
 .hub-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.hub-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .hub-item{background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);
   padding:16px 15px;transition:border-color .16s var(--ease),transform .16s var(--ease)}
 .hub-item:hover{border-color:var(--accent-ring);transform:translateY(-2px)}
@@ -331,6 +332,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   .stats{grid-template-columns:1fr}
   .mini-grid{grid-template-columns:1fr}
   .hub-grid{grid-template-columns:1fr}
+  .hub-grid.two{grid-template-columns:1fr}
   .foot-grid{grid-template-columns:1fr 1fr}
   .hero{padding:56px 0 48px}
   section{padding:56px 0}

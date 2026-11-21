@@ -2,7 +2,7 @@
 <!-- base_url 未配置时 loc 为占位，上线前在 pages.json 设置 base_url -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://codeflow.com.cn/index.html</loc><lastmod>2026-11-20</lastmod></url>
-  <url><loc>https://codeflow.com.cn/features.html</loc><lastmod>2026-11-20</lastmod></url>
+  <url><loc>https://codeflow.com.cn/features.html</loc><lastmod>2026-11-21</lastmod></url>
   <url><loc>https://codeflow.com.cn/delivery.html</loc><lastmod>2026-11-20</lastmod></url>
   <url><loc>https://codeflow.com.cn/cases.html</loc><lastmod>2026-11-20</lastmod></url>
   <url><loc>https://codeflow.com.cn/blog.html</loc><lastmod>2026-11-20</lastmod></url>
