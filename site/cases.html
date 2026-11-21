@@ -77,123 +77,22 @@
   <span class="eyebrow">交付案例</span>
   <h1 style="font-size:clamp(1.9rem,3.6vw,2.8rem)">一个工作项进来，<br>一个可验收的产品出去。</h1>
   <p class="lede">下面每一例都是 CodeFlow 真实施工出来的产物：从工单进入，走完澄清、编码、测试、交接，交付物和报告回到那张工单。截图、数据、产物清单都可以核对。</p>
-  <div class="case-stats">
-    <a class="case-stat" href="#case-1"><b>20<small>分钟</small></b><span>交易系统上线</span></a>
-    <a class="case-stat" href="#case-2"><b>50<small>分钟</small></b><span>压测平台交付</span></a>
-    <a class="case-stat" href="#case-3"><b>19<small>问</small></b><span>开工前澄清确认</span></a>
-    <a class="case-stat" href="#case-4"><b>9<small>次</small></b><span>派发全程可追溯</span></a>
-    <a class="case-stat" href="#case-5"><b>2685<small>行</small></b><span>ChatBI agent 交付</span></a>
+    <div class="case-stats">
+    <a class="case-stat" href="#case-1"><b>2685<small>行</small></b><span>ChatBI agent 交付</span></a>
+    <a class="case-stat" href="#case-2"><b>20<small>分钟</small></b><span>交易系统上线</span></a>
+    <a class="case-stat" href="#case-3"><b>50<small>分钟</small></b><span>压测平台交付</span></a>
+    <a class="case-stat" href="#case-4"><b>19<small>问</small></b><span>开工前澄清确认</span></a>
+    <a class="case-stat" href="#case-5"><b>9<small>次</small></b><span>派发全程可追溯</span></a>
   </div>
   <p class="verify-line">每一例都可复核：<b>工单号可检索</b> · <b>截图自带平台时钟</b> · <b>验收命令可重跑</b> —— <a href="#verify">怎么验，见页尾</a></p>
 </section>
 </div>
 
-<!-- ── 案例 1：交易系统 ── -->
 <div class="wrap">
 <section class="tight" id="case-1">
-  <div class="post-meta case-meta"><span class="post-cat">交易系统</span><span>工作项 #10049</span><span class="tag">✅ 产物可运行</span></div>
-  <ol class="chain-steps">
-    <li><span class="cs-k"><em>1</em>工单进</span><span class="cs-v">#10049 · 交易需求</span></li>
-    <li><span class="cs-k"><em>2</em>过程门禁</span><span class="cs-v">流水线模板 · 步骤级审批</span></li>
-    <li><span class="cs-k"><em>3</em>交付</span><span class="cs-v">商店前台 + 管理端</span></li>
-    <li><span class="cs-k"><em>4</em>实测</span><span class="cs-v">下单 → 发货全链路 ✅</span></li>
-  </ol>
-  <div class="case-hero">
-    <div class="case-shot"><span class="shot-badge">实机截图</span><img src="/assets/shots/cases/ecom-shipped.jpg" alt="电商商城管理端：订单列表与发货完成状态" loading="lazy"></div>
-    <div class="case-meta">
-      <div class="case-big">20<small>分钟</small></div>
-      <p class="case-line">从商品浏览到管理端发货，一条完整的交易闭环。</p>
-      <dl class="case-spec">
-        <div><dt>验收链路</dt><dd>浏览 → 加购 → 下单（NO202611120555218625）→ 发货 → 已发货</dd></div>
-        <div><dt>数据一致性</dt><dd>下单在单事务内完成校验→扣库存→建单，失败整体回滚；取消订单回滚库存</dd></div>
-        <div><dt>交付清单</dt><dd>商店前台 + 管理端 · 内置 SQLite/JSON 降级存储 · 启动脚本 · 交付报告</dd></div>
-        <div><dt>实操录屏</dt><dd><a class="video-link" data-video="ecom" href="#videoDialog">▶ 看下单到发货全链路（42 秒）</a></dd></div>
-      </dl>
-    </div>
-  </div>
-</section>
-</div>
-
-<!-- ── 案例 2：性能测试平台 ── -->
-<div class="wrap">
-<section class="tight" id="case-2">
-  <div class="post-meta case-meta"><span class="post-cat">Web 压测工具</span><span>工作项 #10047</span><span class="tag">✅ 产物可运行</span></div>
-  <ol class="chain-steps">
-    <li><span class="cs-k"><em>1</em>工单进</span><span class="cs-v">#10047 · 压测平台需求</span></li>
-    <li><span class="cs-k"><em>2</em>验收口径</span><span class="cs-v">并发 20 · 持续 10 秒</span></li>
-    <li><span class="cs-k"><em>3</em>交付</span><span class="cs-v">平台 + 启动/自测脚本</span></li>
-    <li><span class="cs-k"><em>4</em>实测</span><span class="cs-v">QPS 15,127 · 错误率 0%</span></li>
-  </ol>
-  <div class="case-hero">
-    <div class="case-shot"><span class="shot-badge">实机截图</span><img src="/assets/shots/cases/perf-report.jpg" alt="性能测试平台生成的压测报告：QPS、耗时分位数图表" loading="lazy"></div>
-    <div class="case-meta">
-      <div class="case-big">50<small>分钟</small></div>
-      <p class="case-line">从一张需求工单，到一个能压测自己的 Web 压测平台。</p>
-      <dl class="case-spec">
-        <div><dt>验收标准</dt><dd>并发 20 · 持续 10 秒 · 产出含 QPS/P95 的报告</dd></div>
-        <div><dt>实测结果</dt><dd>151,277 请求 · QPS 15,127 · P95 1.43 ms · 错误率 0%</dd></div>
-        <div><dt>交付清单</dt><dd>可运行代码 · 启动/停止/状态脚本 · 自测脚本 · 交付报告</dd></div>
-        <div><dt>实操录屏</dt><dd><a class="video-link" data-video="perf" href="#videoDialog">▶ 看发布验收走查（30 秒）</a></dd></div>
-      </dl>
-    </div>
-  </div>
-</section>
-</div>
-
-<!-- ── 案例 3：澄清 ── -->
-<div class="wrap">
-<section class="tight" id="case-3">
-  <div class="post-meta case-meta"><span class="post-cat">需求澄清</span><span class="tag">✅ 真实对话记录</span></div>
-  <ol class="chain-steps">
-    <li><span class="cs-k"><em>1</em>对话进</span><span class="cs-v">工单内直接开聊</span></li>
-    <li><span class="cs-k"><em>2</em>澄清</span><span class="cs-v">19 问逐项确认</span></li>
-    <li><span class="cs-k"><em>3</em>沉淀</span><span class="cs-v">结论 = 工单文档 + 评论</span></li>
-    <li><span class="cs-k"><em>4</em>续跑</span><span class="cs-v">@ 回复带意见继续</span></li>
-  </ol>
-  <div class="case-hero">
-    <div class="case-shot"><span class="shot-badge">真实对话</span><img src="/assets/shots/cases/clarify.jpg" alt="AI 需求澄清对话：开工前逐项确认交付口径" loading="lazy"></div>
-    <div class="case-meta">
-      <div class="case-big">19<small>个问题</small></div>
-      <p class="case-line">动手之前，它先把该问的都问清楚了。</p>
-      <dl class="case-spec">
-        <div><dt>问的是什么</dt><dd>git 仓库归属、部署路径与权限、验收口径、边界条件</dd></div>
-        <div><dt>留下什么</dt><dd>澄清结论作为文档与评论沉淀在工单里，不是口头共识</dd></div>
-        <div><dt>卡住怎么办</dt><dd>工单停在「待决策」，@ 回复一句，下一轮派发带着你的意见继续</dd></div>
-      </dl>
-    </div>
-  </div>
-</section>
-</div>
-
-<!-- ── 案例 4：交付进度可观测 ── -->
-<div class="wrap">
-<section class="tight" id="case-4">
-  <div class="post-meta case-meta"><span class="post-cat">交付过程</span><span class="tag">✅ 平台界面实拍</span></div>
-  <ol class="chain-steps">
-    <li><span class="cs-k"><em>1</em>派发</span><span class="cs-v">9 次全程可数</span></li>
-    <li><span class="cs-k"><em>2</em>留痕</span><span class="cs-v">失败红标 · attempt 1→2→3</span></li>
-    <li><span class="cs-k"><em>3</em>留档</span><span class="cs-v">每次派发独立存证</span></li>
-    <li><span class="cs-k"><em>4</em>回看</span><span class="cs-v">点「详情」查过程</span></li>
-  </ol>
-  <div class="case-hero">
-    <div class="case-shot"><span class="shot-badge">平台界面</span><img src="/assets/shots/cases/tracking.jpg" alt="执行记录列表：每次派发的状态、尝试次数与执行器" loading="lazy"></div>
-    <div class="case-meta">
-      <div class="case-big">9<small>次</small></div>
-      <p class="case-line">每次派发都有记录：成功还是失败、第几次尝试、谁在跑。</p>
-      <dl class="case-spec">
-        <div><dt>看得见什么</dt><dd>时间 · 工单 · Agent · 执行器 · 状态 · 尝试次数</dd></div>
-        <div><dt>失败不隐藏</dt><dd>红标失败 + 尝试序号递增（1→2→3），同一工单可复跑到成功</dd></div>
-        <div><dt>历史可追溯</dt><dd>每次派发独立留档，点「详情」可回看执行过程</dd></div>
-      </dl>
-    </div>
-  </div>
-</section>
-</div>
-
-<!-- ── 案例 5：Agent ChatBI ── -->
-<div class="wrap">
-<section class="tight" id="case-5">
-  <div class="post-meta case-meta"><span class="post-cat">ChatBI agent</span><span>需求 #2000005</span><span class="tag">✅ 产物可运行 · 150 单测全绿</span></div>
+  <div class="sec-head"><div class="sec-kicker">项目一</div>
+  <h2 style="font-size:1.3rem">ChatBI agent</h2></div>
+  <div class="post-meta case-meta"><span>需求 #2000005</span><span class="tag">✅ 产物可运行 · 150 单测全绿</span></div>
   <ol class="chain-steps">
     <li><span class="cs-k"><em>1</em>需求进</span><span class="cs-v">#2000005 · ChatBI agent</span></li>
     <li><span class="cs-k"><em>2</em>澄清拍板</span><span class="cs-v">6 问 a/b/c · 人拍板</span></li>
@@ -217,6 +116,112 @@
     <figure><span class="shot-badge">实机截图</span><img src="/assets/shots/cases/chatbi-q1-line.jpg" alt="ChatBI 出图：最近 7 天新增需求折线图，递归 CTE 补零" loading="lazy"><figcaption>Q1「最近 7 天每天新增需求」——递归 CTE 造日期序列，缺失日期补 0</figcaption></figure>
     <figure><span class="shot-badge">实机截图</span><img src="/assets/shots/cases/chatbi-q3-table.jpg" alt="ChatBI 出图：平均交付耗时表格输出" loading="lazy"><figcaption>Q3「平均交付耗时」——样本量不足时自动降级为表格输出</figcaption></figure>
     <figure><span class="shot-badge">平台留痕</span><img src="/assets/shots/cases/chatbi-archive.jpg" alt="CodeFlow 平台：澄清口径结论归档进需求详情" loading="lazy"><figcaption>澄清口径结论归档进需求详情——不是散落在某个人的终端里</figcaption></figure>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-2">
+  <div class="sec-head"><div class="sec-kicker">项目二</div>
+  <h2 style="font-size:1.3rem">电商交易系统</h2></div>
+  <div class="post-meta case-meta"><span>工作项 #10049</span><span class="tag">✅ 产物可运行</span></div>
+  <ol class="chain-steps">
+    <li><span class="cs-k"><em>1</em>工单进</span><span class="cs-v">#10049 · 交易需求</span></li>
+    <li><span class="cs-k"><em>2</em>过程门禁</span><span class="cs-v">流水线模板 · 步骤级审批</span></li>
+    <li><span class="cs-k"><em>3</em>交付</span><span class="cs-v">商店前台 + 管理端</span></li>
+    <li><span class="cs-k"><em>4</em>实测</span><span class="cs-v">下单 → 发货全链路 ✅</span></li>
+  </ol>
+  <div class="case-hero">
+    <div class="case-shot"><span class="shot-badge">实机截图</span><img src="/assets/shots/cases/ecom-shipped.jpg" alt="电商商城管理端：订单列表与发货完成状态" loading="lazy"></div>
+    <div class="case-meta">
+      <div class="case-big">20<small>分钟</small></div>
+      <p class="case-line">从商品浏览到管理端发货，一条完整的交易闭环。</p>
+      <dl class="case-spec">
+        <div><dt>验收链路</dt><dd>浏览 → 加购 → 下单（NO202611120555218625）→ 发货 → 已发货</dd></div>
+        <div><dt>数据一致性</dt><dd>下单在单事务内完成校验→扣库存→建单，失败整体回滚；取消订单回滚库存</dd></div>
+        <div><dt>交付清单</dt><dd>商店前台 + 管理端 · 内置 SQLite/JSON 降级存储 · 启动脚本 · 交付报告</dd></div>
+        <div><dt>实操录屏</dt><dd><a class="video-link" data-video="ecom" href="#videoDialog">▶ 看下单到发货全链路（42 秒）</a></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-3">
+  <div class="sec-head"><div class="sec-kicker">项目三</div>
+  <h2 style="font-size:1.3rem">Web 压测平台</h2></div>
+  <div class="post-meta case-meta"><span>工作项 #10047</span><span class="tag">✅ 产物可运行</span></div>
+  <ol class="chain-steps">
+    <li><span class="cs-k"><em>1</em>工单进</span><span class="cs-v">#10047 · 压测平台需求</span></li>
+    <li><span class="cs-k"><em>2</em>验收口径</span><span class="cs-v">并发 20 · 持续 10 秒</span></li>
+    <li><span class="cs-k"><em>3</em>交付</span><span class="cs-v">平台 + 启动/自测脚本</span></li>
+    <li><span class="cs-k"><em>4</em>实测</span><span class="cs-v">QPS 15,127 · 错误率 0%</span></li>
+  </ol>
+  <div class="case-hero">
+    <div class="case-shot"><span class="shot-badge">实机截图</span><img src="/assets/shots/cases/perf-report.jpg" alt="性能测试平台生成的压测报告：QPS、耗时分位数图表" loading="lazy"></div>
+    <div class="case-meta">
+      <div class="case-big">50<small>分钟</small></div>
+      <p class="case-line">从一张需求工单，到一个能压测自己的 Web 压测平台。</p>
+      <dl class="case-spec">
+        <div><dt>验收标准</dt><dd>并发 20 · 持续 10 秒 · 产出含 QPS/P95 的报告</dd></div>
+        <div><dt>实测结果</dt><dd>151,277 请求 · QPS 15,127 · P95 1.43 ms · 错误率 0%</dd></div>
+        <div><dt>交付清单</dt><dd>可运行代码 · 启动/停止/状态脚本 · 自测脚本 · 交付报告</dd></div>
+        <div><dt>实操录屏</dt><dd><a class="video-link" data-video="perf" href="#videoDialog">▶ 看发布验收走查（30 秒）</a></dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-4">
+  <div class="sec-head"><div class="sec-kicker">项目四</div>
+  <h2 style="font-size:1.3rem">需求澄清</h2></div>
+  <div class="post-meta case-meta"><span class="tag">✅ 真实对话记录</span></div>
+  <ol class="chain-steps">
+    <li><span class="cs-k"><em>1</em>对话进</span><span class="cs-v">工单内直接开聊</span></li>
+    <li><span class="cs-k"><em>2</em>澄清</span><span class="cs-v">19 问逐项确认</span></li>
+    <li><span class="cs-k"><em>3</em>沉淀</span><span class="cs-v">结论 = 工单文档 + 评论</span></li>
+    <li><span class="cs-k"><em>4</em>续跑</span><span class="cs-v">@ 回复带意见继续</span></li>
+  </ol>
+  <div class="case-hero">
+    <div class="case-shot"><span class="shot-badge">真实对话</span><img src="/assets/shots/cases/clarify.jpg" alt="AI 需求澄清对话：开工前逐项确认交付口径" loading="lazy"></div>
+    <div class="case-meta">
+      <div class="case-big">19<small>个问题</small></div>
+      <p class="case-line">动手之前，它先把该问的都问清楚了。</p>
+      <dl class="case-spec">
+        <div><dt>问的是什么</dt><dd>git 仓库归属、部署路径与权限、验收口径、边界条件</dd></div>
+        <div><dt>留下什么</dt><dd>澄清结论作为文档与评论沉淀在工单里，不是口头共识</dd></div>
+        <div><dt>卡住怎么办</dt><dd>工单停在「待决策」，@ 回复一句，下一轮派发带着你的意见继续</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<section class="tight" id="case-5">
+  <div class="sec-head"><div class="sec-kicker">项目五</div>
+  <h2 style="font-size:1.3rem">交付过程</h2></div>
+  <div class="post-meta case-meta"><span class="tag">✅ 平台界面实拍</span></div>
+  <ol class="chain-steps">
+    <li><span class="cs-k"><em>1</em>派发</span><span class="cs-v">9 次全程可数</span></li>
+    <li><span class="cs-k"><em>2</em>留痕</span><span class="cs-v">失败红标 · attempt 1→2→3</span></li>
+    <li><span class="cs-k"><em>3</em>留档</span><span class="cs-v">每次派发独立存证</span></li>
+    <li><span class="cs-k"><em>4</em>回看</span><span class="cs-v">点「详情」查过程</span></li>
+  </ol>
+  <div class="case-hero">
+    <div class="case-shot"><span class="shot-badge">平台界面</span><img src="/assets/shots/cases/tracking.jpg" alt="执行记录列表：每次派发的状态、尝试次数与执行器" loading="lazy"></div>
+    <div class="case-meta">
+      <div class="case-big">9<small>次</small></div>
+      <p class="case-line">每次派发都有记录：成功还是失败、第几次尝试、谁在跑。</p>
+      <dl class="case-spec">
+        <div><dt>看得见什么</dt><dd>时间 · 工单 · Agent · 执行器 · 状态 · 尝试次数</dd></div>
+        <div><dt>失败不隐藏</dt><dd>红标失败 + 尝试序号递增（1→2→3），同一工单可复跑到成功</dd></div>
+        <div><dt>历史可追溯</dt><dd>每次派发独立留档，点「详情」可回看执行过程</dd></div>
+      </dl>
+    </div>
   </div>
 </section>
 </div>
