@@ -8,7 +8,7 @@
 <title>交付案例 · 一个工作项进来，一个可验收的产品出去 · CodeFlow</title>
 <meta name="description" content="CodeFlow 真实交付案例：50 分钟交付 Web 压测平台（QPS 15,127、错误率 0%）、20 分钟交付可下单可发货的商城、开工前 AI 反问 19 个问题、交付进度可观测可重试——每例都有截图、验收数据与产物清单。">
 <link rel="icon" type="image/svg+xml" href="/assets/codeflow-logo.svg">
-<link rel="stylesheet" href="/assets/site.css?v=f5447b2c">
+<link rel="stylesheet" href="/assets/site.css?v=cc882bab">
 <meta property="og:title" content="交付案例 · 一个工作项进来，一个可验收的产品出去 · CodeFlow">
   <meta property="og:description" content="CodeFlow 真实交付案例：50 分钟交付 Web 压测平台（QPS 15,127、错误率 0%）、20 分钟交付可下单可发货的商城、开工前 AI 反问 19 个问题、交付进度可观测可重试——每例都有截图、验收数据与产物清单。">
   <meta property="og:type" content="website">
@@ -82,6 +82,7 @@
     <a class="case-stat" href="#case-2"><b>50<small>分钟</small></b><span>压测平台交付</span></a>
     <a class="case-stat" href="#case-3"><b>19<small>问</small></b><span>开工前澄清确认</span></a>
     <a class="case-stat" href="#case-4"><b>9<small>次</small></b><span>派发全程可追溯</span></a>
+    <a class="case-stat" href="#case-5"><b>2685<small>行</small></b><span>ChatBI agent 交付</span></a>
   </div>
 </section>
 </div>
@@ -160,6 +161,31 @@
         <div><dt>历史可追溯</dt><dd>每次派发独立留档，点「详情」可回看执行过程</dd></div>
       </dl>
     </div>
+  </div>
+</section>
+</div>
+
+<!-- ── 案例 5：Agent ChatBI ── -->
+<div class="wrap">
+<section class="tight" id="case-5">
+  <div class="post-meta case-meta"><span class="post-cat">ChatBI agent</span><span>需求 #2000005</span><span class="tag">✅ 产物可运行 · 150 单测全绿</span></div>
+  <div class="case-hero">
+    <div class="case-shot"><span class="shot-badge">实机截图</span><img src="/assets/shots/cases/chatbi-q2-stats.jpg" alt="ChatBI agent 真实出图：数字员工执行统计柱状图，成功率 75% 并标注样本量提示" loading="lazy"></div>
+    <div class="case-meta">
+      <div class="case-big">2685<small>行</small></div>
+      <p class="case-line">一句「开发一个 ChatBI agent」——数字员工自己连库勘察、带方案提问，交付一个真能跑的软件。</p>
+      <dl class="case-spec">
+        <div><dt>交付物</dt><dd>2685 行纯标准库（实现 1676 + 测试 1009）：自研 MySQL 协议客户端（368 行）+ SQL 只读校验器 + ECharts 单文件图表</dd></div>
+        <div><dt>三层验收</dt><dd>150 个单测全绿（0.13s）；10 类 SQL 注入样例全拦；只读账号 DB 侧拒写——独立复核，不是 AI 自述</dd></div>
+        <div><dt>人做了什么</dt><dd>数字员工带着核实到的事实提 6 个 a/b/c 方案题，人只在选项里拍板——没有替它做技术判断</dd></div>
+        <div><dt>自检样本</dt><dd>它自己发现自己「已完成」口径的证据缺口，主动标注而不是把能跑的答案当正确答案交出来</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="case-tri">
+    <figure><span class="shot-badge">实机截图</span><img src="/assets/shots/cases/chatbi-q1-line.jpg" alt="ChatBI 出图：最近 7 天新增需求折线图，递归 CTE 补零" loading="lazy"><figcaption>Q1「最近 7 天每天新增需求」——递归 CTE 造日期序列，缺失日期补 0</figcaption></figure>
+    <figure><span class="shot-badge">实机截图</span><img src="/assets/shots/cases/chatbi-q3-table.jpg" alt="ChatBI 出图：平均交付耗时表格输出" loading="lazy"><figcaption>Q3「平均交付耗时」——样本量不足时自动降级为表格输出</figcaption></figure>
+    <figure><span class="shot-badge">平台留痕</span><img src="/assets/shots/cases/chatbi-archive.jpg" alt="CodeFlow 平台：澄清口径结论归档进需求详情" loading="lazy"><figcaption>澄清口径结论归档进需求详情——不是散落在某个人的终端里</figcaption></figure>
   </div>
 </section>
 </div>
@@ -317,6 +343,6 @@
   </div>
 </aside>
 
-<script src="/assets/site.js?v=f5447b2c" defer></script>
+<script src="/assets/site.js?v=cc882bab" defer></script>
 </body>
 </html>

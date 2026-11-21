@@ -923,7 +923,15 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 @media (max-width:860px){
   .case-hero{grid-template-columns:1fr;gap:22px;padding:16px}
   .case-row{grid-template-columns:1fr;gap:6px;padding:14px 4px}
+  .case-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .case-tri{grid-template-columns:1fr}
 }
+
+/* 案例三图陈列：主卡下的交付产物缩略行 */
+.case-tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+.case-tri figure{margin:0;position:relative}
+.case-tri figure img{width:100%;height:auto;display:block;border-radius:var(--radius);border:1px solid var(--border)}
+.case-tri figcaption{font-size:.78rem;color:var(--muted);margin-top:8px;line-height:1.55}
 @media (max-width:620px){
   .cap-grid{grid-template-columns:1fr}
   .doc-layout{grid-template-columns:minmax(0,1fr);gap:18px}
@@ -940,7 +948,7 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .foot-beian .beian-mps{display:inline-flex;align-items:center;gap:4px}
 
 /* hero 下的四项指标数字带 */
-.case-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:34px;
+.case-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:34px;
   padding:22px 26px;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface)}
 .case-stat{display:flex;flex-direction:column;gap:3px;text-decoration:none;padding:6px 4px;
   border-left:2px solid var(--accent);padding-left:14px;transition:transform .16s var(--ease)}
