@@ -975,7 +975,10 @@ async def auth_repo(request: Request):
 MEDIA_SECRET = os.environ.get("MEDIA_TOKEN_SECRET", "").strip() or secrets.token_hex(32)
 MEDIA_DIR = Path(os.environ.get("MEDIA_DIR", "/opt/codeflow-app/media"))
 # 名称 → 文件白名单（路径不可拼接，只允许枚举键）
-MEDIA_FILES = {"demo": "demo.mp4", "ecom": "ecom.mp4", "perf": "perf.mp4", "manual": "manual-v2.1.0.pdf"}
+MEDIA_FILES = {"demo": "demo.mp4", "ecom": "ecom.mp4", "perf": "perf.mp4", "manual": "manual-v2.1.0.pdf",
+               "chatbi": "chatbi-agent.zip", "ecom_site": "ecommerce-site.zip", "perf_platform": "perf-platform.zip"}
+# 登录 gated 资源：令牌签发与取流都要求已登录（手册 + 三大案例产物源码包）
+LOGIN_GATED = {"manual", "chatbi", "ecom_site", "perf_platform"}
 MEDIA_TTL_SEC = 30 * 60
 
 
@@ -999,9 +1002,9 @@ async def media_token(request: Request, name: str = "demo"):
     手册是登录 gated 资源：令牌签发本身就要求已登录。"""
     if name not in MEDIA_FILES:
         return JSONResponse({"ok": False, "message": "未知媒体"}, status_code=404)
-    if name == "manual" and not get_current_user(request):
+    if name in LOGIN_GATED and not get_current_user(request):
         return JSONResponse(
-            {"ok": False, "code": "AUTH_REQUIRED", "message": "请先登录官网账号后再下载用户操作手册"},
+            {"ok": False, "code": "AUTH_REQUIRED", "message": "请先登录官网账号后再下载该资源"},
             status_code=401,
         )
     return JSONResponse({"ok": True, "t": _media_token(int(time.time())), "ttl": MEDIA_TTL_SEC})
@@ -1009,9 +1012,9 @@ async def media_token(request: Request, name: str = "demo"):
 
 @app.get("/api/media/v/{name}")
 async def media_stream(name: str, request: Request):
-    if name == "manual" and not get_current_user(request):
+    if name in LOGIN_GATED and not get_current_user(request):
         return JSONResponse(
-            {"ok": False, "code": "AUTH_REQUIRED", "message": "请先登录官网账号后再下载用户操作手册"},
+            {"ok": False, "code": "AUTH_REQUIRED", "message": "请先登录官网账号后再下载该资源"},
             status_code=401,
         )
     token = request.query_params.get("t", "")
@@ -1024,6 +1027,14 @@ async def media_stream(name: str, request: Request):
     if not path.exists():
         return JSONResponse({"ok": False, "message": "媒体文件缺失"}, status_code=404)
     # nginx internal：由 X-Accel-Redirect 转发；视频支持 Range 拖动进度条，PDF 以附件下发
+    if name in LOGIN_GATED and name != "manual":
+        return Response(
+            status_code=200,
+            headers={"X-Accel-Redirect": f"/_media/{MEDIA_FILES[name]}",
+                     "Content-Type": "application/zip",
+                     "Content-Disposition": f"attachment; filename=\"{MEDIA_FILES[name]}\"",
+                     "Cache-Control": "no-store"},
+        )
     if name == "manual":
         from urllib.parse import quote
         utf8_name = quote("CodeFlow-用户操作手册-v2.1.0.pdf")

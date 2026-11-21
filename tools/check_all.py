@@ -61,11 +61,12 @@ def g04() -> None:
     for p in html_pages():
         s = p.read_text(encoding="utf-8")
         ids = set(re.findall(r'id="([^"]+)"', s))
-        # 门禁占位：data-repo-link 的链接其 href 在登录后由 /api/auth/repo 填充，
-        # 这里的 #repo 只是占位，不是站内锚点，跳过校验
+        # 门禁占位：data-repo-link 的 href 登录后由 /api/auth/repo 填充；
+        # data-artifact 的 href 由登录门禁下载流程接管（site.js preventDefault）。
+        # 两者都不是站内锚点，跳过校验
         gated = set()
         for tag in re.findall(r"<a\b[^>]*>", s):
-            if "data-repo-link" in tag:
+            if "data-repo-link" in tag or "data-artifact" in tag:
                 m = re.search(r'href="#([^"]*)"', tag)
                 if m:
                     gated.add(m.group(1))
@@ -511,10 +512,14 @@ def g28() -> None:
     for p_ in SITE.rglob("*"):
         if p_.is_file() and p_.suffix.lower() in (".mp4", ".webm", ".mov", ".avi", ".mkv"):
             bad.append(f"{p_.relative_to(SITE)} 视频文件进了站点目录")
+        if p_.is_file() and p_.suffix.lower() == ".zip":
+            bad.append(f"{p_.relative_to(SITE)} 产物 zip 进了站点目录（应走登录门禁）")
     for p_ in html_pages():
         s = p_.read_text(encoding="utf-8")
         for m in re.finditer(r'(?:src|href|data-video)="([^"]*\.mp4[^"]*)"', s):
             bad.append(f"{p_.name} 媒体直链 {m.group(1)[:50]}")
+        if "/downloads/" in s:
+            bad.append(f"{p_.name} 产物 zip 直链（应走 data-artifact 登录门禁）")
     idx = (SITE / "index.html").read_text(encoding="utf-8")
     if 'data-video="demo"' not in idx and "mediaTokenUrl" not in (SITE / "assets" / "site.js").read_text(encoding="utf-8"):
         bad.append("首页视频未接令牌流模块")

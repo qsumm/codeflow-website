@@ -1183,6 +1183,26 @@
         }
       });
     }
+    // 案例产物源码包下载（登录 gated）：未登录先弹登录，登录后自动续下
+    function downloadArtifact(name, btn) {
+      var label = btn ? btn.textContent : "";
+      if (btn) { btn.textContent = "⏳ 准备中…"; btn.disabled = true; }
+      mediaTokenUrl(name, function (u) {
+        if (btn) { btn.textContent = label; btn.disabled = false; }
+        if (!u) return;
+        var a = document.createElement("a"); a.href = u; a.download = "";
+        document.body.appendChild(a); a.click(); a.remove();
+      });
+    }
+    document.querySelectorAll("a[data-artifact]").forEach(function (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        var name = el.getAttribute("data-artifact");
+        if (document.getElementById("navUserPill")) { downloadArtifact(name, el); return; }
+        window.__pendingArtifact = name; window.__pendingArtifactBtn = el;
+        var b = document.getElementById("navAuthBtn"); if (b) b.click();
+      });
+    });
     var manualBtn = document.getElementById("demoManualBtn");
     if (manualBtn) manualBtn.addEventListener("click", function () {
       if (document.getElementById("navUserPill")) { downloadManual(); return; }
@@ -1195,6 +1215,11 @@
         if (window.__pendingManualDownload && document.getElementById("navUserPill")) {
           window.__pendingManualDownload = false;
           downloadManual();
+        }
+        if (window.__pendingArtifact && document.getElementById("navUserPill")) {
+          var n = window.__pendingArtifact, b2 = window.__pendingArtifactBtn;
+          window.__pendingArtifact = false; window.__pendingArtifactBtn = null;
+          downloadArtifact(n, b2);
         }
       }).observe(zone, { childList: true });
     }
