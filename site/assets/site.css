@@ -913,7 +913,6 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
   .case-tri{grid-template-columns:1fr}
   .chain-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
   .chain-steps li:nth-child(2n)::after{content:none}
-  .verify-line{padding:0 4px}
 }
 
 .chain-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;list-style:none;margin:16px 0 20px;padding:0}
@@ -922,17 +921,6 @@ footer{border-top:1px solid var(--border);padding:52px 0 34px;background:var(--c
 .chain-steps .cs-k{display:flex;gap:7px;align-items:baseline;font-size:.72rem;color:var(--muted);letter-spacing:.04em}
 .chain-steps .cs-k em{font-style:normal;font-family:var(--font-mono);color:var(--accent-text);font-weight:700}
 .chain-steps .cs-v{display:block;margin-top:5px;font-size:.86rem;font-weight:620;line-height:1.5;overflow-wrap:anywhere}
-
-/* 名片正面可复核声明条 */
-.verify-line{margin-top:16px;font-size:.86rem;color:var(--muted)}
-.verify-line b{color:var(--text);font-weight:620}
-.verify-line a{color:var(--accent-text);border-bottom:1px solid var(--accent-ring)}
-
-/* 页尾复核指南 */
-.verify-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.verify-list li{padding:13px 16px;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius);font-size:.88rem;line-height:1.65;color:var(--muted)}
-.verify-list li b{color:var(--text)}
-.verify-list code{font-family:var(--font-mono);font-size:.8rem;color:var(--accent-text)}
 
 /* 案例三图陈列：主卡下的交付产物缩略行 */
 .case-tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
